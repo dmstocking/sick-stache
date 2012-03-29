@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+        <PreferenceCategory
+        android:title="SickBeard Server" >
+        <EditTextPreference
+            android:title="Host or IP address"
+            android:summary="The host name or ip address of your SickBeard server."
+            android:defaultValue="192.168.0.101"
+            android:key="host" />
+        <EditTextPreference
+            android:title="Port"
+            android:summary="The port to connect to your SickBeard server."
+            android:defaultValue="8081"
+            android:key="port" />
+        <EditTextPreference
+            android:title="API Key"
+            android:summary="The API key of your SickBeard server."
+            android:defaultValue=""
+            android:key="api" />
+    </PreferenceCategory>
+<!--     <PreferenceCategory -->
+<!--         android:title="History"> -->
+<!--         <EditTextPreference -->
+<!--             android:title="Item Limit" -->
+<!--             android:summary="The limit on the number of items to show for history." -->
+<!--             android:defaultValue="100" -->
+<!--             android:key="historyLimit" /> -->
+<!--     </PreferenceCategory> -->
+</PreferenceScreen>

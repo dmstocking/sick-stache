@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- General Values -->
+    <string name="app_name">SickStashe</string>
+    <string name="ok">Ok</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    
+    <!-- Searching -->
+    <string name="search_hint">Search for TV Shows</string>
+    
+    <!-- Cache Message -->
+    <string name="cache_delete">Are you sure you want to delete the cache?</string>
+    
+    <!-- Options Fragment Values -->
+    <string name="ip_hint">Host or IP Address (no http://)</string>
+    <string name="try_get_key">Try Automatically Get API Key</string>
+    <string name="port">Port</string>
+    <string name="api_key">API Key</string>
+    <string name="ip_address">IP Address</string>
+    <string name="save">Save</string>
+    
+    <!-- Menu Item Values -->
+    <string name="options_item_title">Options</string>
+    <string name="refresh_item_title">Refresh</string>
+    <string name="search_item_title">Search</string>
+    <string name="cache_item_title">Delete Cache</string>
+    <string name="history_item_title">History</string>
+    <string name="log_item_title">Log</string>
+    <string name="about_item_title">About SickGoatee</string>
+    
+</resources>
