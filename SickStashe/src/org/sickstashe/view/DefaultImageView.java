@@ -196,7 +196,10 @@ public class DefaultImageView extends ImageView {
 					return bitmap;
 				}
 			} catch (Exception e) {
-				Log.e("@GetUrlImageTaks.doInBackground", e.getMessage());
+				if ( e.getMessage() != null )
+					Log.e("@GetUrlImageTaks.doInBackground", e.getMessage());
+				else
+					Log.e("@GetUrlImageTaks.doInBackground", "Error getting image");
 			}
 			return null;
 		}
