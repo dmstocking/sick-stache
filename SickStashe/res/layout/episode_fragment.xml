@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" >
+	    
+	    <org.sickstashe.view.DefaultImageView
+			android:id="@+id/showImage"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:adjustViewBounds="true"
+			android:scaleType="fitXY"
+			android:src="@drawable/default_banner" />
+	
+		<TextView
+			android:id="@+id/show"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingLeft="3dp"
+			android:text="Show Name Unknown"
+			android:textSize="15sp"
+			android:textStyle="bold"
+			android:textColor="#ffffff"
+			android:background="@color/sickbeard_title_background" />
+	
+		<RelativeLayout
+			android:id="@+id/relativeLayout1"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+	
+			<TextView
+				android:id="@+id/textView1"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_alignParentTop="true"
+				android:text="Season: "
+				style="@style/ShowTitle" />
+	
+			<TextView
+				android:id="@+id/seasonTextView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentTop="true"
+				android:layout_toRightOf="@+id/textView1"
+				android:text="Unknown"
+				style="@style/ShowLabel" />
+	
+			<TextView
+				android:id="@+id/textView2"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/seasonTextView"
+				android:layout_alignParentLeft="true"
+				android:text="Episode: "
+				style="@style/ShowTitle" />
+	
+			<TextView
+				android:id="@+id/episodeTextView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/seasonTextView"
+				android:layout_toRightOf="@+id/textView2"
+				android:text="Unknown"
+				style="@style/ShowLabel" />
+	
+			<TextView
+				android:id="@+id/textView3"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/episodeTextView"
+				android:layout_alignParentLeft="true"
+				android:text="Air-by-Date: "
+				style="@style/ShowTitle" />
+	
+			<TextView
+				android:id="@+id/airbydateTextView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/episodeTextView"
+				android:layout_toRightOf="@+id/textView3"
+				android:text="Unknown"
+				style="@style/ShowLabel" />
+			
+			<TextView
+				android:id="@+id/textView4"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/airbydateTextView"
+				android:layout_alignParentLeft="true"
+				android:text="Status: "
+				style="@style/ShowTitle" />
+	
+			<TextView
+				android:id="@+id/statusTextView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/airbydateTextView"
+				android:layout_toRightOf="@+id/textView4"
+				android:text="Unknown"
+				style="@style/ShowLabel" />
+	
+			<TextView
+				android:id="@+id/textView5"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/statusTextView"
+				android:layout_alignParentLeft="true"
+				android:text="Name: "
+				style="@style/ShowTitle" />
+	
+			<TextView
+				android:id="@+id/nameTextView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/statusTextView"
+				android:layout_toRightOf="@+id/textView5"
+				android:text="Unknown"
+				style="@style/ShowLabel" />
+			
+<!-- 			<TextView -->
+<!-- 				android:id="@+id/textView5" -->
+<!-- 				android:layout_width="fill_parent" -->
+<!-- 				android:layout_height="wrap_content" -->
+<!-- 				android:layout_below="@+id/nameTextView" -->
+<!-- 				android:layout_alignParentLeft="true" -->
+<!-- 				android:paddingLeft="3dp" -->
+<!-- 				android:text="Description" -->
+<!-- 				android:textSize="15sp" -->
+<!-- 				android:textStyle="bold" -->
+<!-- 				android:textColor="#ffffff" -->
+<!-- 				android:background="@color/sickbeard_title_background" /> -->
+	
+			<TextView
+				android:id="@+id/textView6"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/nameTextView"
+				android:layout_alignParentLeft="true"
+				android:text="Description: "
+				style="@style/ShowTitle" />
+	
+			<TextView
+				android:id="@+id/descriptionTextView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/textView6"
+				android:text="Unknown"
+				style="@style/ShowLabel"
+				android:paddingLeft="3dp" />
+	
+		</RelativeLayout>
+		
+		<TextView
+			android:id="@+id/optionsTextView"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingLeft="3dp"
+			android:text="Episode Options"
+			android:textSize="15sp"
+			android:textStyle="bold"
+			android:textColor="#ffffff"
+			android:background="@color/sickbeard_title_background" />
+		
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:orientation="vertical"
+	        android:divider="@drawable/seperator_background"
+	        android:dividerHeight="1dp"
+	        android:showDividers="middle|end" >
+		    
+			<TextView
+	            android:id="@+id/searchTextView"
+	            android:enabled="false"
+	            style="@style/ShowOptionTitle"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Search for Episode"
+	            android:gravity="center_vertical"
+	            android:drawableRight="@drawable/ic_go"
+	            android:clickable="true" />
+			
+			<TextView
+	            android:id="@+id/setstatusTextView"
+	            android:enabled="false"
+	            style="@style/ShowOptionTitle"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Set Status"
+	            android:gravity="center_vertical"
+	            android:drawableRight="@drawable/ic_go"
+	            android:clickable="true" />
+			
+		</LinearLayout>
+	
+	</LinearLayout>
+
+</ScrollView>

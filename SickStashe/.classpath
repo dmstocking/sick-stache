@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libSickBeard"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ActionBarSherlock"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ViewPagerIndicator"/>
+	<classpathentry kind="lib" path="libs/gson-2.1.jar"/>
+	<classpathentry kind="lib" path="libs/guava-11.0.1.jar"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>

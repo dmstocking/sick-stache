@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/sickbeard_soon_background" >
+    
+    <TextView
+        android:id="@+id/historyDateTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="3dp"
+        android:text="Show Name Unkown"
+        android:gravity="center_horizontal"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:background="@color/sickbeard_title_background" />
+
+    <TextView
+        android:id="@+id/historyEpisodeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/historyDateTextView"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:text="Example-01x01"
+        android:gravity="center_horizontal"
+        android:textColor="#000000" />
+
+</RelativeLayout>

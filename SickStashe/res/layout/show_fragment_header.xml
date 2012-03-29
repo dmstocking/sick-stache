@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+
+	<org.sickstashe.view.DefaultImageView
+		android:id="@+id/showImage"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:adjustViewBounds="true"
+		android:scaleType="fitXY"
+		android:src="@drawable/default_banner" />
+
+	<TextView
+		android:id="@+id/show"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingLeft="3dp"
+		android:text="Show Name Unkown"
+		android:textSize="15sp"
+		android:textStyle="bold"
+		android:textColor="#ffffff"
+		android:background="@color/sickbeard_title_background" />
+
+	<RelativeLayout
+		android:id="@+id/relativeLayout1"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<TextView
+			android:id="@+id/textView1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_alignParentTop="true"
+			android:text="Airs: "
+			style="@style/ShowTitle" />
+
+		<TextView
+			android:id="@+id/airsTextView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_toRightOf="@+id/textView1"
+			android:text="TextView"
+			style="@style/ShowLabel" />
+
+		<TextView
+			android:id="@+id/textView2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/airsTextView"
+			android:layout_alignParentLeft="true"
+			android:text="Quality: "
+			style="@style/ShowTitle" />
+
+		<TextView
+			android:id="@+id/qualityTextView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/airsTextView"
+			android:layout_toRightOf="@+id/textView2"
+			android:text="TextView"
+			style="@style/ShowLabel" />
+
+		<TextView
+			android:id="@+id/textView3"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/qualityTextView"
+			android:layout_alignParentLeft="true"
+			android:text="Language: "
+			style="@style/ShowTitle" />
+
+		<TextView
+			android:id="@+id/languageTextView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/qualityTextView"
+			android:layout_toRightOf="@+id/textView3"
+			android:text="TextView"
+			style="@style/ShowLabel" />
+
+		<TextView
+			android:id="@+id/textView4"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/languageTextView"
+			android:layout_alignParentLeft="true"
+			android:text="Paused: "
+			style="@style/ShowTitle" />
+
+		<TextView
+			android:id="@+id/pausedTextView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/languageTextView"
+			android:layout_toRightOf="@+id/textView4"
+			android:text="TextView"
+			style="@style/ShowLabel" />
+
+		<TextView
+			android:id="@+id/textView5"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/pausedTextView"
+			android:layout_alignParentLeft="true"
+			android:text="Air-by-Date: "
+			style="@style/ShowTitle" />
+
+		<TextView
+			android:id="@+id/airbydateTextView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/pausedTextView"
+			android:layout_toRightOf="@+id/textView5"
+			android:text="TextView"
+			style="@style/ShowLabel" />
+
+	</RelativeLayout>
+
+	<TextView
+		android:id="@+id/textView6"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingLeft="3dp"
+		android:text="Seasons"
+		android:textSize="15sp"
+		android:textStyle="bold"
+		android:textColor="#ffffff"
+		android:background="@color/sickbeard_title_background" />
+
+</LinearLayout>
