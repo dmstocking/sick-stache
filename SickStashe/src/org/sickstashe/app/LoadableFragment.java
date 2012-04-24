@@ -194,7 +194,9 @@ public abstract class LoadableFragment<Params, Progress, Result> extends Sherloc
 
     	@Override
     	protected void onPostExecute(Result result) {
-    		if ( LoadableFragment.this != null ) {
+    		// checking if the fragment and the activity is alive otherwise we will crash
+    		if ( LoadableFragment.this != null &&
+    				LoadableFragment.this.getSherlockActivity() != null ) {
     			// finished loading
     			if ( refreshMenuItem != null ) {
     				refreshMenuItem.setActionView(null);

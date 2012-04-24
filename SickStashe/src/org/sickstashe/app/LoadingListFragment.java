@@ -177,7 +177,9 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 
     	@Override
     	protected void onPostExecute(Result result) {
-    		if ( LoadingListFragment.this != null ) {
+    		// checking if the fragment and the activity is alive otherwise we will crash
+    		if ( LoadingListFragment.this != null &&
+    				LoadingListFragment.this.getSherlockActivity() != null ) {
     			// finished loading
     			if ( refreshMenuItem != null ) {
     				refreshMenuItem.setActionView(null);

@@ -184,7 +184,9 @@ public class EpisodeFragment extends LoadableFragment<String, Void, Episode> {
 
     	@Override
     	protected void onPostExecute(Boolean result) {
-    		if ( EpisodeFragment.this != null ) {
+    		// checking if the fragment and the activity is alive otherwise we will crash
+    		if ( EpisodeFragment.this != null &&
+    				EpisodeFragment.this.getSherlockActivity() != null ) {
 	    		if ( result != null && result == true ) {
 	    			Toast searching = Toast.makeText(EpisodeFragment.this.getActivity(), "Searching Successful", Toast.LENGTH_LONG);
 					searching.show();
@@ -212,7 +214,9 @@ public class EpisodeFragment extends LoadableFragment<String, Void, Episode> {
 
     	@Override
     	protected void onPostExecute(Boolean result) {
-    		if ( EpisodeFragment.this != null ) {
+    		// checking if the fragment and the activity is alive otherwise we will crash
+    		if ( EpisodeFragment.this != null && 
+    				EpisodeFragment.this.getSherlockActivity() != null ) {
 	    		if ( result != null && result == true ) {
 	    			Toast searching = Toast.makeText(EpisodeFragment.this.getActivity(), "Set Status Successful", Toast.LENGTH_LONG);
 					searching.show();
