@@ -23,18 +23,19 @@ import org.sickstashe.R;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public abstract class LoadableFragment<Params, Progress, Result> extends Fragment {
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.MenuInflater;
+
+public abstract class LoadableFragment<Params, Progress, Result> extends SherlockFragment {
 	
 	public enum Status { NORMAL, WORKING, ERROR, EMPTY };
 	

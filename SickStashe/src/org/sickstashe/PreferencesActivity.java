@@ -21,10 +21,12 @@ package org.sickstashe;
 
 import org.sickstashe.R;
 
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
-public class PreferencesActivity extends PreferenceActivity {
+public class PreferencesActivity extends SherlockPreferenceActivity {
 	
 	@Override
 	protected void onPause() {

@@ -23,14 +23,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
-import android.support.v4.view.SubMenu;
 import android.support.v4.view.ViewPager;
+
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -55,10 +52,15 @@ import org.sickstashe.fragments.*;
 import org.sickstashe.helper.ImageCache;
 import org.sickstashe.helper.Preferences;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.SubMenu;
+
 import com.viewpagerindicator.TitlePageIndicator;
 import com.viewpagerindicator.TitleProvider;
 
-public class HomeActivity extends FragmentActivity implements OnSharedPreferenceChangeListener {
+public class HomeActivity extends SherlockFragmentActivity implements OnSharedPreferenceChangeListener {
 	
 	public static SharedPreferences pref;
 	
@@ -119,7 +121,7 @@ public class HomeActivity extends FragmentActivity implements OnSharedPreference
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// create the menu button options NOT ACTIONBAR!
-		this.getMenuInflater().inflate(R.menu.home_menu, menu);
+		this.getSupportMenuInflater().inflate(R.menu.home_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
     

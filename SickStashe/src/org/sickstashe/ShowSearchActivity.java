@@ -21,10 +21,11 @@ package org.sickstashe;
 
 import org.sickstashe.R;
 
-import android.support.v4.app.FragmentActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
 import android.os.Bundle;
 
-public class ShowSearchActivity extends FragmentActivity {
+public class ShowSearchActivity extends SherlockFragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

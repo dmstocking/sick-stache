@@ -50,12 +50,15 @@
 <!--         <item name="android:paddingRight">12dip</item> -->
 <!--         <item name="android:scaleType">center</item> -->
     </style>
-    <style name="Theme.SickStashe" parent="Theme.Sherlock">
+    <style name="Widget.SickGoatee.ActionBar" parent="Widget.Sherlock.ActionBar" >
         <item name="actionBarSize">@dimen/actionbar_height</item>
+        <item name="background">@color/actionbar_background</item>
+        <item name="divider">@drawable/seperator_background</item>
+        <item name="titleTextStyle">@style/BoldTitle</item>
+    </style>
+    <style name="Theme.SickStashe" parent="Theme.Sherlock">
+        <item name="actionBarStyle">@style/Widget.SickGoatee.ActionBar</item>
         <item name="actionButtonStyle">@style/Widget.SickGoatee.ActionButton</item>
-        <item name="abBackground">@color/actionbar_background</item>
-        <item name="abDivider">@drawable/seperator_background</item>
-        <item name="abTitleTextStyle">@style/BoldTitle</item>
-        <item name="selectableItemBackground">@drawable/action_button_selector</item>
+        <item name="android:selectableItemBackground">@drawable/action_button_selector</item>
     </style>
 </resources>
