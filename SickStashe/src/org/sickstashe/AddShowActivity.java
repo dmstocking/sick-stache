@@ -32,6 +32,8 @@ public class AddShowActivity extends SherlockFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.add_show_activity);
+        
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 }

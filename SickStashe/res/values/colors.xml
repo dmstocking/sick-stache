@@ -10,8 +10,8 @@
     <color name="focused_background">@color/focused_background_list</color>
     
     <color name="actionbar_background">#79c838</color>
-    <color name="actionbar_background_light">#D1D1D1</color>
-    <color name="actionbar_background_dark">#9C9C9C</color>
+    <color name="actionbar_background_light">#b2c838</color>
+    <color name="actionbar_background_dark">@color/sickbeard_dark</color>
     <color name="actionbar_button_focus">#FF8000</color>
     
     <color name="sickbeard_light">#c7db40</color>

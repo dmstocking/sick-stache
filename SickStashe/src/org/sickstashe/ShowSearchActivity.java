@@ -31,6 +31,8 @@ public class ShowSearchActivity extends SherlockFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.search_activity);
+        
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 	
 }

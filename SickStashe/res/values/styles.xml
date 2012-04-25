@@ -59,6 +59,7 @@
     <style name="Theme.SickStashe" parent="Theme.Sherlock">
         <item name="actionBarStyle">@style/Widget.SickGoatee.ActionBar</item>
         <item name="actionButtonStyle">@style/Widget.SickGoatee.ActionButton</item>
-        <item name="android:selectableItemBackground">@drawable/action_button_selector</item>
+        <item name="android:actionBarItemBackground">@drawable/action_button_selector</item>
+        <item name="actionBarItemBackground">@drawable/action_button_selector</item>
     </style>
 </resources>

@@ -66,15 +66,15 @@ public class SeasonsFragment extends LoadingListFragment<String, Void, Show> {
 		tvdbid = parent.getStringExtra("tvdbid");
 		show = parent.getStringExtra("show");
 		headerfooter = this.getActivity().getIntent().getBooleanExtra("headerfooter", false);
-		seasonAdapter = new ArrayAdapter<Integer>(this.getActivity(), android.R.layout.simple_list_item_1) {
+		seasonAdapter = new ArrayAdapter<Integer>(this.getActivity(), R.layout.seasons_item) {
 			@Override
 			public View getView( int position, View convertView, ViewGroup parent ) {
 				View row = convertView;
 				int item = getItem(position);
 				if ( row == null ) {
-					row = getActivity().getLayoutInflater().inflate(android.R.layout.simple_list_item_1, null);
+					row = getActivity().getLayoutInflater().inflate(R.layout.seasons_item, null);
 				}
-				TextView text = (TextView) row.findViewById(android.R.id.text1);
+				TextView text = (TextView) row.findViewById(R.id.seasonsItemTextView);
 				if ( item == 0 ) {
 					text.setText("Specials" );
 				} else {

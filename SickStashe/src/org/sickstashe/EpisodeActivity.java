@@ -33,6 +33,8 @@ public class EpisodeActivity extends SherlockFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.episode_activity);
+        
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override

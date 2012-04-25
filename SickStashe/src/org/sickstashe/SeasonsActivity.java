@@ -31,9 +31,10 @@ public class SeasonsActivity extends SherlockFragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle arg0) {
-		// TODO Auto-generated method stub
 		super.onCreate(arg0);
         setContentView(R.layout.seasons);
+        
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override

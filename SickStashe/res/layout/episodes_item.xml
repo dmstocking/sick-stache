@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:text="Example Episode List Item"
         android:textColor="#000000"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:paddingLeft="3dp"
         android:paddingTop="3dp"
         android:paddingBottom="3dp"

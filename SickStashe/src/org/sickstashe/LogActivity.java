@@ -33,6 +33,8 @@ public class LogActivity extends SherlockFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.log_activity);
+        
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override

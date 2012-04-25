@@ -36,9 +36,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -46,6 +48,8 @@ import android.widget.TextView;
 import com.actionbarsherlock.view.MenuItem;
 
 public class EpisodesFragment extends LoadingListFragment<Void, Void, ArrayList<Episode>> {
+	
+//	private LinearLayout header;
 	
 	private ArrayAdapter<Episode> episodesAdapter;
 	
@@ -91,6 +95,12 @@ public class EpisodesFragment extends LoadingListFragment<Void, Void, ArrayList<
 			}
 		};
 	}
+	
+//	@Override
+//	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//		header = (LinearLayout)inflater.inflate(R.layout.show_fragment_header, null);
+//		return super.onCreateView(inflater, container, savedInstanceState);
+//	}
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
