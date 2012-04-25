@@ -57,6 +57,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 
+import com.viewpagerindicator.TabPageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 import com.viewpagerindicator.TitleProvider;
 
@@ -94,10 +95,10 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
         futureFrag = new FutureFragment();
         
         viewpager = ((ViewPager)findViewById(R.id.viewpager));
+        pageIndicator = ((TitlePageIndicator)findViewById(R.id.viewPagerIndicator));
         pageAdapter =  new SlideAdapter( this.getSupportFragmentManager() );
         viewpager.setAdapter( pageAdapter );
-        pageIndicator = ((TitlePageIndicator)findViewById(R.id.viewPagerIndicator));
-        pageIndicator.setViewPager(viewpager);
+        pageIndicator.setViewPager( viewpager );
         
         Intent intent = this.getIntent();
         if ( intent != null ) {
