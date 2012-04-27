@@ -19,6 +19,7 @@
  */
 package org.sickbeard;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,6 +35,13 @@ import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+
 import com.google.gson.*;
 import com.google.gson.reflect.*;
 
@@ -41,6 +49,7 @@ import org.sickbeard.json.*;
 import org.sickbeard.json.ShowJson.CacheStatusJson;
 import org.sickbeard.json.deserializer.JsonBooleanDeserializer;
 import org.sickbeard.json.type.JsonBoolean;
+import org.sickbeard.net.ssl.DefaultTrustManager;
 
 
 
@@ -81,11 +90,28 @@ public class SickBeard {
 	}
 	
 	private URI serverUri;
+	private boolean https = false;
 	
 	public SickBeard( String url, String port, String api, boolean https )
 	{
 		try {
-			String protocol = ( https ? "https" : "http" );
+			this.https = https;
+			String protocol = "";
+			if ( https ) {
+				SSLContext ctx = SSLContext.getInstance("TLS");
+		        ctx.init(new KeyManager[0], new TrustManager[] {new DefaultTrustManager()}, new SecureRandom());
+		        HttpsURLConnection.setDefaultSSLSocketFactory(ctx.getSocketFactory());
+//		        SSLContext.setDefault(ctx);
+		        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier(){
+					@Override
+					public boolean verify(String arg0, SSLSession arg1) {
+						return true;
+					}
+				});
+		        protocol = "https";
+			} else {
+				protocol ="http";
+			}
 			serverUri = new URI( protocol + "://" + url + ":" + port + "/api/" + api + "/?cmd=" );
 		} catch (Exception e){
 //			serverUri = new URI("http://192.168.0.101:8081/api/?cmd=");
@@ -457,7 +483,12 @@ public class SickBeard {
 	private <T> JsonResponse<T> commandResponse( String command, Type type ) throws Exception
 	{
 		URI uri = new URI( serverUri.toString() + command );
-		HttpURLConnection server = (HttpURLConnection)uri.toURL().openConnection();
+		HttpURLConnection server = null;
+		if ( https ) {
+			server = (HttpsURLConnection)uri.toURL().openConnection();
+		} else {
+			server = (HttpURLConnection)uri.toURL().openConnection();
+		}
 		server.setConnectTimeout(10000);
 		Reader reader = new BufferedReader( new InputStreamReader(server.getInputStream() ) );
 		// TypeToken cannot figure out T so instead it must be supplied

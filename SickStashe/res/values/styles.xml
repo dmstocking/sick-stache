@@ -41,7 +41,7 @@
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">25sp</item>
     </style>
-    <style name="Widget.SickGoatee.ActionButton" parent="Widget.Sherlock.ActionButton">
+    <style name="Widget.SickStache.ActionButton" parent="Widget.Sherlock.ActionButton">
 <!--         <item name="android:background">@color/sickbeard_dark</item> -->
 <!--         <item name="android:minHeight">?attr/actionBarSize</item> -->
         <item name="android:minWidth">48dip</item>
@@ -50,16 +50,22 @@
 <!--         <item name="android:paddingRight">12dip</item> -->
 <!--         <item name="android:scaleType">center</item> -->
     </style>
-    <style name="Widget.SickGoatee.ActionBar" parent="Widget.Sherlock.ActionBar" >
+    <style name="Widget.SickStache.ActionBar" parent="Widget.Sherlock.ActionBar" >
         <item name="actionBarSize">@dimen/actionbar_height</item>
+        <item name="android:actionBarSize">@dimen/actionbar_height</item>
         <item name="background">@color/actionbar_background</item>
+        <item name="android:background">@color/actionbar_background</item>
         <item name="divider">@drawable/seperator_background</item>
+        <item name="android:divider">@drawable/seperator_background</item>
         <item name="titleTextStyle">@style/BoldTitle</item>
+        <item name="android:titleTextStyle">@style/BoldTitle</item>
     </style>
     <style name="Theme.SickStache" parent="Theme.Sherlock">
-        <item name="actionBarStyle">@style/Widget.SickGoatee.ActionBar</item>
-        <item name="actionButtonStyle">@style/Widget.SickGoatee.ActionButton</item>
-        <item name="android:actionBarItemBackground">@drawable/action_button_selector</item>
+        <item name="actionBarStyle">@style/Widget.SickStache.ActionBar</item>
+        <item name="android:actionBarStyle">@style/Widget.SickStache.ActionBar</item>
+        <item name="actionButtonStyle">@style/Widget.SickStache.ActionButton</item>
+        <item name="android:actionButtonStyle">@style/Widget.SickStache.ActionButton</item>
         <item name="actionBarItemBackground">@drawable/action_button_selector</item>
-    </style>
+        <item name="android:actionBarItemBackground">@drawable/action_button_selector</item>
+        </style>
 </resources>
