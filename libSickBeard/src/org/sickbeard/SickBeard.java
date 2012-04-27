@@ -82,10 +82,11 @@ public class SickBeard {
 	
 	private URI serverUri;
 	
-	public SickBeard( String url, String port, String api )
+	public SickBeard( String url, String port, String api, boolean https )
 	{
 		try {
-			serverUri = new URI( "http://" + url + ":" + port + "/api/" + api + "/?cmd=" );
+			String protocol = ( https ? "https" : "http" );
+			serverUri = new URI( protocol + "://" + url + ":" + port + "/api/" + api + "/?cmd=" );
 		} catch (Exception e){
 //			serverUri = new URI("http://192.168.0.101:8081/api/?cmd=");
 			;
