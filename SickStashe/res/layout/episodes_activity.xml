@@ -6,7 +6,7 @@
     
 <!--     <include layout="@layout/actionbar" /> -->
     
-    <fragment android:name="org.sickstashe.fragments.EpisodesFragment"
+    <fragment android:name="org.sickstache.fragments.EpisodesFragment"
             android:id="@+id/seasons"
             android:layout_weight="1"
             android:layout_width="match_parent"

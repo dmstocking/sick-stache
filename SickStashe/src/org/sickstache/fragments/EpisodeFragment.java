@@ -1,4 +1,4 @@
-package org.sickstashe.fragments;
+package org.sickstache.fragments;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -8,10 +8,10 @@ import org.sickbeard.SickBeard;
 import org.sickbeard.SickBeard.StatusEnum;
 import org.sickbeard.json.FutureEpisodeJson;
 import org.sickbeard.json.FutureJson;
-import org.sickstashe.R;
-import org.sickstashe.app.LoadableFragment;
-import org.sickstashe.helper.Preferences;
-import org.sickstashe.view.DefaultImageView;
+import org.sickstache.app.LoadableFragment;
+import org.sickstache.helper.Preferences;
+import org.sickstache.view.DefaultImageView;
+import org.sickstache.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;

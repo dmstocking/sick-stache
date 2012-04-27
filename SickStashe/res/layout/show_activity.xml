@@ -7,7 +7,7 @@
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical" >
 	    
-	    <org.sickstashe.view.DefaultImageView
+	    <org.sickstache.view.DefaultImageView
 	        android:id="@+id/showImage"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
 <!-- 	        android:textColor="#ffffff" -->
 <!-- 	        android:background="@color/sickbeard_title_background" /> -->
 	    
-<!-- 	    <fragment android:name="org.sickstashe.fragments.SeasonsFragment" -->
+<!-- 	    <fragment android:name="org.sickstache.fragments.SeasonsFragment" -->
 <!-- 	            android:id="@+id/seasons" -->
 <!-- 	            android:layout_weight="1" -->
 <!-- 	            android:layout_width="match_parent" -->
@@ -153,7 +153,7 @@
 <!-- 	        android:textColor="#ffffff" -->
 <!-- 	        android:background="@color/sickbeard_title_background" /> -->
 	    
-<!-- 	    <fragment android:name="org.sickstashe.fragments.ShowOptionsFragment" -->
+<!-- 	    <fragment android:name="org.sickstache.fragments.ShowOptionsFragment" -->
 <!-- 	            android:id="@+id/showOptions" -->
 <!-- 	            android:layout_weight="1" -->
 <!-- 	            android:layout_width="match_parent" -->

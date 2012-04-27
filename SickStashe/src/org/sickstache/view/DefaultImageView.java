@@ -1,10 +1,10 @@
 /*
- * 	SickStashe is a android application for managing SickBeard
+ * 	SickStache is a android application for managing SickBeard
  * 	Copyright (C) 2012  David Stocking dmstocking@gmail.com
  * 
  * 	http://code.google.com/p/sick-stashe/
  * 	
- * 	SickStashe is free software: you can redistribute it and/or modify
+ * 	SickStache is free software: you can redistribute it and/or modify
  * 	it under the terms of the GNU General Public License as published by
  * 	the Free Software Foundation, either version 3 of the License, or
  * 	(at your option) any later version.
@@ -17,12 +17,12 @@
  * 	You should have received a copy of the GNU General Public License
  * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.sickstashe.view;
+package org.sickstache.view;
 
 import java.net.URI;
 import java.net.URL;
 
-import org.sickstashe.helper.ImageCache;
+import org.sickstache.helper.ImageCache;
 
 import android.content.Context;
 import android.graphics.Bitmap;

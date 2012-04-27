@@ -1,10 +1,10 @@
 /*
- * 	SickStashe is a android application for managing SickBeard
+ * 	SickStache is a android application for managing SickBeard
  * 	Copyright (C) 2012  David Stocking dmstocking@gmail.com
  * 
  * 	http://code.google.com/p/sick-stashe/
  * 	
- * 	SickStashe is free software: you can redistribute it and/or modify
+ * 	SickStache is free software: you can redistribute it and/or modify
  * 	it under the terms of the GNU General Public License as published by
  * 	the Free Software Foundation, either version 3 of the License, or
  * 	(at your option) any later version.
@@ -17,7 +17,7 @@
  * 	You should have received a copy of the GNU General Public License
  * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.sickstashe.helper;
+package org.sickstache.helper;
 
 import org.sickbeard.SickBeard;
 
@@ -53,6 +53,11 @@ public class Preferences implements OnSharedPreferenceChangeListener {
 		return pref.getString("api", "");
 	}
 	
+	public boolean getHTTPS()
+	{
+		return pref.getBoolean("https", false);
+	}
+	
 	public SickBeard getSickBeard()
 	{
 		// hope this works if it doesn't use copy constructor
@@ -71,7 +76,7 @@ public class Preferences implements OnSharedPreferenceChangeListener {
 	
 	private void updateSickBeard()
 	{
-		sick = new SickBeard( getHost(), getPort(), getAPI() );
+		sick = new SickBeard( getHost(), getPort(), getAPI(), getHTTPS() );
 	}
 
 	public void onSharedPreferenceChanged(SharedPreferences arg0, String arg1) {

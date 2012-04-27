@@ -5,7 +5,7 @@
     android:orientation="vertical" >
     
     <fragment
-        android:name="org.sickstashe.fragments.SearchFragment"
+        android:name="org.sickstache.fragments.SearchFragment"
         android:id="@+id/search"
         android:layout_weight="1"
         android:layout_width="match_parent"

@@ -56,7 +56,7 @@
         <item name="divider">@drawable/seperator_background</item>
         <item name="titleTextStyle">@style/BoldTitle</item>
     </style>
-    <style name="Theme.SickStashe" parent="Theme.Sherlock">
+    <style name="Theme.SickStache" parent="Theme.Sherlock">
         <item name="actionBarStyle">@style/Widget.SickGoatee.ActionBar</item>
         <item name="actionButtonStyle">@style/Widget.SickGoatee.ActionButton</item>
         <item name="android:actionBarItemBackground">@drawable/action_button_selector</item>

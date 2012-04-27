@@ -26,7 +26,7 @@ public class SickBeardTestCase {
 		hostname = "nas-server";
 		port = "8081";
 		api = "e409e3b95faad0c41319e5a6bc8a3c7a";
-		sick = new SickBeard(hostname, port, api);
+		sick = new SickBeard(hostname, port, api, false);
 	}
 	
 	@Test

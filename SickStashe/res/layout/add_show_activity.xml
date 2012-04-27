@@ -5,7 +5,7 @@
     android:orientation="vertical" >
     
     <fragment
-        android:name="org.sickstashe.fragments.AddShowFragment"
+        android:name="org.sickstache.fragments.AddShowFragment"
         android:id="@+id/episode"
         android:layout_weight="1"
         android:layout_width="match_parent"

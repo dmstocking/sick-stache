@@ -17,6 +17,11 @@
             android:summary="The API key of your SickBeard server."
             android:defaultValue=""
             android:key="api" />
+        <SwitchPreference
+            android:title="HTTPS"
+            android:summary="Use HTTPS"
+            android:defaultValue="false"
+            android:key="https"/>
     </PreferenceCategory>
 <!--     <PreferenceCategory -->
 <!--         android:title="History"> -->
