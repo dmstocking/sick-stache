@@ -8,7 +8,7 @@ import org.sickbeard.SickBeard;
 import org.sickbeard.SickBeard.StatusEnum;
 import org.sickbeard.json.FutureEpisodeJson;
 import org.sickbeard.json.FutureJson;
-import org.sickstache.app.LoadableFragment;
+import org.sickstache.app.LoadingFragment;
 import org.sickstache.helper.Preferences;
 import org.sickstache.view.DefaultImageView;
 import org.sickstache.R;
@@ -27,7 +27,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class EpisodeFragment extends LoadableFragment<String, Void, Episode> {
+public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 
 	public String tvdbid;
 	public String show;

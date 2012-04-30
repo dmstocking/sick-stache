@@ -35,7 +35,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuInflater;
 
-public abstract class LoadableFragment<Params, Progress, Result> extends SherlockFragment {
+public abstract class LoadingFragment<Params, Progress, Result> extends SherlockFragment {
 	
 	public enum Status { NORMAL, WORKING, ERROR, EMPTY };
 	
@@ -179,7 +179,7 @@ public abstract class LoadableFragment<Params, Progress, Result> extends Sherloc
     	@Override
     	protected Result doInBackground(Params... arg0) {
     		try {
-    			return LoadableFragment.this.doInBackground(arg0);
+    			return LoadingFragment.this.doInBackground(arg0);
     		} catch (Exception e) {
     			error = e;
     		}
@@ -189,24 +189,24 @@ public abstract class LoadableFragment<Params, Progress, Result> extends Sherloc
     	@Override
     	protected void onProgressUpdate(Progress...values)
     	{
-    		LoadableFragment.this.onProgressUpdate(values);
+    		LoadingFragment.this.onProgressUpdate(values);
     	}
 
     	@Override
     	protected void onPostExecute(Result result) {
     		// checking if the fragment and the activity is alive otherwise we will crash
-    		if ( LoadableFragment.this != null &&
-    				LoadableFragment.this.getSherlockActivity() != null ) {
+    		if ( LoadingFragment.this != null &&
+    				LoadingFragment.this.getSherlockActivity() != null ) {
     			// finished loading
     			if ( refreshMenuItem != null ) {
     				refreshMenuItem.setActionView(null);
     			}
     			// if we have a error
     			if ( error != null ) {
-    				LoadableFragment.this.setStatus(LoadableFragment.Status.ERROR);
+    				LoadingFragment.this.setStatus(LoadingFragment.Status.ERROR);
     			} else if ( result != null ) {
-        			LoadableFragment.this.setStatus(LoadableFragment.Status.NORMAL);
-    				LoadableFragment.this.onPostExecute(result);
+        			LoadingFragment.this.setStatus(LoadingFragment.Status.NORMAL);
+    				LoadingFragment.this.onPostExecute(result);
     			}
     		}
     	}

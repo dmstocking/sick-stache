@@ -21,7 +21,7 @@ package org.sickstache.fragments;
 
 import org.sickstache.AddShowActivity;
 import org.sickstache.HomeActivity;
-import org.sickstache.app.LoadableFragment;
+import org.sickstache.app.LoadingFragment;
 import org.sickstache.helper.Preferences;
 import org.sickstache.R;
 
