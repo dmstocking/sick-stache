@@ -188,10 +188,10 @@ public class EpisodeFragment extends LoadableFragment<String, Void, Episode> {
     		if ( EpisodeFragment.this != null &&
     				EpisodeFragment.this.getSherlockActivity() != null ) {
 	    		if ( result != null && result == true ) {
-	    			Toast searching = Toast.makeText(EpisodeFragment.this.getActivity(), "Searching Successful", Toast.LENGTH_LONG);
+	    			Toast searching = Toast.makeText(EpisodeFragment.this.getSherlockActivity(), "Searching Successful", Toast.LENGTH_LONG);
 					searching.show();
 	    		} else {
-	    			Toast searching = Toast.makeText(EpisodeFragment.this.getActivity(), "Searching Failed", Toast.LENGTH_LONG);
+	    			Toast searching = Toast.makeText(EpisodeFragment.this.getSherlockActivity(), "Searching Failed", Toast.LENGTH_LONG);
 					searching.show();
 	    		}
     		}
@@ -218,10 +218,10 @@ public class EpisodeFragment extends LoadableFragment<String, Void, Episode> {
     		if ( EpisodeFragment.this != null && 
     				EpisodeFragment.this.getSherlockActivity() != null ) {
 	    		if ( result != null && result == true ) {
-	    			Toast searching = Toast.makeText(EpisodeFragment.this.getActivity(), "Set Status Successful", Toast.LENGTH_LONG);
+	    			Toast searching = Toast.makeText(EpisodeFragment.this.getSherlockActivity(), "Set Status Successful", Toast.LENGTH_LONG);
 					searching.show();
 	    		} else {
-	    			Toast searching = Toast.makeText(EpisodeFragment.this.getActivity(), "Set Status Failed", Toast.LENGTH_LONG);
+	    			Toast searching = Toast.makeText(EpisodeFragment.this.getSherlockActivity(), "Set Status Failed", Toast.LENGTH_LONG);
 					searching.show();
 	    		}
     		}
