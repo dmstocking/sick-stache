@@ -21,10 +21,12 @@ package org.sickstache.fragments;
 
 import java.util.Comparator;
 
+import org.sickbeard.Episode;
 import org.sickbeard.Season;
 import org.sickbeard.Show;
 
 import org.sickstache.EpisodesActivity;
+import org.sickstache.app.ExpandableLoadingListFragment;
 import org.sickstache.app.LoadingListFragment;
 import org.sickstache.helper.Preferences;
 import org.sickstache.view.DefaultImageView;
@@ -40,7 +42,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class SeasonsFragment extends LoadingListFragment<String, Void, Show> {
+public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episode,String, Void, Show> {
 
 	private String tvdbid;
 	private String show;
@@ -178,5 +180,46 @@ public class SeasonsFragment extends LoadingListFragment<String, Void, Show> {
 			}
 		});
 		seasonAdapter.notifyDataSetChanged();
+	}
+
+	@Override
+	protected View getChildView(Integer group, Episode item, int groupNum, int itemNum, boolean isLastView, View convertView, ViewGroup root) {
+		if ( convertView == null )
+			convertView = LayoutInflater.from(getSherlockActivity()).inflate(R.layout.seasons_item, root, false);
+		View row = convertView;
+		TextView text = (TextView) row.findViewById(R.id.episodesItemTextView);
+		text.setText(item.episode + " - " + item.name);
+		switch ( item.status ) {
+		case WANTED:
+			text.setBackgroundResource(R.color.sickbeard_wanted_background);
+			break;
+		case DOWNLOADED:
+		case SNATCHED:
+		case ARCHIVED:
+			text.setBackgroundResource(R.color.sickbeard_downloaded_background);
+			break;
+		case SKIPPED:
+		case IGNORED:
+			text.setBackgroundResource(R.color.sickbeard_skipped_background);
+			break;
+		case UNAIRED:
+			text.setBackgroundResource(R.color.sickbeard_unaired_background);
+			break;
+		}
+		return row;
+	}
+
+	@Override
+	protected View getGroupView(Integer group, int groupNum, boolean isLastView, View convertView, ViewGroup root) {
+		if ( convertView == null )
+			convertView = LayoutInflater.from(getSherlockActivity()).inflate(R.layout.seasons_item, root, false);
+		View row = convertView;
+		TextView text = (TextView) row.findViewById(R.id.seasonsItemTextView);
+		if ( group == 0 ) {
+			text.setText("Specials" );
+		} else {
+			text.setText("Season " + group);
+		}
+		return row;
 	}
 }
