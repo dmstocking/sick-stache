@@ -149,7 +149,9 @@ public class SeasonsFragment extends LoadingListFragment<String, Void, Show> {
 
 	@Override
 	protected Show doInBackground(String... arg0) throws Exception {
-		return Preferences.singleton.getSickBeard().show(arg0[0]);
+		Show show = Preferences.singleton.getSickBeard().show(arg0[0]);
+		show.seasonList = Preferences.singleton.getSickBeard().showSeasons(arg0[0]);
+		return show;
 	}
 
 	@Override

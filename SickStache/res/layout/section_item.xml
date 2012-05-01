@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+	android:id="@+id/sectionTextView"
+	android:paddingLeft="3dp"
+	android:text="Section Label"
+	android:textSize="15sp"
+	android:textStyle="bold"
+	android:textColor="#ffffff"
+	android:background="@color/sickbeard_title_background" >
+    
+
+</TextView>
