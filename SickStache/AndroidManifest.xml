@@ -52,7 +52,7 @@
             android:name=".HistoryActivity" >
         </activity>
         <activity
-            android:name=".LogActivityhe.LogActivity" >
+            android:name=".LogActivity" >
         </activity>
     </application>
 

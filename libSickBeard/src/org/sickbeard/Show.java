@@ -40,7 +40,7 @@ public class Show {
 	public String quality;
 	public QualityDetails qualityDetails;
 	public boolean seasonFolders;
-	public List<Integer> seasonList;
+	public List<Season> seasonList;
 	public String showName;
 	public String status;
 	public int tvrageId;
@@ -79,7 +79,12 @@ public class Show {
 		quality = json.quality;
 		qualityDetails = new QualityDetails( json.quality_details );
 		seasonFolders = json.season_folders.value;
-		seasonList = (json.season_list != null ? json.season_list : new ArrayList<Integer>());
+		seasonList = new ArrayList<Season>();
+		if ( json.season_list != null ) {
+			for ( Integer s : json.season_list ) {
+				seasonList.add(new Season(s));
+			}
+		}
 		showName = json.show_name;
 		status = json.status;
 		tvrageId = json.tvrage_id;

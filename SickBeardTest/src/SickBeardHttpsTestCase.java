@@ -13,7 +13,7 @@ import org.sickbeard.SickBeard.*;
 import org.sickbeard.json.*;
 
 
-public class SickBeardTestCase {
+public class SickBeardHttpsTestCase {
 	
 	private static SickBeard sick;
 	
@@ -27,7 +27,7 @@ public class SickBeardTestCase {
 		hostname = "nas-server";
 		port = "8081";
 		api = "e409e3b95faad0c41319e5a6bc8a3c7a";
-		sick = new SickBeard(hostname, port, api, false);
+		sick = new SickBeard(hostname, port, api, true);
 	}
 	
 	@Test

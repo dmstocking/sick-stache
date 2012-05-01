@@ -21,6 +21,7 @@ package org.sickstache.fragments;
 
 import java.util.Comparator;
 
+import org.sickbeard.Season;
 import org.sickbeard.Show;
 
 import org.sickstache.EpisodesActivity;
@@ -166,8 +167,8 @@ public class SeasonsFragment extends LoadingListFragment<String, Void, Show> {
 		paused.setText(result.paused ? "Yes" : "No");
 		airbydate.setText(result.airbydate ? "Yes" : "No");
 		seasonAdapter.clear();
-		for ( int i : result.seasonList ) {
-			seasonAdapter.add(i);
+		for ( Season s : result.seasonList ) {
+			seasonAdapter.add(s.season);
 		}
 		seasonAdapter.sort(new Comparator<Integer>() {
 			public int compare( Integer a, Integer b ) {

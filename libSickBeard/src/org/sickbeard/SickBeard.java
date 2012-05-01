@@ -123,6 +123,7 @@ public class SickBeard {
 	{
 		try {
 			this.serverUri = new URI( sick.serverUri.toString() );
+			this.https = sick.https;
 		} catch (Exception e) {
 			;
 		}
@@ -330,22 +331,42 @@ public class SickBeard {
 		return uri;
 	}
 	
-	public SeasonListJson showSeasonList( String tvdbid ) throws Exception
+	public List<Integer> showSeasonList( String tvdbid ) throws Exception
 	{
 		StringBuilder builder = new StringBuilder("show.seasonlist");
 		builder.append("&tvdbid=");
 		builder.append(tvdbid);
 		
-		return new SeasonListJson( this.<ArrayList<Integer>>commandData( builder.toString(), new TypeToken<JsonResponse<ArrayList<Integer>>>(){}.getType() ) );
+		ArrayList<Integer> result = this.<ArrayList<Integer>>commandData( builder.toString(), new TypeToken<JsonResponse<ArrayList<Integer>>>(){}.getType() );
+		
+		return result;
 	}
 	
-	// because there is no season we get a different data structure back
-//	public List<Episode> showSeasons( String tvdbid ) throws Exception
-//	{
-//		StringBuilder builder = new StringBuilder("show.seasons");
-//		builder.append("&tvdbid=");
-//		builder.append(tvdbid);
-//		
+	public List<Season> showSeasons( String tvdbid ) throws Exception
+	{
+		StringBuilder builder = new StringBuilder("show.seasons");
+		builder.append("&tvdbid=");
+		builder.append(tvdbid);
+		
+		SeasonsListJson result = this.<SeasonsListJson>commandData( builder.toString(), new TypeToken<JsonResponse<SeasonsListJson>>(){}.getType() );
+		List<Season> ret = new ArrayList<Season>();
+		for ( Map.Entry<String, SeasonsJson> entry : result.entrySet() ) {
+			ret.add( new Season( entry.getKey(), entry.getValue() ) );
+		}
+		return ret;
+	}
+	
+	public Season showSeasons( String tvdbid, String season ) throws Exception
+	{
+		StringBuilder builder = new StringBuilder("show.seasons");
+		builder.append("&tvdbid=");
+		builder.append(tvdbid);
+		builder.append("&season=");
+		builder.append(season);
+		
+		SeasonsJson result = this.<SeasonsJson>commandData( builder.toString(), new TypeToken<JsonResponse<SeasonsJson>>(){}.getType() );
+		return new Season( season, result );
+		
 //		HashMap<String,EpisodeJson> result = this.<HashMap<String,EpisodeJson>>commandData( builder.toString(), new TypeToken<JsonResponse<HashMap<String,EpisodeJson>>>(){}.getType() );
 //		ArrayList<Episode> ret = new ArrayList<Episode>();
 //		for ( Map.Entry<String, EpisodeJson> entry : result.entrySet() ) {
@@ -360,31 +381,6 @@ public class SickBeard {
 //			}
 //		});
 //		return ret;
-//	}
-	
-	public ArrayList<Episode> showSeasons( String tvdbid, String season ) throws Exception
-	{
-		StringBuilder builder = new StringBuilder("show.seasons");
-		builder.append("&tvdbid=");
-		builder.append(tvdbid);
-		if ( season != null ) {
-			builder.append("&season=");
-			builder.append(season);
-		}
-		HashMap<String,EpisodeJson> result = this.<HashMap<String,EpisodeJson>>commandData( builder.toString(), new TypeToken<JsonResponse<HashMap<String,EpisodeJson>>>(){}.getType() );
-		ArrayList<Episode> ret = new ArrayList<Episode>();
-		for ( Map.Entry<String, EpisodeJson> entry : result.entrySet() ) {
-			entry.getValue().episode = entry.getKey();
-			ret.add(new Episode(entry.getValue()));
-		}
-		// don't know if i should sort ...
-		Collections.sort(ret, new Comparator<Episode>() {
-			public int compare( Episode a, Episode b ) {
-				// only reason i do this is that i don't want "10" to be with "1"
-				return Integer.valueOf(a.episode).compareTo( Integer.valueOf(a.episode) );
-			}
-		});
-		return ret;
 	}
 	
 	public ArrayList<Show> shows() throws Exception

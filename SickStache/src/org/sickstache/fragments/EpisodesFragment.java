@@ -24,6 +24,7 @@ import java.util.Comparator;
 
 import org.sickbeard.Episode;
 import org.sickbeard.History;
+import org.sickbeard.Season;
 import org.sickbeard.SickBeard;
 import org.sickbeard.json.FutureEpisodeJson;
 import org.sickbeard.json.FutureJson;
@@ -47,7 +48,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.view.MenuItem;
 
-public class EpisodesFragment extends LoadingListFragment<Void, Void, ArrayList<Episode>> {
+public class EpisodesFragment extends LoadingListFragment<Void, Void, Season> {
 	
 //	private LinearLayout header;
 	
@@ -125,7 +126,7 @@ public class EpisodesFragment extends LoadingListFragment<Void, Void, ArrayList<
 	}
 
 	@Override
-	protected ArrayList<Episode> doInBackground(Void... arg0) throws Exception {
+	protected Season doInBackground(Void... arg0) throws Exception {
 		return Preferences.singleton.getSickBeard().showSeasons( tvdbid, season );
 	}
 
@@ -135,10 +136,10 @@ public class EpisodesFragment extends LoadingListFragment<Void, Void, ArrayList<
 	}
 
 	@Override
-	protected void onPostExecute(ArrayList<Episode> result) {
+	protected void onPostExecute(Season result) {
 		this.setListAdapter(episodesAdapter);
 		episodesAdapter.clear();
-		for ( Episode e : result ) {
+		for ( Episode e : result.getEpisodes() ) {
 			episodesAdapter.add(e);
 		}
 		episodesAdapter.sort(new Comparator<Episode>() {
