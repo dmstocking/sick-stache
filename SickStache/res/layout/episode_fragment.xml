@@ -171,8 +171,8 @@
 		    android:layout_height="match_parent"
 		    android:orientation="vertical"
 	        android:divider="@drawable/seperator_background"
-	        android:dividerHeight="1dp"
-	        android:showDividers="middle|end" >
+	        android:dividerHeight="1px"
+	        android:showDividers="middle" >
 		    
 			<TextView
 	            android:id="@+id/searchTextView"
