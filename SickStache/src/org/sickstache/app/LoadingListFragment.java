@@ -98,9 +98,9 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.loadable_menu, menu);
 		refreshMenuItem = menu.findItem(R.id.refreshMenuItem);
-		if ( downloader != null && downloader.getStatus() == AsyncTask.Status.RUNNING ) {
-			refreshMenuItem.setActionView(refreshMenuActionView);
-		}
+//		if ( downloader != null && downloader.getStatus() == AsyncTask.Status.RUNNING ) {
+//			refreshMenuItem.setActionView(refreshMenuActionView);
+//		}
 		searchMenuItem = menu.findItem(R.id.searchMenuItem);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
@@ -109,7 +109,6 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch ( item.getItemId() ) {
 		case R.id.refreshMenuItem:
-			item.setActionView(refreshMenuActionView);
 			this.refresh();
 			break;
 		case R.id.searchMenuItem:
@@ -142,6 +141,7 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 	
 	public void refresh()
 	{
+//		refreshMenuItem.setActionView(refreshMenuActionView);
 		this.setListAdapter(null);
 		this.setListStatus(ListStatus.NORMAL);
 		if ( downloader != null ) {
@@ -181,9 +181,10 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
     		if ( LoadingListFragment.this != null &&
     				LoadingListFragment.this.getSherlockActivity() != null ) {
     			// finished loading
-    			if ( refreshMenuItem != null ) {
-    				refreshMenuItem.setActionView(null);
-    			}
+    			// TODO fix this stupid action bar action view
+//    			if ( refreshMenuItem != null ) {
+//    				refreshMenuItem.setActionView(null);
+//    			}
     			// if we have a error
     			if ( error != null ) {
     				LoadingListFragment.this.setListStatus(ListStatus.ERROR);

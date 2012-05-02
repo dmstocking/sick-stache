@@ -10,7 +10,7 @@ import org.sickbeard.json.FutureEpisodeJson;
 import org.sickbeard.json.FutureJson;
 import org.sickstache.app.LoadingFragment;
 import org.sickstache.helper.Preferences;
-import org.sickstache.view.DefaultImageView;
+import org.sickstache.widget.DefaultImageView;
 import org.sickstache.R;
 
 import android.app.Activity;

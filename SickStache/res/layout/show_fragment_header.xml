@@ -5,7 +5,7 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical">
 
-	<org.sickstache.view.DefaultImageView
+	<org.sickstache.widget.DefaultImageView
 		android:id="@+id/showImage"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

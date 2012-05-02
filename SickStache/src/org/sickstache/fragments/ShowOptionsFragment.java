@@ -21,7 +21,7 @@ package org.sickstache.fragments;
 
 import org.sickbeard.json.ShowJson;
 import org.sickstache.helper.Preferences;
-import org.sickstache.view.DefaultImageView;
+import org.sickstache.widget.DefaultImageView;
 import org.sickstache.R;
 
 import android.os.Bundle;

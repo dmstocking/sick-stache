@@ -31,7 +31,7 @@ import org.sickstache.EpisodeActivity;
 import org.sickstache.app.LoadingListFragment;
 import org.sickstache.app.LoadingSectionListFragment;
 import org.sickstache.helper.Preferences;
-import org.sickstache.view.DefaultImageView;
+import org.sickstache.widget.DefaultImageView;
 import org.sickstache.R;
 
 import android.content.Intent;

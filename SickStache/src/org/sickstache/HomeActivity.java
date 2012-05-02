@@ -100,7 +100,7 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
         viewpager.setAdapter( pageAdapter );
         pageIndicator.setViewPager( viewpager );
         
-        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
         Intent intent = this.getIntent();
         if ( intent != null ) {

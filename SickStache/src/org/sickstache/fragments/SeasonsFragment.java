@@ -29,7 +29,7 @@ import org.sickstache.EpisodesActivity;
 import org.sickstache.app.ExpandableLoadingListFragment;
 import org.sickstache.app.LoadingListFragment;
 import org.sickstache.helper.Preferences;
-import org.sickstache.view.DefaultImageView;
+import org.sickstache.widget.DefaultImageView;
 import org.sickstache.R;
 
 import android.content.Intent;
