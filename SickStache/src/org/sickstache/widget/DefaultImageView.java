@@ -39,6 +39,10 @@ import android.provider.MediaStore;
 
 public class DefaultImageView extends ImageView {
 
+	private static final String logName = "DefaultImageView";
+	
+	private static Bitmap defaultBitmap;
+	
 	public int defaultResource;
 	
 	public GetUrlImageTask urlTask;
@@ -106,7 +110,11 @@ public class DefaultImageView extends ImageView {
 		if ( urlTask != null ) {
 			urlTask.cancel(true);
 		}
-		this.setImageResource(defaultResource);
+		// I will take a 1 time hit for the time being
+		if ( defaultBitmap == null ) {
+			defaultBitmap = BitmapFactory.decodeResource(this.getResources(), defaultResource);
+		}
+		this.setImageBitmap(defaultBitmap);
 		urlTask = new GetUrlImageTask( this.getContext(), uri );
 		urlTask.execute();
 //		try {
@@ -196,10 +204,7 @@ public class DefaultImageView extends ImageView {
 					return bitmap;
 				}
 			} catch (Exception e) {
-				if ( e.getMessage() != null )
-					Log.e("@GetUrlImageTaks.doInBackground", e.getMessage());
-				else
-					Log.e("@GetUrlImageTaks.doInBackground", "Error getting image");
+				Log.e(logName + ".GetUrlImageTaks.doInBackground", "ERROR: \"" + e.getMessage() + "\"");
 			}
 			return null;
 		}
@@ -230,7 +235,7 @@ public class DefaultImageView extends ImageView {
 				}
 				return null;
 			} catch (Exception e) {
-				Log.e("@GetExternalCacheImageTask.doInBackground", e.getMessage());
+				Log.e(logName + ".GetExternalCacheImageTask.doInBackground", "ERROR: \"" + e.getMessage() + "\"");
 			}
 			return null;
 		}
@@ -240,8 +245,6 @@ public class DefaultImageView extends ImageView {
 			super.onPostExecute(result);
 			if ( result != null ) {
 				DefaultImageView.super.setImageBitmap(result);
-			} else {
-				Log.e("@GetExternalCacheImageTask.onPostExecute", "Returned Bitmap was null.");
 			}
 		}
 	}
