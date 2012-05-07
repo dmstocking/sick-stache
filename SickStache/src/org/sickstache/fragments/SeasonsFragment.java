@@ -19,12 +19,14 @@
  */
 package org.sickstache.fragments;
 
+import java.util.Collections;
 import java.util.Comparator;
 
 import org.sickbeard.Episode;
 import org.sickbeard.Season;
 import org.sickbeard.Show;
 
+import org.sickstache.EpisodeActivity;
 import org.sickstache.EpisodesActivity;
 import org.sickstache.app.ExpandableLoadingListFragment;
 import org.sickstache.app.LoadingListFragment;
@@ -47,10 +49,7 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	private String tvdbid;
 	private String show;
 	
-	private boolean headerfooter;
-	
 	private LinearLayout header;
-//	private LinearLayout footer;
 	
 	private DefaultImageView showImage;
 	private TextView showView;
@@ -60,40 +59,19 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	private TextView paused;
 	private TextView airbydate;
 	
-	private ArrayAdapter<Integer> seasonAdapter;
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent parent = this.getActivity().getIntent();
 		tvdbid = parent.getStringExtra("tvdbid");
 		show = parent.getStringExtra("show");
-		headerfooter = this.getActivity().getIntent().getBooleanExtra("headerfooter", false);
-		seasonAdapter = new ArrayAdapter<Integer>(this.getActivity(), R.layout.seasons_item) {
-			@Override
-			public View getView( int position, View convertView, ViewGroup parent ) {
-				View row = convertView;
-				int item = getItem(position);
-				if ( row == null ) {
-					row = getActivity().getLayoutInflater().inflate(R.layout.seasons_item, null);
-				}
-				TextView text = (TextView) row.findViewById(R.id.seasonsItemTextView);
-				if ( item == 0 ) {
-					text.setText("Specials" );
-				} else {
-					text.setText("Season " + item);
-				}
-				return row;
-			}
-		};
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		if ( headerfooter ) {
+		if ( hasHeader() ) {
 			header = (LinearLayout)inflater.inflate(R.layout.show_fragment_header, null);
-//			footer = (LinearLayout)inflater.inflate(R.layout.show_fragment_footer, null);
 		}
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
@@ -101,10 +79,8 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		if ( headerfooter ) {
+		if ( hasHeader() ) {
 			this.getListView().addHeaderView(header,null,false);
-			// no footer for right now until i decide the best way to do options for a show
-//			this.getListView().addFooterView(footer,null,false);
 		}
 		showView = (TextView) view.findViewById(R.id.show);
 		showView.setText(show);
@@ -119,24 +95,6 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 		} catch (Exception e) {
 			;
 		}
-	}
-
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-		// some genius thought that it would be a good idea to use the positions from the "hidden"
-		// adapter they use to do headers and footers OH BOY!!! WTF ANDROID
-		// you do this shit and you cant figure out how to put a list view in a scroll view
-		// FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFf
-		position -= 1;
-		if ( position == seasonAdapter.getCount() ) {
-			return;
-		}
-		Intent intent = new Intent( this.getActivity(), EpisodesActivity.class );
-		intent.putExtra("tvdbid", this.tvdbid);
-		intent.putExtra("show", this.show);
-		intent.putExtra("season", seasonAdapter.getItem(position).toString());
-		startActivity(intent);
 	}
 	
 	@Override
@@ -163,29 +121,29 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 
 	@Override
 	protected void onPostExecute(Show result) {
-		setListAdapter(seasonAdapter);
+		setListAdapter(adapter);
 		airs.setText(result.airs);
 		quality.setText(result.quality);
 		language.setText(result.language);
 		// TODO this is probably not the best way to handle this
 		paused.setText(result.paused ? "Yes" : "No");
 		airbydate.setText(result.airbydate ? "Yes" : "No");
-		seasonAdapter.clear();
+		adapter.clear();
+		Collections.reverse(result.seasonList);
 		for ( Season s : result.seasonList ) {
-			seasonAdapter.add(s.season);
-		}
-		seasonAdapter.sort(new Comparator<Integer>() {
-			public int compare( Integer a, Integer b ) {
-				return - (a - b);
+			int group = adapter.addGroup(s.season);
+			Collections.reverse(s.getEpisodes());
+			for ( Episode e : s.getEpisodes() ) {
+				adapter.addChild(group, e);
 			}
-		});
-		seasonAdapter.notifyDataSetChanged();
+		}
+		adapter.notifyDataSetChanged();
 	}
 
 	@Override
 	protected View getChildView(Integer group, Episode item, int groupNum, int itemNum, boolean isLastView, View convertView, ViewGroup root) {
 		if ( convertView == null )
-			convertView = LayoutInflater.from(getSherlockActivity()).inflate(R.layout.seasons_item, root, false);
+			convertView = LayoutInflater.from(getSherlockActivity()).inflate(R.layout.episodes_item, root, false);
 		View row = convertView;
 		TextView text = (TextView) row.findViewById(R.id.episodesItemTextView);
 		text.setText(item.episode + " - " + item.name);
@@ -210,7 +168,7 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	}
 
 	@Override
-	protected View getGroupView(Integer group, int groupNum, boolean isLastView, View convertView, ViewGroup root) {
+	protected View getGroupView(Integer group, int groupNum, boolean visible, boolean isLastView, View convertView, ViewGroup root) {
 		if ( convertView == null )
 			convertView = LayoutInflater.from(getSherlockActivity()).inflate(R.layout.seasons_item, root, false);
 		View row = convertView;
@@ -220,6 +178,41 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 		} else {
 			text.setText("Season " + group);
 		}
+		if ( visible ) {
+			text.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.expander_close_holo_dark, 0);
+		} else {
+			text.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.expander_open_holo_dark, 0);
+		}
 		return row;
+	}
+
+	@Override
+	protected void onChildItemClick(ListView l, View v, Integer group, Episode item) {
+		Intent intent = new Intent( this.getActivity(), EpisodeActivity.class );
+		intent.putExtra("tvdbid", this.tvdbid);
+		intent.putExtra("show", this.show);
+		intent.putExtra("season", group.toString());
+		intent.putExtra("episode", item.episode);
+		startActivity(intent);
+	}
+	
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		if ( hasHeader() ) {
+			if ( position == 0 ) {
+				// clicked on the header
+			}
+			super.onListItemClick(l, v, position-1, id);
+		} else {
+			super.onListItemClick(l, v, position, id);
+		}
+	}
+
+	protected boolean hasHeader() {
+		return true;
+	}
+
+	protected boolean hasFooter() {
+		return false;
 	}
 }

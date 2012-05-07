@@ -9,12 +9,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="Example Episode List Item"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:paddingLeft="3dp"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp"
-        android:background="#000000" />
+		android:paddingLeft="3dp"
+		android:text="Section Label"
+		android:gravity="center_vertical"
+		android:textSize="24sp"
+		android:textStyle="bold"
+		android:textColor="#ffffff"
+		android:background="#000000"
+		android:drawableRight="@drawable/expander_close_holo_dark" />
+    
+<!--     <View -->
+<!--         android:id="@+id/seasonsSeperator" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="1px" -->
+<!--         android:layout_below="@id/seasonsItemTextView" -->
+<!--         android:background="#AAAAAA" /> -->
 
 </RelativeLayout>

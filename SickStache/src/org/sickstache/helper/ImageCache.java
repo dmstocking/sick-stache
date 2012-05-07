@@ -77,9 +77,12 @@ public class ImageCache {
 			if ( cacheDir.canRead() ) {
 				File tmp = new File( cacheDir, filename );
 				return tmp.exists();
+//				FileInputStream in = new FileInputStream( tmp );
+////				boolean exists = tmp.exists();
+//				return true;
 			}
 		} catch (Exception e) {
-			;
+			Log.e(cacheLogName, "Error finding if \"" + filename + "\" exists on the disk. ERROR:" + e.getMessage());
 		}
 		return false;
 	}
@@ -95,16 +98,16 @@ public class ImageCache {
 		try {
 			File tmp = new File( cacheDir, filename );
 			if ( tmp.exists() == false ) {
-				// funny they throw an exception for something we are supposed to check
-				// granted between the check and the output it could be created but really ....
 				FileOutputStream out = new FileOutputStream( tmp );
 				bitmap.compress(CompressFormat.PNG, 90, out);
+				out.close();
 				ret = true;
-				Log.e(cacheLogName, "Added file to disk cache.");
+				Log.e(cacheLogName, "Added file \"" + filename + "\" to disk cache.");
+			} else {
+				Log.e(cacheLogName, "File already existed in cache.");
 			}
-			Log.e(cacheLogName, "File already existed in cache.");
 		} catch (Exception e) {
-			Log.e(cacheLogName, "Error adding File.");
+			Log.e(cacheLogName, "Error adding File. ERROR:" + e.getMessage());
 		}
 		return ret;
 	}
@@ -122,6 +125,7 @@ public class ImageCache {
 					FileInputStream in = new FileInputStream( tmp.getAbsolutePath() );
 					// get from disk
 					Bitmap map = BitmapFactory.decodeStream(in);
+					in.close();
 					// re-add to the cache
 					memCache.put(key, map);
 					return map;
@@ -129,7 +133,7 @@ public class ImageCache {
 					Log.e(cacheLogName, "File \"" + tmp.getAbsolutePath() + "\" does not exist.");
 				}
 			} catch (Exception e) {
-				Log.e(cacheLogName, e.getMessage());
+				Log.e(cacheLogName, "Problem getting file. ERROR: " + e.getMessage());
 			}
 		}
 		return null;
@@ -156,7 +160,7 @@ public class ImageCache {
 				}
 			}
 		} catch (Exception e) {
-			Log.e(cacheLogName, "Unable to clear cache.");
+			Log.e(cacheLogName, "Unable to clear cache. ERROR: " + e.getMessage() );
 		}
 	}
 	
