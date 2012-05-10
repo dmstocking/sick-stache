@@ -43,6 +43,7 @@ public class EpisodeActivity extends SherlockFragmentActivity {
 		case android.R.id.home:
 			Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             break;
 		}

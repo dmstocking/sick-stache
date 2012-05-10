@@ -67,6 +67,8 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 	
 	private static int PREFRENCES_ACTIVITY_REQUEST_CODE = 1;
 	
+	private boolean preferencesChanged = false;
+	
 	private ViewPager viewpager;
 	private SlideAdapter pageAdapter;
 	private TitlePageIndicator pageIndicator;
@@ -88,7 +90,7 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
         }
         if ( Preferences.singleton == null )
         	Preferences.singleton = new Preferences( pref );
-//        pref.registerOnSharedPreferenceChangeListener(this);
+        pref.registerOnSharedPreferenceChangeListener(this);
 
         setContentView(R.layout.main);
         showFrag = new ShowsFragment();
@@ -120,13 +122,6 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 //        pinger = new PingChecker();
 //        pinger.execute();
     }
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// create the menu button options NOT ACTIONBAR!
-		this.getSupportMenuInflater().inflate(R.menu.home_menu, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
     
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -167,23 +162,29 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
     	}
 		return super.onOptionsItemSelected(item);
 	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// create the menu button options NOT ACTIONBAR!
+		this.getSupportMenuInflater().inflate(R.menu.home_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 	
-//	@Override
-//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		super.onActivityResult(requestCode, resultCode, data);
-//		// if we came back from the PreferencesActivity
-//		if ( requestCode == PREFRENCES_ACTIVITY_REQUEST_CODE ) {
-//			Toast test = Toast.makeText(this, "Testing Connection.", Toast.LENGTH_LONG);
-//			pinger.cancel(true);
-//			pinger = new PingChecker();
-//			pinger.execute();
-//		}
-//	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// if we came back from the PreferencesActivity
+		if ( requestCode == PREFRENCES_ACTIVITY_REQUEST_CODE ) {
+			if ( preferencesChanged ) {
+				showFrag.refresh();
+				futureFrag.refresh();
+				preferencesChanged = false;
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		pinger.cancel(true);
-		pinger = new PingChecker();
-		pinger.execute();
+		preferencesChanged = true;
 	}
 
 	private class SlideAdapter extends FragmentPagerAdapter implements TitleProvider {

@@ -47,15 +47,6 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 	
 	public TextView search;
 	public TextView setStatusView;
-	
-//	public DownloadEpisode downloader;
-	
-//	@Override
-//	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//			Bundle savedInstanceState) {
-//		View view = inflater.inflate(R.layout.episode_fragment, container, false);
-//		return view;
-//	}
 
 
 	@Override
@@ -119,6 +110,13 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 			;
 		}
 		
+		setStatusEnum(this.status);
+		super.onActivityCreated(savedInstanceState);
+	}
+	
+	public void setStatusEnum(StatusEnum status)
+	{
+		this.status = status;
 		this.statusView.setText(status.toString());
 
 		if ( this.status == StatusEnum.UNAIRED ) {
@@ -132,7 +130,6 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 		if ( this.status == StatusEnum.WANTED ) {
 			this.search.setEnabled(true);
 		}
-		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override
@@ -166,6 +163,7 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 		airbydate.setText(result.airdate);
 		name.setText(result.name);
 		descirption.setText(result.description);
+		setStatusEnum(status);
 	}
 	
 	private class SearchDownloader extends AsyncTask<Void, Void, Boolean> {
@@ -190,6 +188,7 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 	    		if ( result != null && result == true ) {
 	    			Toast searching = Toast.makeText(EpisodeFragment.this.getSherlockActivity(), "Searching Successful", Toast.LENGTH_LONG);
 					searching.show();
+					refresh();
 	    		} else {
 	    			Toast searching = Toast.makeText(EpisodeFragment.this.getSherlockActivity(), "Searching Failed", Toast.LENGTH_LONG);
 					searching.show();
@@ -202,9 +201,12 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 
     	public Exception error;
     	
+    	public StatusEnum status;
+    	
     	@Override
     	protected Boolean doInBackground(StatusEnum... arg0) {
     		try {
+    			status = arg0[0];
     			return Preferences.singleton.getSickBeard().episodeSetStatus(tvdbid, season, episode,arg0[0]);
     		} catch (Exception e) {
     			error = e;
@@ -218,6 +220,7 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
     		if ( EpisodeFragment.this != null && 
     				EpisodeFragment.this.getSherlockActivity() != null ) {
 	    		if ( result != null && result == true ) {
+	    			setStatusEnum(status);
 	    			Toast searching = Toast.makeText(EpisodeFragment.this.getSherlockActivity(), "Set Status Successful", Toast.LENGTH_LONG);
 					searching.show();
 	    		} else {

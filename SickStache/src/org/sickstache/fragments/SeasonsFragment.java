@@ -43,6 +43,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episode,String, Void, Show> {
 
@@ -109,9 +110,7 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 
 	@Override
 	protected Show doInBackground(String... arg0) throws Exception {
-		Show show = Preferences.singleton.getSickBeard().show(arg0[0]);
-		show.seasonList = Preferences.singleton.getSickBeard().showSeasons(arg0[0]);
-		return show;
+		return Preferences.singleton.getSickBeard().show(arg0[0],true);
 	}
 
 	@Override
@@ -193,6 +192,7 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 		intent.putExtra("show", this.show);
 		intent.putExtra("season", group.toString());
 		intent.putExtra("episode", item.episode);
+		intent.putExtra("status", item.status.toString());
 		startActivity(intent);
 	}
 	
@@ -200,7 +200,7 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		if ( hasHeader() ) {
 			if ( position == 0 ) {
-				// clicked on the header
+				// clicked on show options section
 			}
 			super.onListItemClick(l, v, position-1, id);
 		} else {
