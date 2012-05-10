@@ -5,6 +5,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.BeforeClass;
 
@@ -15,14 +16,14 @@ import org.sickbeard.json.*;
 
 public class SickBeardTestCase {
 	
-	private static SickBeard sick;
+	protected SickBeard sick;
 	
-	private static String hostname;
-	private static String port;
-	private static String api;
-
-	@BeforeClass
-	public static void SetUpTests(){
+	protected String hostname;
+	protected String port;
+	protected String api;
+	
+	@Before
+	public void SetUpTests(){
 		// hostname or ip both work
 		hostname = "nas-server";
 		port = "8081";
@@ -70,6 +71,12 @@ public class SickBeardTestCase {
 	@Test
 	public void showTest() throws Exception {
 		Show response = sick.show("71256");
+		assertNotNull(response);
+	}
+	
+	@Test
+	public void showWithFullSeasonListingTest() throws Exception {
+		Show response = sick.show("71256", true);
 		assertNotNull(response);
 	}
 	
