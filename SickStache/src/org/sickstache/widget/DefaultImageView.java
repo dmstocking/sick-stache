@@ -27,6 +27,7 @@ import org.sickstache.helper.ImageCache;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -45,8 +46,8 @@ public class DefaultImageView extends ImageView {
 	
 	public int defaultResource;
 	
-	public GetUrlImageTask urlTask;
-	public GetExternalCacheImageTask externalFileTask;
+	private GetUrlImageTask urlTask;
+	private GetExternalCacheImageTask externalFileTask;
 	
 	public DefaultImageView(Context context) {
 		super(context);
@@ -91,7 +92,7 @@ public class DefaultImageView extends ImageView {
 //			urlTask.execute(uri);
 //		}
 //	}
-	
+
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		Drawable pic = this.getDrawable();
@@ -116,7 +117,7 @@ public class DefaultImageView extends ImageView {
 		}
 		this.setImageBitmap(defaultBitmap);
 		urlTask = new GetUrlImageTask( this.getContext(), uri );
-		urlTask.execute();
+		urlTask.execute(this.getWidth(),this.getHeight());
 //		try {
 //			String filename = uri.toURL().toString();
 //			if ( ImageCache.cache.in(filename) ) {
@@ -175,7 +176,7 @@ public class DefaultImageView extends ImageView {
 //		}
 //	}
 	
-	public class GetUrlImageTask extends AsyncTask<Void,Void,Bitmap>
+	public class GetUrlImageTask extends AsyncTask<Integer,Void,Bitmap>
 	{
 		public Context c;
 		public URI uri;
@@ -193,14 +194,22 @@ public class DefaultImageView extends ImageView {
 		}
 
 		@Override
-		protected Bitmap doInBackground(Void... params) {
+		protected Bitmap doInBackground(Integer... params) {
 			try {
 				if ( ImageCache.cache.in(key) == true ) {
 					// createScaledBitmap is boned
-					return ImageCache.cache.get(key);
+					Bitmap bitmap = ImageCache.cache.get(key);
+					// TODO figure out if this will make my views faster
+					if ( params[0] > 0 && params[1] > 0 ) {
+						bitmap = Bitmap.createScaledBitmap(bitmap, params[0], params[1], true);
+					}
+					return bitmap;
 				} else {
 					Bitmap bitmap = BitmapFactory.decodeStream(uri.toURL().openStream());
 					ImageCache.cache.add(key, bitmap);
+					if ( params[0] > 0 && params[1] > 0 ) {
+						bitmap = Bitmap.createScaledBitmap(bitmap, params[0], params[1], true);
+					}
 					return bitmap;
 				}
 			} catch (Exception e) {
