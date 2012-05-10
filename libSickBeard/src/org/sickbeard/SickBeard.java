@@ -30,6 +30,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.net.Authenticator;
 import java.net.URI;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
@@ -49,9 +50,8 @@ import org.sickbeard.json.*;
 import org.sickbeard.json.ShowJson.CacheStatusJson;
 import org.sickbeard.json.deserializer.JsonBooleanDeserializer;
 import org.sickbeard.json.type.JsonBoolean;
+import org.sickbeard.net.SickAuthenticator;
 import org.sickbeard.net.ssl.DefaultTrustManager;
-
-
 
 public class SickBeard {
 	
@@ -92,7 +92,11 @@ public class SickBeard {
 	private URI serverUri;
 	private boolean https = false;
 	
-	public SickBeard( String url, String port, String api, boolean https )
+	public SickBeard( String url, String port, String api, boolean https ) {
+		this(url,port,api,https,"","");
+	}
+	
+	public SickBeard( String url, String port, String api, boolean https, String user, String password )
 	{
 		try {
 			this.https = https;
@@ -101,7 +105,6 @@ public class SickBeard {
 				SSLContext ctx = SSLContext.getInstance("TLS");
 		        ctx.init(new KeyManager[0], new TrustManager[] {new DefaultTrustManager()}, new SecureRandom());
 		        HttpsURLConnection.setDefaultSSLSocketFactory(ctx.getSocketFactory());
-//		        SSLContext.setDefault(ctx);
 		        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier(){
 					@Override
 					public boolean verify(String arg0, SSLSession arg1) {
@@ -112,9 +115,9 @@ public class SickBeard {
 			} else {
 				protocol ="http";
 			}
+			Authenticator.setDefault(new SickAuthenticator(user,password));
 			serverUri = new URI( protocol + "://" + url + ":" + port + "/api/" + api + "/?cmd=" );
 		} catch (Exception e){
-//			serverUri = new URI("http://192.168.0.101:8081/api/?cmd=");
 			;
 		}
 	}
@@ -278,6 +281,25 @@ public class SickBeard {
 		return new Show( this.<ShowJson>commandData( builder.toString(), new TypeToken<JsonResponse<ShowJson>>(){}.getType() ) );
 	}
 	
+	public Show show( String tvdbid, boolean fullSeasonListing ) throws Exception
+	{
+		if ( fullSeasonListing ) {
+			StringBuilder builder = new StringBuilder("show%7Cshow.seasons");
+			builder.append("&tvdbid=");
+			builder.append(tvdbid);
+			
+			ShowWithFullSeasonListing results = this.<ShowWithFullSeasonListing>commandData( builder.toString(), new TypeToken<JsonResponse<ShowWithFullSeasonListing>>(){}.getType() );
+			Show ret = new Show( results.show.data );
+			ret.seasonList.clear();
+			for ( Map.Entry<String, SeasonsJson> season : results.seasons.data.entrySet() ) {
+				ret.seasonList.add( new Season( season.getKey(), season.getValue() ) );
+			}
+			return ret;
+		} else {
+			return show( tvdbid );
+		}
+	}
+	
 	public boolean showAddNew( String tvdbid ) throws Exception
 	{
 		StringBuilder builder = new StringBuilder("show.addnew");
@@ -366,21 +388,6 @@ public class SickBeard {
 		
 		SeasonsJson result = this.<SeasonsJson>commandData( builder.toString(), new TypeToken<JsonResponse<SeasonsJson>>(){}.getType() );
 		return new Season( season, result );
-		
-//		HashMap<String,EpisodeJson> result = this.<HashMap<String,EpisodeJson>>commandData( builder.toString(), new TypeToken<JsonResponse<HashMap<String,EpisodeJson>>>(){}.getType() );
-//		ArrayList<Episode> ret = new ArrayList<Episode>();
-//		for ( Map.Entry<String, EpisodeJson> entry : result.entrySet() ) {
-//			entry.getValue().episode = entry.getKey();
-//			ret.add(new Episode(entry.getValue()));
-//		}
-//		// don't know if i should sort ...
-//		Collections.sort(ret, new Comparator<Episode>() {
-//			public int compare( Episode a, Episode b ) {
-//				// only reason i do this is that i don't want "10" to be with "1"
-//				return Integer.valueOf(a.episode).compareTo( Integer.valueOf(a.episode) );
-//			}
-//		});
-//		return ret;
 	}
 	
 	public ArrayList<Show> shows() throws Exception
