@@ -22,6 +22,16 @@
             android:summary="Use HTTPS"
             android:defaultValue="false"
             android:key="https"/>
+        <EditTextPreference
+            android:title="Username"
+            android:summary="The username to access your SickBeard server."
+            android:defaultValue=""
+            android:key="username" />
+        <EditTextPreference
+            android:title="Password"
+            android:summary="The password to access your SickBeard server."
+            android:defaultValue=""
+            android:key="password" />
     </PreferenceCategory>
 <!--     <PreferenceCategory -->
 <!--         android:title="History"> -->
