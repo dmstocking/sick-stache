@@ -25,21 +25,25 @@ import org.sickbeard.Show;
 import org.sickbeard.comparator.ShowNameComparator;
 import org.sickbeard.SickBeard;
 
-import org.sickstache.PreferencesActivity;
 import org.sickstache.SeasonsActivity;
-import org.sickstache.ShowActivity;
 import org.sickstache.app.LoadingListFragment;
-import org.sickstache.helper.ImageCache;
 import org.sickstache.helper.Preferences;
 import org.sickstache.widget.DefaultImageView;
 import org.sickstache.R;
+
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -49,6 +53,11 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 	
 	private ArrayAdapter<Show> showAdapter;
 	
+	@Override
+	protected int getChoiceMode() {
+		return ListView.CHOICE_MODE_NONE;
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -65,11 +74,16 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 				DefaultImageView image = (DefaultImageView) row.findViewById(R.id.showImage);
 				image.defaultResource = R.drawable.default_banner;
 				try {
-					// TODO this needs to be fixed
-					// if we load to fast we get the sickbeard default banner
 					image.setImageJavaURI( Preferences.singleton.getSickBeard().showGetBanner(item.id) );
 				} catch (Exception e) {
 					;
+				}
+
+				ImageView overlay = (ImageView)row.findViewById(R.id.showSelectedOverlay);
+				if ( selected.contains(position) ) {
+					overlay.setVisibility(View.VISIBLE);
+				} else {
+					overlay.setVisibility(View.INVISIBLE);
 				}
 				return row;
 			}
@@ -86,6 +100,57 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 		intent.putExtra("headerfooter", true);
 		startActivity(intent);
 	}
+
+//	@Override
+//	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+//		if ( actionMode == null ) {
+//			actionMode = getSherlockActivity().startActionMode( new ActionMode.Callback() {
+//				
+//				@Override
+//				public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+//					return false;
+//				}
+//				
+//				@Override
+//				public void onDestroyActionMode(ActionMode mode) {
+//					showAdapter.notifyDataSetChanged();
+//					selected.clear();
+//					actionMode = null;
+//				}
+//				
+//				@Override
+//				public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+//					MenuInflater inflate = getSherlockActivity().getSupportMenuInflater();
+//					inflate.inflate(R.menu.shows_cab_menu, menu);
+//					return true;
+//				}
+//				
+//				@Override
+//				public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+//					switch ( item.getItemId() ) {
+//					case R.id.editMenuItem:
+//						// get all selected items and create the edit show activity passing all of them
+//						actionMode.finish();
+//						break;
+//					}
+//					return true;
+//				}
+//			});
+//		}
+//		ImageView overlay = (ImageView)arg1.findViewById(R.id.showSelectedOverlay);
+//		int i = selected.indexOf(arg2);
+//		if ( i >= 0 ) {
+//			selected.remove(i);
+//			overlay.setVisibility(View.INVISIBLE);
+//		} else {
+//			selected.add(arg2);
+//			overlay.setVisibility(View.VISIBLE);
+//		}
+//		if ( selected.size() == 0 ) {
+//			actionMode.finish();
+//		}
+//		return true;
+//	}
 
 	@Override
 	protected String getEmptyText() {

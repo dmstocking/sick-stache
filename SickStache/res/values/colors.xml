@@ -4,10 +4,12 @@
     <color name="android_selected_background">#FF7F00</color>
     <color name="android_focused_background">#0000FF</color>
     
-    <color name="selected_background_list">#80FF7F00</color>
-    <color name="selected_background">@color/selected_background_list</color>
-    <color name="focused_background_list">#804080FF</color>
+    <color name="focused_background_list">#80FF7F00</color>
     <color name="focused_background">@color/focused_background_list</color>
+    <color name="pressed_background_list">#804080FF</color>
+    <color name="pressed_background">@color/pressed_background_list</color>
+    <color name="selected_background_list">#8080FF04</color>
+    <color name="selected_background">@color/pressed_background_list</color>
     
     <color name="actionbar_background">#79c838</color>
     <color name="actionbar_background_light">#b2c838</color>

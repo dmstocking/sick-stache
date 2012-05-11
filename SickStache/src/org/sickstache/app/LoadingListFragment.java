@@ -19,6 +19,9 @@
  */
 package org.sickstache.app;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.sickstache.R;
 
 import android.os.AsyncTask;
@@ -26,18 +29,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuInflater;
 
-public abstract class LoadingListFragment<Params, Progress, Result> extends SherlockListFragment {
+public abstract class LoadingListFragment<Params, Progress, Result> extends SherlockListFragment implements AdapterView.OnItemLongClickListener {
 	
 	public enum ListStatus { NORMAL, ERROR, EMPTY };
+	
+	protected ActionMode actionMode;
+	protected List<Integer> selected = new ArrayList<Integer>();
 
 	protected MenuItem searchMenuItem;
 	protected MenuItem refreshMenuItem;
@@ -50,7 +58,11 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 	protected abstract String getEmptyText();
 	protected abstract Params[] getRefreshParams();
 	
-	protected AsyncTask<Params,Progress,Result> downloader = new Downloader();
+	protected int getChoiceMode() {
+		return ListView.CHOICE_MODE_NONE;
+	}
+	
+	private AsyncTask<Params,Progress,Result> downloader = new Downloader();
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -72,12 +84,12 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 		return root;
 	}
 	
-	// this isnt used because the activity might have information needed to refresh or query
-//	@Override
-//	public void onViewCreated(View view, Bundle savedInstanceState) {
-//		super.onViewCreated(view, savedInstanceState);
-//		this.refresh();
-//	}
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		getListView().setChoiceMode(getChoiceMode());
+		getListView().setOnItemLongClickListener(this);
+	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -116,6 +128,11 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		return false;
 	}
 	
 	public void setListStatus( ListStatus status )

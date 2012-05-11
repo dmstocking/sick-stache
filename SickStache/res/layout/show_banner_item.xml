@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/sickbeard_title_background" >
+    android:layout_height="wrap_content" >
 
     <TextView
         android:id="@+id/show"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -14,7 +13,8 @@
         android:text="Show Name Unkown"
         android:textSize="15sp"
         android:textStyle="bold"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:background="@color/sickbeard_title_background" />
 
     <org.sickstache.widget.DefaultImageView
         android:id="@+id/showImage"
@@ -25,5 +25,14 @@
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:src="@drawable/default_banner" />
-
+    
+    <ImageView
+        android:id="@+id/showSelectedOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/list_selector_selected"
+        android:layout_alignRight="@id/showImage"
+        android:layout_alignBottom="@id/showImage"
+        android:visibility="invisible" />
+    
 </RelativeLayout>

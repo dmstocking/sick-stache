@@ -67,5 +67,7 @@
         <item name="android:actionButtonStyle">@style/Widget.SickStache.ActionButton</item>
         <item name="actionBarItemBackground">@drawable/action_button_selector</item>
         <item name="android:actionBarItemBackground">@drawable/action_button_selector</item>
+        <item name="actionModeBackground">@drawable/action_button_selector</item>
+        <item name="android:actionModeBackground">@drawable/action_button_selector</item>
         </style>
 </resources>
