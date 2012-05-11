@@ -86,6 +86,7 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
         // otherwise we could refresh a cache that doesn't exist
         if ( ImageCache.cache == null ) {
 	        ImageCache.cache = new ImageCache( this );
+	        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 	        pref = PreferenceManager.getDefaultSharedPreferences(this);
         }
         if ( Preferences.singleton == null )
