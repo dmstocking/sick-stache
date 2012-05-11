@@ -58,25 +58,37 @@ public class Preferences implements OnSharedPreferenceChangeListener {
 		return pref.getBoolean("https", false);
 	}
 	
+	public String getUsername()
+	{
+		return pref.getString("username", "");
+	}
+	
+	public String getPassword()
+	{
+		return pref.getString("password", "");
+	}
+	
 	public SickBeard getSickBeard()
 	{
 		// hope this works if it doesn't use copy constructor
 		return sick;
 	}
 	
-	public void setSickBeard( String host, String port, String api )
+	public void setSickBeard( String host, String port, String api, String username, String password )
 	{
 		SharedPreferences.Editor edit = pref.edit();
 		edit.putString("host", host);
 		edit.putString("port", port);
 		edit.putString("api", api);
+		edit.putString("username", username);
+		edit.putString("password", password);
 		edit.commit();
 		updateSickBeard();
 	}
 	
 	private void updateSickBeard()
 	{
-		sick = new SickBeard( getHost(), getPort(), getAPI(), getHTTPS() );
+		sick = new SickBeard( getHost(), getPort(), getAPI(), getHTTPS(), getUsername(), getPassword() );
 	}
 
 	public void onSharedPreferenceChanged(SharedPreferences arg0, String arg1) {
