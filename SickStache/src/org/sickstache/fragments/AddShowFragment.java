@@ -22,6 +22,7 @@ package org.sickstache.fragments;
 import java.util.EnumSet;
 
 import org.sickbeard.LanguageEnum;
+import org.sickbeard.Episode.StatusEnum;
 import org.sickbeard.Show.QualityEnum;
 import org.sickstache.HomeActivity;
 import org.sickstache.helper.Preferences;
@@ -57,8 +58,9 @@ public class AddShowFragment extends SherlockFragment {
 	
 	public LanguageEnum language = null;
 	public Boolean seasonFolder = null;
-	public EnumSet<QualityEnum> initialQuality = null;
-	public EnumSet<QualityEnum> archiveQuality = null;
+	public StatusEnum status = null;
+	public EnumSet<QualityEnum> initialQuality = EnumSet.noneOf(QualityEnum.class);
+	public EnumSet<QualityEnum> archiveQuality = EnumSet.noneOf(QualityEnum.class);
 	
 	public Button addButton;
 	
@@ -114,44 +116,89 @@ public class AddShowFragment extends SherlockFragment {
 				    		language = LanguageEnum.fromOrdinal(item-1);
 				    }
 				});
+				builder.show();
 			}
 		});
 		statusTextView = (TextView)root.findViewById(R.id.statusTextView);
-		seasonFolderTextView = (TextView)root.findViewById(R.id.seasonFolderTextView);
-		seasonFolderTextView.setOnClickListener( new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				seasonFolder = !seasonFolder;
-				if ( seasonFolder != null && seasonFolder)
-					seasonFolderTextView.setBackgroundResource(R.drawable.ic_menu_more);
-				else
-					seasonFolderTextView.setBackgroundResource(R.drawable.ic_menu_more);
-			}
-		});
-		initialQualityTextView = (TextView)root.findViewById(R.id.initialQualityTextView);
-		initialQualityTextView.setOnClickListener( new OnClickListener() {
+		statusTextView.setOnClickListener( new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				// TODO probably should just make this once and save it
-				String[] items = LanguageEnum.valuesToString();
+				String[] items = StatusEnum.valuesToString();
 				String[] itemsNDefault = new String[items.length+1];
 				itemsNDefault[0] = "Default";
 				for ( int i=0; i < items.length; i++ ) {
 					itemsNDefault[i+1] = items[i];
 				}
 				AlertDialog.Builder builder = new AlertDialog.Builder(AddShowFragment.this.getSherlockActivity());
-				builder.setTitle("Select Initial Quality");
+				builder.setTitle("Select Initial Status");
 				builder.setItems(itemsNDefault, new DialogInterface.OnClickListener() {
 				    public void onClick(DialogInterface dialog, int item) {
 				    	if ( item == 0 )
-				    		language = null;
+				    		status = null;
 				    	else
-				    		language = LanguageEnum.fromOrdinal(item-1);
+				    		status = StatusEnum.fromOrdinal(item-1);
 				    }
 				});
+				builder.show();
+			}
+		});
+		seasonFolderTextView = (TextView)root.findViewById(R.id.seasonFolderTextView);
+		seasonFolderTextView.setOnClickListener( new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				if ( seasonFolder == null )
+					seasonFolder = true;
+				else
+					seasonFolder = !seasonFolder;
+				if ( seasonFolder != null && seasonFolder)
+					seasonFolderTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, android.R.drawable.ic_menu_more, 0);
+				else
+					seasonFolderTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, android.R.drawable.ic_menu_more, 0);
+			}
+		});
+		initialQualityTextView = (TextView)root.findViewById(R.id.initialQualityTextView);
+		initialQualityTextView.setOnClickListener( new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				String[] items = QualityEnum.valuesToString();
+				AlertDialog.Builder builder = new AlertDialog.Builder(AddShowFragment.this.getSherlockActivity());
+				builder.setTitle("Select Initial Quality");
+				builder.setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+						if ( isChecked ) {
+							initialQuality.add(QualityEnum.fromOrdinal(which));
+						} else {
+							initialQuality.remove(QualityEnum.fromOrdinal(which));
+						}
+					}
+				});
+				builder.show();
 			}
 		});
 		archiveQualityTextView = (TextView)root.findViewById(R.id.archiveQualityTextView);
+		archiveQualityTextView.setOnClickListener( new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				String[] items = QualityEnum.valuesToString();
+				AlertDialog.Builder builder = new AlertDialog.Builder(AddShowFragment.this.getSherlockActivity());
+				builder.setTitle("Select Archive Quality");
+				builder.setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+						if ( isChecked ) {
+							archiveQuality.add(QualityEnum.fromOrdinal(which));
+						} else {
+							archiveQuality.remove(QualityEnum.fromOrdinal(which));
+						}
+					}
+				});
+				builder.show();
+			}
+		});
 		addButton = (Button)root.findViewById(R.id.addButton);
 		addButton.setOnClickListener( new OnClickListener() {
 			  public void onClick(View v) {

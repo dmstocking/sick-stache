@@ -45,6 +45,21 @@ public class Episode {
 		{
 			return this.toString().toLowerCase();
 		}
+		
+		public static String[] valuesToString()
+		{
+			StatusEnum[] enums = StatusEnum.values();
+			String[] items = new String[enums.length];
+			for ( int i=0; i < enums.length; i++ ) {
+				items[i] = enums[i].toString();
+			}
+			return items;
+		}
+		
+		public static StatusEnum fromOrdinal(int index)
+		{
+			return StatusEnum.values()[index];
+		}
 	}
 	
 	public String tvdbid;

@@ -20,19 +20,18 @@
 package org.sickstache;
 
 import org.sickstache.R;
+import org.sickstache.app.SickActivity;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.os.Bundle;
 
-public class ShowSearchActivity extends SherlockFragmentActivity {
+public class ShowSearchActivity extends SickActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.search_activity);
-        
-        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 	
 }

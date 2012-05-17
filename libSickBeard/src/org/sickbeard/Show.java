@@ -35,6 +35,21 @@ public class Show {
 		{
 			return QualityEnum.valueOf(quality.toUpperCase());
 		}
+		
+		public static String[] valuesToString()
+		{
+			QualityEnum[] enums = QualityEnum.values();
+			String[] items = new String[enums.length];
+			for ( int i=0; i < enums.length; i++ ) {
+				items[i] = enums[i].toString();
+			}
+			return items;
+		}
+		
+		public static QualityEnum fromOrdinal(int index)
+		{
+			return QualityEnum.values()[index];
+		}
 	}
 	
 	public String id;

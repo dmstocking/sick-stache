@@ -20,6 +20,7 @@
 package org.sickstache;
 
 import org.sickstache.R;
+import org.sickstache.app.SickActivity;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
@@ -27,27 +28,11 @@ import com.actionbarsherlock.view.MenuItem;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class SeasonsActivity extends SherlockFragmentActivity {
+public class SeasonsActivity extends SickActivity {
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
         setContentView(R.layout.seasons);
-        
-        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch ( item.getItemId() ) {
-		case android.R.id.home:
-			Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
 }

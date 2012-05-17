@@ -83,8 +83,6 @@ public class SearchFragment extends LoadingListFragment<String, Void, SearchResu
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		this.setListAdapter(null);
-		this.setListStatus(ListStatus.NORMAL);
 		if ( position >= searchAdapter.getCount() ) {
 			return;
 		}
