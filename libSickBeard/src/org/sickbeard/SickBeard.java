@@ -290,11 +290,7 @@ public class SickBeard {
 	
 	public boolean showAddNew( String tvdbid ) throws Exception
 	{
-		StringBuilder builder = new StringBuilder("show.addnew");
-		builder.append("&tvdbid=");
-		builder.append(tvdbid);
-		
-		return this.<Object>commandSuccessful( builder.toString(), new TypeToken<JsonResponse<Object>>(){}.getType() );
+		return showAddNew(tvdbid,null,null,null,null,null);
 	}
 	
 	public boolean showAddNew( String tvdbid, LanguageEnum language, Boolean seasonFolders, StatusEnum status, EnumSet<QualityEnum> initial, EnumSet<QualityEnum> archive ) throws Exception

@@ -54,8 +54,8 @@
                 android:id="@+id/languageTextView"
                 style="@style/ClickableText"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:drawableRight="@android:drawable/ic_menu_more"
+                android:layout_height="72px"
+                android:drawableRight="@drawable/ic_menu_more"
                 android:gravity="center_vertical"
                 android:paddingLeft="3dp"
                 android:text="Language" />
@@ -69,8 +69,8 @@
                 android:id="@+id/seasonFolderTextView"
                 style="@style/ClickableText"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:drawableRight="@android:drawable/ic_menu_more"
+                android:layout_height="72px"
+                android:drawableRight="@drawable/btn_check_off"
                 android:gravity="center_vertical"
                 android:paddingLeft="3dp"
                 android:text="Season Folders" />
@@ -84,11 +84,11 @@
                 android:id="@+id/statusTextView"
                 style="@style/ClickableText"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:drawableRight="@android:drawable/ic_menu_more"
+                android:layout_height="72px"
+                android:drawableRight="@drawable/ic_menu_more"
                 android:gravity="center_vertical"
                 android:paddingLeft="3dp"
-                android:text="Initial Status" />
+                android:text="Status" />
             
             <View
                 android:layout_width="fill_parent"
@@ -99,8 +99,8 @@
                 android:id="@+id/initialQualityTextView"
                 style="@style/ClickableText"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:drawableRight="@android:drawable/ic_menu_more"
+                android:layout_height="72px"
+                android:drawableRight="@drawable/ic_menu_more"
                 android:gravity="center_vertical"
                 android:paddingLeft="3dp"
                 android:text="Initial Quality" />
@@ -114,8 +114,8 @@
                 android:id="@+id/archiveQualityTextView"
                 style="@style/ClickableText"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:drawableRight="@android:drawable/ic_menu_more"
+                android:layout_height="72px"
+                android:drawableRight="@drawable/ic_menu_more"
                 android:gravity="center_vertical"
                 android:paddingLeft="3dp"
                 android:text="Archive Quality" />

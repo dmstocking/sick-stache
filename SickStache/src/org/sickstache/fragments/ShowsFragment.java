@@ -20,6 +20,7 @@
 package org.sickstache.fragments;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.sickbeard.Show;
 import org.sickbeard.comparator.ShowNameComparator;
@@ -49,7 +50,7 @@ import android.widget.TextView;
 
 public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Show>> {
 
-	private static final String[] showActions = { "Set Quality", "Pause", "Refresh", "Update" };
+//	private static final String[] showActions = { "Set Quality", "Pause", "Refresh", "Update" };
 	
 	private ArrayAdapter<Show> showAdapter;
 	
@@ -89,7 +90,7 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 			}
 		};
 	}
-	
+
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);

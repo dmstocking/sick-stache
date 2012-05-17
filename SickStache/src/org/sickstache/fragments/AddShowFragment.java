@@ -46,6 +46,24 @@ import android.widget.TextView;
 
 public class AddShowFragment extends SherlockFragment {
 	
+	private class SearchParams {
+		public String tvdbid;
+		public LanguageEnum langauge;
+		public Boolean seasonFolder;
+		public StatusEnum status;
+		public EnumSet<QualityEnum> initial;
+		public EnumSet<QualityEnum> archive;
+		
+		public SearchParams( String tvdbid, LanguageEnum lang, Boolean season, StatusEnum status,
+				EnumSet<QualityEnum> initial, EnumSet<QualityEnum> archive) {
+			this.tvdbid = tvdbid;
+			this.langauge = lang;
+			this.seasonFolder = season;
+			this.status = status;
+			this.initial = initial;
+			this.archive = archive;
+		}
+	}
 	protected Dialog working;
 	
 	public TextView showTextView;
@@ -152,9 +170,9 @@ public class AddShowFragment extends SherlockFragment {
 				else
 					seasonFolder = !seasonFolder;
 				if ( seasonFolder != null && seasonFolder)
-					seasonFolderTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, android.R.drawable.ic_menu_more, 0);
+					seasonFolderTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.btn_check_on, 0);
 				else
-					seasonFolderTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, android.R.drawable.ic_menu_more, 0);
+					seasonFolderTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.btn_check_off, 0);
 			}
 		});
 		initialQualityTextView = (TextView)root.findViewById(R.id.initialQualityTextView);
@@ -222,17 +240,28 @@ public class AddShowFragment extends SherlockFragment {
 		working = ProgressDialog.show(this.getActivity(), "Adding Show", "Adding Show to SickBeard ...", true);
 		// when this downloader returns display the show
 		Downloader downloader = new Downloader();
-		downloader.execute();
+		downloader.execute(new SearchParams(this.tvdbid,
+				this.language,
+				this.seasonFolder,
+				this.status,
+				this.initialQuality,
+				this.archiveQuality));
 	}
 	
-	private class Downloader extends AsyncTask<Void, Void, Boolean> {
+	private class Downloader extends AsyncTask<SearchParams, Void, Boolean> {
 
     	public Exception error = null;
     	
     	@Override
-    	protected Boolean doInBackground(Void... arg0) {
+    	protected Boolean doInBackground(SearchParams... arg0) {
     		try {
-    			return Preferences.singleton.getSickBeard().showAddNew(tvdbid);
+    			SearchParams params = arg0[0];
+    			return Preferences.singleton.getSickBeard().showAddNew(params.tvdbid,
+    					params.langauge,
+    					params.seasonFolder,
+    					params.status,
+    					params.initial,
+    					params.archive);
     		} catch (Exception e) {
     			error = e;
     		}
