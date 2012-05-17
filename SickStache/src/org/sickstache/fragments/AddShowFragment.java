@@ -19,18 +19,23 @@
  */
 package org.sickstache.fragments;
 
-import org.sickstache.AddShowActivity;
+import java.util.EnumSet;
+
+import org.sickbeard.LanguageEnum;
+import org.sickbeard.Show.QualityEnum;
 import org.sickstache.HomeActivity;
-import org.sickstache.app.LoadingFragment;
 import org.sickstache.helper.Preferences;
 import org.sickstache.R;
 
+import com.actionbarsherlock.app.SherlockFragment;
+
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,17 +43,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class AddShowFragment extends Fragment {
+public class AddShowFragment extends SherlockFragment {
 	
 	protected Dialog working;
 	
 	public TextView showTextView;
 //	public TextView directoryTextView;
-//	public TextView languageTextView;
-//	public TextView seasonFolderTextView;
-//	public TextView statusTextView;
-//	public TextView intialQualityTextView;
-//	public TextView archiveQualityTextView;
+	public TextView languageTextView;
+	public TextView seasonFolderTextView;
+	public TextView statusTextView;
+	public TextView initialQualityTextView;
+	public TextView archiveQualityTextView;
+	
+	public LanguageEnum language = null;
+	public Boolean seasonFolder = null;
+	public EnumSet<QualityEnum> initialQuality = null;
+	public EnumSet<QualityEnum> archiveQuality = null;
 	
 	public Button addButton;
 	
@@ -68,6 +78,80 @@ public class AddShowFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View root = inflater.inflate(R.layout.add_show_fragment, container, false);
 		showTextView = (TextView)root.findViewById(R.id.showTextView);
+//		directoryTextView = (TextView)root.findViewById(R.id.directoryTextView);
+//		directoryTextView.setOnClickListener( new OnClickListener() {
+//			@Override
+//			public void onClick(View arg0) {
+//				final CharSequence[] items = { "Default" };
+//				
+//				AlertDialog.Builder builder = new AlertDialog.Builder(AddShowFragment.this.getSherlockActivity());
+//				builder.setTitle("Select Directory");
+//				builder.setItems(items, new DialogInterface.OnClickListener() {
+//				    public void onClick(DialogInterface dialog, int item) {
+//				    	
+//				    }
+//				});
+//			}
+//		});
+		languageTextView = (TextView)root.findViewById(R.id.languageTextView);
+		languageTextView.setOnClickListener( new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				// TODO probably should just make this once and save it
+				String[] items = LanguageEnum.valuesToString();
+				String[] itemsNDefault = new String[items.length+1];
+				itemsNDefault[0] = "Default";
+				for ( int i=0; i < items.length; i++ ) {
+					itemsNDefault[i+1] = items[i];
+				}
+				AlertDialog.Builder builder = new AlertDialog.Builder(AddShowFragment.this.getSherlockActivity());
+				builder.setTitle("Select Language");
+				builder.setItems(itemsNDefault, new DialogInterface.OnClickListener() {
+				    public void onClick(DialogInterface dialog, int item) {
+				    	if ( item == 0 )
+				    		language = null;
+				    	else
+				    		language = LanguageEnum.fromOrdinal(item-1);
+				    }
+				});
+			}
+		});
+		statusTextView = (TextView)root.findViewById(R.id.statusTextView);
+		seasonFolderTextView = (TextView)root.findViewById(R.id.seasonFolderTextView);
+		seasonFolderTextView.setOnClickListener( new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				seasonFolder = !seasonFolder;
+				if ( seasonFolder != null && seasonFolder)
+					seasonFolderTextView.setBackgroundResource(R.drawable.ic_menu_more);
+				else
+					seasonFolderTextView.setBackgroundResource(R.drawable.ic_menu_more);
+			}
+		});
+		initialQualityTextView = (TextView)root.findViewById(R.id.initialQualityTextView);
+		initialQualityTextView.setOnClickListener( new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				// TODO probably should just make this once and save it
+				String[] items = LanguageEnum.valuesToString();
+				String[] itemsNDefault = new String[items.length+1];
+				itemsNDefault[0] = "Default";
+				for ( int i=0; i < items.length; i++ ) {
+					itemsNDefault[i+1] = items[i];
+				}
+				AlertDialog.Builder builder = new AlertDialog.Builder(AddShowFragment.this.getSherlockActivity());
+				builder.setTitle("Select Initial Quality");
+				builder.setItems(itemsNDefault, new DialogInterface.OnClickListener() {
+				    public void onClick(DialogInterface dialog, int item) {
+				    	if ( item == 0 )
+				    		language = null;
+				    	else
+				    		language = LanguageEnum.fromOrdinal(item-1);
+				    }
+				});
+			}
+		});
+		archiveQualityTextView = (TextView)root.findViewById(R.id.archiveQualityTextView);
 		addButton = (Button)root.findViewById(R.id.addButton);
 		addButton.setOnClickListener( new OnClickListener() {
 			  public void onClick(View v) {
@@ -112,6 +196,7 @@ public class AddShowFragment extends Fragment {
     	protected void onPostExecute(Boolean result) {
     		if ( AddShowFragment.this != null ) {
     			// finished loading
+				working.dismiss();
     			// if we have a error
     			if ( error != null ) {
     				// show some sort of error >.> i dont know how yet

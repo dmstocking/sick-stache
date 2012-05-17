@@ -26,8 +26,6 @@ import org.sickbeard.Episode;
 import org.sickbeard.History;
 import org.sickbeard.Season;
 import org.sickbeard.SickBeard;
-import org.sickbeard.json.FutureEpisodeJson;
-import org.sickbeard.json.FutureJson;
 import org.sickstache.EpisodeActivity;
 import org.sickstache.app.LoadingListFragment;
 import org.sickstache.helper.Preferences;

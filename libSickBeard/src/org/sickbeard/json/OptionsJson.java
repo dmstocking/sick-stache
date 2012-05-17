@@ -20,12 +20,13 @@
 package org.sickbeard.json;
 
 import java.util.EnumSet;
-import org.sickbeard.SickBeard;
-import org.sickbeard.ShowQuality;
+
+import org.sickbeard.Episode.StatusEnum;
+import org.sickbeard.Show.QualityEnum;
 
 public class OptionsJson {
-	public EnumSet<ShowQuality> initial;
-	public EnumSet<ShowQuality> archive;
+	public EnumSet<QualityEnum> initial;
+	public EnumSet<QualityEnum> archive;
 	public int seasonFolders;
-	public SickBeard.StatusEnum status;
+	public StatusEnum status;
 }

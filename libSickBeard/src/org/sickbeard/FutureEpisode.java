@@ -17,13 +17,29 @@
  * 	You should have received a copy of the GNU General Public License
  * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.sickbeard.json;
+package org.sickbeard;
 
-import java.util.ArrayList;
+import org.sickbeard.SickBeard;
 
-public class FutureJson {
-	public ArrayList<FutureEpisodeJson> missed; 
-	public ArrayList<FutureEpisodeJson> today; 
-	public ArrayList<FutureEpisodeJson> soon; 
-	public ArrayList<FutureEpisodeJson> later; 
+public class FutureEpisode {
+	
+	public enum TimeEnum {
+		MISSED, TODAY, SOON, LATER;
+	}
+	
+	public String airdate;
+	public String airs;
+	public String ep_name;
+	public String ep_plot;
+	public int episode;
+	public String network;
+	public int paused;
+	public String quality;
+	public int season;
+	public String show_name;
+	public String show_status;
+	public int tvdbid;
+	// the day of the week >.> 1-7 mon-sun
+	public int weekday;
+	public TimeEnum when;
 }

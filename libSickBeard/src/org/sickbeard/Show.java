@@ -27,6 +27,16 @@ import org.sickbeard.json.ShowJson;
 import org.sickbeard.json.ShowJson.QualityDetailsJson;
 
 public class Show {
+	
+	public enum QualityEnum {
+		SDTV, SDDVD, HDTV, HDWEBDL, HDBLURAY, FULLHDBLURAY, UNKNOWN;
+		
+		public static QualityEnum fromJson( String quality )
+		{
+			return QualityEnum.valueOf(quality.toUpperCase());
+		}
+	}
+	
 	public String id;
 	public boolean airbydate;
 	public String airs;

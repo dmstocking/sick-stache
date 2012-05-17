@@ -22,11 +22,12 @@ package org.sickstache.fragments;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.sickbeard.Episode.StatusEnum;
+import org.sickbeard.FutureEpisode;
+import org.sickbeard.FutureEpisode.TimeEnum;
+import org.sickbeard.FutureEpisodes;
+import org.sickbeard.FutureEpisodes.SortEnum;
 import org.sickbeard.SickBeard;
-import org.sickbeard.SickBeard.StatusEnum;
-import org.sickbeard.SickBeard.TimeEnum;
-import org.sickbeard.json.FutureEpisodeJson;
-import org.sickbeard.json.FutureJson;
 import org.sickstache.EpisodeActivity;
 import org.sickstache.app.LoadingListFragment;
 import org.sickstache.app.LoadingSectionListFragment;
@@ -43,12 +44,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class FutureFragment extends LoadingSectionListFragment<FutureEpisodeJson, Void, Void, FutureJson> {
+public class FutureFragment extends LoadingSectionListFragment<FutureEpisode, Void, Void, FutureEpisodes> {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		FutureEpisodeJson item = (FutureEpisodeJson)adapter.getItem(position);
+		FutureEpisode item = (FutureEpisode)adapter.getItem(position);
 		Intent intent = new Intent( this.getActivity(), EpisodeActivity.class );
 		intent.putExtra("tvdbid", item.tvdbid + "");
 		intent.putExtra("show", item.show_name);
@@ -74,7 +75,7 @@ public class FutureFragment extends LoadingSectionListFragment<FutureEpisodeJson
 	}
 
 	@Override
-	protected View getListTypeView(int position, FutureEpisodeJson item, View convertView, ViewGroup parent) {
+	protected View getListTypeView(int position, FutureEpisode item, View convertView, ViewGroup parent) {
 		View row = convertView;
 		switch ( item.when ) {
 		case MISSED:
@@ -123,8 +124,8 @@ public class FutureFragment extends LoadingSectionListFragment<FutureEpisodeJson
 	}
 
 	@Override
-	protected FutureJson doInBackground(Void... arg0) throws Exception {
-		return Preferences.singleton.getSickBeard().future( SickBeard.SortEnum.DATE );
+	protected FutureEpisodes doInBackground(Void... arg0) throws Exception {
+		return Preferences.singleton.getSickBeard().future( SortEnum.DATE );
 	}
 
 	@Override
@@ -133,26 +134,26 @@ public class FutureFragment extends LoadingSectionListFragment<FutureEpisodeJson
 	}
 
 	@Override
-	protected void onPostExecute(FutureJson result) {
+	protected void onPostExecute(FutureEpisodes result) {
 		setListAdapter(adapter);
 		adapter.clear();
 		if ( result.missed.size() > 0 ) {
 			adapter.addSection("Missing");
-			for ( FutureEpisodeJson s : result.missed ) {
+			for ( FutureEpisode s : result.missed ) {
 				adapter.add(s);
 			}
 		}
 		if ( result.today.size() > 0 ) {
 			adapter.addSection("Today");
-			for ( FutureEpisodeJson s : result.today ) {
+			for ( FutureEpisode s : result.today ) {
 				adapter.add(s);
 			}
 		}
 		if ( result.soon.size() > 0 ) {
 			SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd");
 			SimpleDateFormat out = new SimpleDateFormat("EEEE");
-			FutureEpisodeJson prev = null;
-			for ( FutureEpisodeJson s : result.soon ) {
+			FutureEpisode prev = null;
+			for ( FutureEpisode s : result.soon ) {
 				if ( prev == null || prev.airdate.compareTo(s.airdate) != 0) {
 					// add section
 					try {
@@ -168,7 +169,7 @@ public class FutureFragment extends LoadingSectionListFragment<FutureEpisodeJson
 		}
 		if ( result.later.size() > 0 ) {
 			adapter.addSection("Later");
-			for ( FutureEpisodeJson s : result.later ) {
+			for ( FutureEpisode s : result.later ) {
 				adapter.add(s);
 			}
 		}

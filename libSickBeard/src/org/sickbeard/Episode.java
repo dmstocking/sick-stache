@@ -22,6 +22,31 @@ package org.sickbeard;
 import org.sickbeard.json.EpisodeJson;
 
 public class Episode {
+	
+	public enum StatusEnum {
+		WANTED, SKIPPED, ARCHIVED, IGNORED, UNAIRED, SNATCHED, DOWNLOADED;
+		
+		public static String[] valuesSetableToString()
+		{
+			StatusEnum[] s = StatusEnum.values();
+			String[] ret = new String[4];
+			for ( int i=0; i < ret.length; i++ ) {
+				ret[i] = s[i].toJson();
+			}
+			return ret;
+		}
+		
+		public static StatusEnum fromJson( String status )
+		{
+			return StatusEnum.valueOf(status.toUpperCase());
+		}
+		
+		public String toJson()
+		{
+			return this.toString().toLowerCase();
+		}
+	}
+	
 	public String tvdbid;
 	public String episode;
 	public String airdate;
@@ -29,7 +54,7 @@ public class Episode {
 	public String location;
 	public String name;
 	public String quality;
-	public SickBeard.StatusEnum status;
+	public StatusEnum status;
 	
 	public Episode( EpisodeJson json ) {
 		episode = json.episode;
@@ -38,6 +63,6 @@ public class Episode {
 		location = json.location;
 		name = json.name;
 		quality = json.quality;
-		status = SickBeard.StatusEnum.fromJson(json.status);
+		status = StatusEnum.fromJson(json.status);
 	}
 }

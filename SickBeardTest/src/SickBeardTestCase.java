@@ -2,6 +2,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.net.URI;
 
 import junit.framework.Assert;
 
@@ -10,9 +11,9 @@ import org.junit.Test;
 import org.junit.BeforeClass;
 
 import org.sickbeard.*;
+import org.sickbeard.FutureEpisodes.SortEnum;
 import org.sickbeard.SickBeard.*;
 import org.sickbeard.json.*;
-
 
 public class SickBeardTestCase {
 	
@@ -39,7 +40,7 @@ public class SickBeardTestCase {
 	
 	@Test
 	public void futureTest() throws Exception {
-		FutureJson response = sick.future(SortEnum.DATE);
+		FutureEpisodes response = sick.future(SortEnum.DATE);
 		assertNotNull(response);
 	}
 	
@@ -72,6 +73,18 @@ public class SickBeardTestCase {
 	public void showTest() throws Exception {
 		Show response = sick.show("71256");
 		assertNotNull(response);
+	}
+	
+	@Test
+	public void showGetBanner() throws Exception {
+		URI uri = sick.showGetBanner("71256");
+		System.out.println(uri.toString());
+	}
+	
+	@Test
+	public void showGetPoster() throws Exception {
+		URI uri = sick.showGetPoster("71256");
+		System.out.println(uri.toString());
 	}
 	
 	@Test

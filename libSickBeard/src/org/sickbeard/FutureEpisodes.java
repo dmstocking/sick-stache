@@ -19,11 +19,17 @@
  */
 package org.sickbeard;
 
-public enum ShowQuality {
-	SDTV, SDDVD, HDTV, HDWEBDL, HDBLURAY, FULLHDBLURAY, UNKNOWN;
+import java.util.List;
+
+public class FutureEpisodes {
 	
-	public static ShowQuality fromJson( String quality )
-	{
-		return ShowQuality.valueOf(quality.toUpperCase());
+	public enum SortEnum {
+		DATE, NETWORK, NAME
 	}
+
+	public List<FutureEpisode> missed;
+	public List<FutureEpisode> today;
+	public List<FutureEpisode> soon;
+	public List<FutureEpisode> later;
+	
 }

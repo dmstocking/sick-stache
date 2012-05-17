@@ -23,6 +23,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,9 @@ import javax.net.ssl.TrustManager;
 import com.google.gson.*;
 import com.google.gson.reflect.*;
 
+import org.sickbeard.Episode.StatusEnum;
+import org.sickbeard.FutureEpisode.TimeEnum;
+import org.sickbeard.Show.QualityEnum;
 import org.sickbeard.json.*;
 import org.sickbeard.json.ShowJson.CacheStatusJson;
 import org.sickbeard.json.deserializer.JsonBooleanDeserializer;
@@ -57,50 +61,28 @@ public class SickBeard {
 	
 	private static final String success = "success";
 	
-	public enum SortEnum {
-		DATE, NETWORK, NAME
-	}
-	
-	public enum StatusEnum {
-		WANTED, SKIPPED, ARCHIVED, IGNORED, UNAIRED,SNATCHED, DOWNLOADED;
-		
-		public static String[] valuesSetableString()
-		{
-			StatusEnum[] s = StatusEnum.values();
-			String[] ret = new String[4];
-			for ( int i=0; i < ret.length; i++ ) {
-				ret[i] = s[i].toJson();
-			}
-			return ret;
-		}
-		
-		public static StatusEnum fromJson( String status )
-		{
-			return StatusEnum.valueOf(status.toUpperCase());
-		}
-		
-		public String toJson()
-		{
-			return this.toString().toLowerCase();
-		}
-	}
-	
-	public enum TimeEnum {
-		MISSED, TODAY, SOON, LATER
-	}
-	
-	private URI serverUri;
 	private boolean https = false;
+	private String scheme;
+	private String hostname;
+	private String port;
+	private String path;
 	
-	public SickBeard( String url, String port, String api, boolean https ) {
-		this(url,port,api,https,"","");
+	private String user;
+	private String password;
+	
+	public SickBeard( String hostname, String port, String api, boolean https ) {
+		this(hostname,port,api,https,"","");
 	}
 	
-	public SickBeard( String url, String port, String api, boolean https, String user, String password )
+	public SickBeard( String hostname, String port, String api, boolean https, String user, String password )
 	{
+		this.hostname = hostname;
+		this.port = port;
+		this.path = "/api/" + api + "/";
 		try {
 			this.https = https;
-			String protocol = "";
+			this.scheme = "http";
+			Authenticator.setDefault(new SickAuthenticator(user,password));
 			if ( https ) {
 				SSLContext ctx = SSLContext.getInstance("TLS");
 		        ctx.init(new KeyManager[0], new TrustManager[] {new DefaultTrustManager()}, new SecureRandom());
@@ -111,12 +93,8 @@ public class SickBeard {
 						return true;
 					}
 				});
-		        protocol = "https";
-			} else {
-				protocol ="http";
+		        scheme = "https";
 			}
-			Authenticator.setDefault(new SickAuthenticator(user,password));
-			serverUri = new URI( protocol + "://" + url + ":" + port + "/api/" + api + "/?cmd=" );
 		} catch (Exception e){
 			;
 		}
@@ -124,17 +102,27 @@ public class SickBeard {
 	
 	public SickBeard( SickBeard sick )
 	{
-		try {
-			this.serverUri = new URI( sick.serverUri.toString() );
-			this.https = sick.https;
-		} catch (Exception e) {
-			;
-		}
+		this( sick.scheme, sick.hostname, sick.port, sick.path, sick.user, sick.password );
+	}
+	
+	private SickBeard( String scheme, String hostname, String port, String path, String user, String password ) {
+		this.scheme = scheme;
+		this.https = scheme.toLowerCase().compareTo("https") == 0 ? true : false;
+		this.hostname = hostname;
+		this.port = port;
+		this.path = path;
+		this.user = user;
+		this.password = password;
 	}
 	
 	public URI getServerUri() throws URISyntaxException
 	{
-		return new URI(serverUri.toString());
+		return new URI( scheme, null, hostname, Integer.parseInt(port), path, null, null );
+	}
+	
+	public URI getServerUri( String command ) throws URISyntaxException
+	{
+		return new URI( scheme, null, hostname, Integer.parseInt(port), path, "cmd=" + command, null );
 	}
 	
 	public Episode episode( String tvdbid, String season, String episode ) throws Exception
@@ -191,7 +179,7 @@ public class SickBeard {
 		return this.<ArrayList<String>>commandData( builder.toString(), new TypeToken<JsonResponse<ArrayList<String>>>(){}.getType() );
 	}
 	
-	public FutureJson future( SickBeard.SortEnum sort ) throws Exception
+	public FutureEpisodes future( FutureEpisodes.SortEnum sort ) throws Exception
 	{
 		StringBuilder builder = new StringBuilder("future");
 		builder.append("&sort=");
@@ -209,18 +197,18 @@ public class SickBeard {
 			builder.append("date");
 		}
 
-		FutureJson ret = this.<FutureJson>commandData( builder.toString(), new TypeToken<JsonResponse<FutureJson>>(){}.getType() );
-		for ( FutureEpisodeJson e : ret.missed ) {
-			e.when = TimeEnum.MISSED;
+		FutureEpisodes ret = this.<FutureEpisodes>commandData( builder.toString(), new TypeToken<JsonResponse<FutureEpisodes>>(){}.getType() );
+		for ( FutureEpisode ep : ret.missed ) {
+			ep.when = TimeEnum.MISSED;
 		}
-		for ( FutureEpisodeJson e : ret.today ) {
-			e.when = TimeEnum.TODAY;
+		for ( FutureEpisode ep : ret.today ) {
+			ep.when = TimeEnum.TODAY;
 		}
-		for ( FutureEpisodeJson e : ret.soon ) {
-			e.when = TimeEnum.SOON;
+		for ( FutureEpisode ep : ret.soon ) {
+			ep.when = TimeEnum.SOON;
 		}
-		for ( FutureEpisodeJson e : ret.later ) {
-			e.when = TimeEnum.LATER;
+		for ( FutureEpisode ep : ret.later ) {
+			ep.when = TimeEnum.LATER;
 		}
 		return ret;
 	}
@@ -284,7 +272,7 @@ public class SickBeard {
 	public Show show( String tvdbid, boolean fullSeasonListing ) throws Exception
 	{
 		if ( fullSeasonListing ) {
-			StringBuilder builder = new StringBuilder("show%7Cshow.seasons");
+			StringBuilder builder = new StringBuilder("show|show.seasons");
 			builder.append("&tvdbid=");
 			builder.append(tvdbid);
 			
@@ -305,6 +293,39 @@ public class SickBeard {
 		StringBuilder builder = new StringBuilder("show.addnew");
 		builder.append("&tvdbid=");
 		builder.append(tvdbid);
+		
+		return this.<Object>commandSuccessful( builder.toString(), new TypeToken<JsonResponse<Object>>(){}.getType() );
+	}
+	
+	public boolean showAddNew( String tvdbid, LanguageEnum language, Boolean seasonFolders, StatusEnum status, EnumSet<QualityEnum> initial, EnumSet<QualityEnum> archive ) throws Exception
+	{
+		StringBuilder builder = new StringBuilder("show.addnew");
+		builder.append("&tvdbid=");
+		builder.append(tvdbid);
+		if ( language != null ) {
+			builder.append("&lang=");
+			builder.append(language.getAbbrev());
+		}
+		if ( seasonFolders != null ) {
+			builder.append("&season_folder=");
+			builder.append( seasonFolders ? "1" : "0" );
+		}
+		if ( status != null ) {
+			builder.append("&status=");
+			builder.append(status.toString());
+		}
+		if ( initial != null && initial.size() > 0 ) {
+			builder.append("&initial=");
+			for ( QualityEnum q : initial ) {
+				builder.append(q.toString());
+			}
+		}
+		if ( archive != null && archive.size() > 0 ) {
+			builder.append("&archive=");
+			for ( QualityEnum q : archive ) {
+				builder.append(q.toString());
+			}
+		}
 		
 		return this.<Object>commandSuccessful( builder.toString(), new TypeToken<JsonResponse<Object>>(){}.getType() );
 	}
@@ -333,11 +354,11 @@ public class SickBeard {
 		builder.append("&tvdbid=");
 		builder.append(tvdbid);
 		
-		URI uri = new URI( serverUri.toString() + builder.toString() );
+//		URI uri = new URI( serverUri.toString() + builder.toString() );
 //		HttpURLConnection server = (HttpURLConnection)uri.toURL().openConnection();
 //		server.connect();
 //		return server.getInputStream();
-		return uri;
+		return this.getServerUri(builder.toString());
 	}
 	
 	public URI showGetPoster( String tvdbid ) throws Exception
@@ -346,11 +367,11 @@ public class SickBeard {
 		builder.append("&tvdbid=");
 		builder.append(tvdbid);
 		
-		URI uri = new URI( serverUri.toString() + builder.toString() );
+//		URI uri = new URI( serverUri.toString() + builder.toString() );
 //		HttpURLConnection server = (HttpURLConnection)uri.toURL().openConnection();
 //		server.connect();
 //		return server.getInputStream();
-		return uri;
+		return this.getServerUri(builder.toString());
 	}
 	
 	public List<Integer> showSeasonList( String tvdbid ) throws Exception
@@ -485,7 +506,8 @@ public class SickBeard {
 
 	private <T> JsonResponse<T> commandResponse( String command, Type type ) throws Exception
 	{
-		URI uri = new URI( serverUri.toString() + command );
+		URI uri = this.getServerUri(command);
+//		URI uri = new URI( serverUri.toString() + URLEncoder.encode(command) );
 		HttpURLConnection server = null;
 		if ( https ) {
 			server = (HttpsURLConnection)uri.toURL().openConnection();

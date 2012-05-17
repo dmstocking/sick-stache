@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
+            
             <org.sickstache.widget.DefaultImageView
                 android:id="@+id/showImage"
                 android:layout_width="match_parent"
@@ -34,16 +34,21 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/directoryTextView"
-                style="@style/ClickableText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:drawableRight="@android:drawable/ic_menu_more"
-                android:gravity="center_vertical"
-                android:paddingLeft="3dp"
-                android:text="Directory"
-                android:enabled="false" />
+<!--             <TextView -->
+<!--                 android:id="@+id/directoryTextView" -->
+<!--                 style="@style/ClickableText" -->
+<!--                 android:layout_width="fill_parent" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:drawableRight="@android:drawable/ic_menu_more" -->
+<!--                 android:gravity="center_vertical" -->
+<!--                 android:paddingLeft="3dp" -->
+<!--                 android:text="Directory" -->
+<!--                 android:enabled="false" /> -->
+            
+<!--             <View -->
+<!--                 android:layout_width="fill_parent" -->
+<!--                 android:layout_height="1px" -->
+<!--                 android:background="#212121" /> -->
 
             <TextView
                 android:id="@+id/languageTextView"
@@ -53,8 +58,12 @@
                 android:drawableRight="@android:drawable/ic_menu_more"
                 android:gravity="center_vertical"
                 android:paddingLeft="3dp"
-                android:text="Language"
-                android:enabled="false" />
+                android:text="Language" />
+            
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#212121" />
 
             <TextView
                 android:id="@+id/seasonFolderTextView"
@@ -64,8 +73,12 @@
                 android:drawableRight="@android:drawable/ic_menu_more"
                 android:gravity="center_vertical"
                 android:paddingLeft="3dp"
-                android:text="Season Folders"
-                android:enabled="false" />
+                android:text="Season Folders" />
+            
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#212121" />
 
             <TextView
                 android:id="@+id/statusTextView"
@@ -75,19 +88,27 @@
                 android:drawableRight="@android:drawable/ic_menu_more"
                 android:gravity="center_vertical"
                 android:paddingLeft="3dp"
-                android:text="Status"
-                android:enabled="false" />
+                android:text="Initial Status" />
+            
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#212121" />
 
             <TextView
-                android:id="@+id/intialQualityTextView"
+                android:id="@+id/initialQualityTextView"
                 style="@style/ClickableText"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:drawableRight="@android:drawable/ic_menu_more"
                 android:gravity="center_vertical"
                 android:paddingLeft="3dp"
-                android:text="Initial Quality"
-                android:enabled="false" />
+                android:text="Initial Quality" />
+            
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#212121" />
 
             <TextView
                 android:id="@+id/archiveQualityTextView"
@@ -97,8 +118,12 @@
                 android:drawableRight="@android:drawable/ic_menu_more"
                 android:gravity="center_vertical"
                 android:paddingLeft="3dp"
-                android:text="Archive Quality"
-                android:enabled="false" />
+                android:text="Archive Quality" />
+            
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#212121" />
             
         </LinearLayout>
         

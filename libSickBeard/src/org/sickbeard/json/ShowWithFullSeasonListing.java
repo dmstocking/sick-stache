@@ -19,22 +19,14 @@
  */
 package org.sickbeard.json;
 
-import org.sickbeard.SickBeard;
+import java.util.ArrayList;
 
-public class FutureEpisodeJson {
-	public String airdate;
-	public String airs;
-	public String ep_name;
-	public String ep_plot;
-	public int episode;
-	public String network;
-	public int paused;
-	public String quality;
-	public int season;
-	public String show_name;
-	public String show_status;
-	public int tvdbid;
-	// the day of the week >.> 1-7 mon-sun
-	public int weekday;
-	public SickBeard.TimeEnum when; 
+import org.sickbeard.json.type.JsonBoolean;
+
+import com.google.gson.annotations.SerializedName;
+
+public class ShowWithFullSeasonListing {
+	public JsonResponse<ShowJson> show;
+	@SerializedName("show.seasons")
+	public JsonResponse<SeasonsListJson> seasons;
 }

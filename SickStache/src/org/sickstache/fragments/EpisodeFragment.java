@@ -5,9 +5,7 @@ import java.util.Comparator;
 
 import org.sickbeard.Episode;
 import org.sickbeard.SickBeard;
-import org.sickbeard.SickBeard.StatusEnum;
-import org.sickbeard.json.FutureEpisodeJson;
-import org.sickbeard.json.FutureJson;
+import org.sickbeard.Episode.StatusEnum;
 import org.sickstache.app.LoadingFragment;
 import org.sickstache.helper.Preferences;
 import org.sickstache.widget.DefaultImageView;
@@ -75,7 +73,7 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 			public void onClick(View v) {
 				AlertDialog.Builder build = new AlertDialog.Builder(EpisodeFragment.this.getActivity());
 				build.setTitle("Set Status");
-				build.setItems(SickBeard.StatusEnum.valuesSetableString(), new DialogInterface.OnClickListener() {
+				build.setItems(Episode.StatusEnum.valuesSetableToString(), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						StatusDownloader downloader = new StatusDownloader();
 						downloader.execute(StatusEnum.values()[which]);
