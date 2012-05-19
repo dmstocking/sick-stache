@@ -279,6 +279,7 @@ public class AddShowFragment extends SherlockFragment {
     			} else if ( result != null ) {
     				Intent intent = new Intent( AddShowFragment.this.getActivity(), HomeActivity.class );
     	            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    	            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
     				intent.putExtra("activity", "ShowActivity");
     				intent.putExtra("tvdbid", tvdbid);
     				startActivity(intent);

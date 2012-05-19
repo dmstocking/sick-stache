@@ -28,14 +28,14 @@
             android:textStyle="bold" />
         
          <TextView
-            android:id="@+id/qualityTextView"
+            android:id="@+id/bannerTextView"
             style="@style/ClickableText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:drawableRight="@android:drawable/ic_menu_more"
             android:gravity="center_vertical"
             android:paddingLeft="3dp"
-            android:text="Quality"
+            android:text="Fetch Banner"
             android:state_enabled="false" />
         
         <TextView
@@ -62,16 +62,16 @@
             android:state_enabled="false"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/languageTextView"
-            style="@style/ClickableText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:drawableRight="@android:drawable/ic_menu_more"
-            android:gravity="center_vertical"
-            android:paddingLeft="3dp"
-            android:text="Language"
-            android:state_enabled="false" />
+<!--         <TextView -->
+<!--             android:id="@+id/languageTextView" -->
+<!--             style="@style/ClickableText" -->
+<!--             android:layout_width="fill_parent" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:drawableRight="@android:drawable/ic_menu_more" -->
+<!--             android:gravity="center_vertical" -->
+<!--             android:paddingLeft="3dp" -->
+<!--             android:text="Language" -->
+<!--             android:state_enabled="false" /> -->
 
         <TextView
             android:id="@+id/seasonFolderTextView"
