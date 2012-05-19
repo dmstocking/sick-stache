@@ -19,13 +19,22 @@
  */
 package org.sickstache.fragments;
 
+import java.util.Comparator;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 import org.sickbeard.SearchResult;
 import org.sickbeard.SearchResults;
-import org.sickbeard.comparator.SearchResultComparator;
+import org.sickbeard.comparator.SearchResultByTitleComparator;
+import org.sickbeard.comparator.SearchResultByYearComparator;
 import org.sickstache.AddShowActivity;
 import org.sickstache.app.LoadingListFragment;
 import org.sickstache.helper.Preferences;
 import org.sickstache.R;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 import android.app.SearchManager;
 import android.content.Intent;
@@ -38,12 +47,22 @@ import android.widget.TextView;
 
 public class SearchFragment extends LoadingListFragment<String, Void, SearchResults> {
 	
-	private ArrayAdapter<SearchResult> searchAdapter;
-	
 	private String query;
+	
+	private ArrayAdapter<SearchResult> searchAdapter;
+	private Comparator<SearchResult> sorter;
+	private Pattern hasYear = Pattern.compile("\\(\\d{4}\\)\\s*$");
+	
+	private SearchResults lastResults = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		sorter = new Comparator<SearchResult>(){
+			@Override
+			public int compare(SearchResult lhs, SearchResult rhs) {
+				return 0;
+			}
+		};
 		searchAdapter = new ArrayAdapter<SearchResult>(this.getActivity(), R.layout.search_item) {
 			@Override
 			public View getView( int position, View convertView, ViewGroup parent ) {
@@ -53,10 +72,13 @@ public class SearchFragment extends LoadingListFragment<String, Void, SearchResu
 				}
 				SearchResult item = getItem(position);
 				TextView ep = (TextView) row.findViewById(R.id.searchItemTextView);
-				if ( item.getYear() != null )
-					ep.setText(item.getTitle() + " (" + item.getYear() + ")");
-				else
-					ep.setText(item.getTitle());
+				ep.setText(item.getTitle());
+				if ( item.getYear() != null ) {
+					Matcher match = hasYear.matcher(item.getTitle());
+					if ( match.find() == false ) {
+						ep.setText(item.getTitle() + " (" + item.getYear() + ")");
+					}
+				}
 				// 1 is even because position starts at 0 not 1
 				if ( position % 2 == 1 ) {
 					ep.setBackgroundResource(R.color.sickbeard_even_row);
@@ -71,6 +93,13 @@ public class SearchFragment extends LoadingListFragment<String, Void, SearchResu
 		// this makes the list have a progress spinner for us
 	}
 	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		menu.removeItem(R.id.searchMenuItem);
+		inflater.inflate(R.menu.search_menu, menu);
+	}
+
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		Intent intent = this.getActivity().getIntent();
@@ -90,6 +119,32 @@ public class SearchFragment extends LoadingListFragment<String, Void, SearchResu
 		intent.putExtra("tvdbid", searchAdapter.getItem(position).getId());
 		intent.putExtra("show", searchAdapter.getItem(position).getTitle());
 		startActivity(intent);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch ( item.getItemId() ) {
+		case R.id.sortByRelevance:
+			sorter = new Comparator<SearchResult>(){
+				@Override
+				public int compare(SearchResult lhs, SearchResult rhs) {
+					return 0;
+				}
+			};
+			onPostExecute(lastResults);
+			return true;
+		case R.id.sortByTitle:
+			sorter = new SearchResultByTitleComparator();
+			searchAdapter.sort(sorter);
+			return true;
+		case R.id.sortByYear:
+			sorter = new SearchResultByYearComparator();
+			searchAdapter.sort(sorter);
+			return true;
+		case R.id.searchMenuItem:
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -114,16 +169,19 @@ public class SearchFragment extends LoadingListFragment<String, Void, SearchResu
 
 	@Override
 	protected void onPostExecute(SearchResults result) {
-		SearchFragment.this.setListAdapter(searchAdapter);
-		searchAdapter.clear();
-		for ( SearchResult s : result.results ) {
-			searchAdapter.add(s);
-		}
-		// make a sorter that sorts by year
-		searchAdapter.sort( new SearchResultComparator() );
-		searchAdapter.notifyDataSetChanged();
-		if ( searchAdapter.getCount() == 0 ) {
-			this.setListStatus(ListStatus.EMPTY);
+		if ( result != null && searchAdapter != null ) {
+			SearchFragment.this.setListAdapter(searchAdapter);
+			lastResults = result;
+			searchAdapter.clear();
+			for ( SearchResult s : result.results ) {
+				searchAdapter.add(s);
+			}
+			// make a sorter that sorts by year
+			searchAdapter.sort( sorter );
+			searchAdapter.notifyDataSetChanged();
+			if ( searchAdapter.getCount() == 0 ) {
+				this.setListStatus(ListStatus.EMPTY);
+			}
 		}
 	}
 }

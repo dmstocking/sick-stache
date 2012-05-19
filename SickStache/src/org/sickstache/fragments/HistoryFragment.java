@@ -19,9 +19,12 @@
  */
 package org.sickstache.fragments;
 
+import java.text.SimpleDateFormat;
+
 import org.sickbeard.History;
 import org.sickbeard.HistoryItem;
 import org.sickstache.app.LoadingListFragment;
+import org.sickstache.app.LoadingSectionListFragment;
 import org.sickstache.helper.Preferences;
 import org.sickstache.R;
 
@@ -31,33 +34,35 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class HistoryFragment extends LoadingListFragment<Void, Void, History> {
+public class HistoryFragment extends LoadingSectionListFragment<HistoryItem, Void, Void, History> {
 	
 	private ArrayAdapter<HistoryItem> historyAdapter;
+	
+//	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		historyAdapter = new ArrayAdapter<HistoryItem>( this.getActivity(), R.layout.history_item ){
-			@Override
-			public View getView( int position, View convertView, ViewGroup parent ) {
-				View row;
-				if ( convertView == null ) {
-					row = getActivity().getLayoutInflater().inflate(R.layout.history_item, null);
-				} else {
-					row = convertView;
-				}
-				HistoryItem item = getItem(position);
-				((TextView)row.findViewById(R.id.historyDateTextView)).setText(item.date);
-				((TextView)row.findViewById(R.id.historyEpisodeTextView)).setText(item.show + " - " + item.season + "x" + item.episode + " [" + item.quality + " ]");
-				if ( item.status.compareTo("Downloaded") == 0 ) {
-					row.setBackgroundResource(R.color.sickbeard_today_background);
-				} else {
-					row.setBackgroundResource(R.color.sickbeard_soon_background);
-				}
-				return row;
-			}
-		};
+//		historyAdapter = new ArrayAdapter<HistoryItem>( this.getActivity(), R.layout.history_item ){
+//			@Override
+//			public View getView( int position, View convertView, ViewGroup parent ) {
+//				View row;
+//				if ( convertView == null ) {
+//					row = getActivity().getLayoutInflater().inflate(R.layout.history_item, null);
+//				} else {
+//					row = convertView;
+//				}
+//				HistoryItem item = getItem(position);
+//				((TextView)row.findViewById(R.id.historyDateTextView)).setText(item.date);
+//				((TextView)row.findViewById(R.id.historyEpisodeTextView)).setText(item.show + " - " + item.season + "x" + item.episode + " [" + item.quality + " ]");
+//				if ( item.status.compareTo("Downloaded") == 0 ) {
+//					row.setBackgroundResource(R.color.sickbeard_today_background);
+//				} else {
+//					row.setBackgroundResource(R.color.sickbeard_soon_background);
+//				}
+//				return row;
+//			}
+//		};
 	}
 	
 	@Override
@@ -82,14 +87,50 @@ public class HistoryFragment extends LoadingListFragment<Void, Void, History> {
 
 	@Override
 	protected void onPostExecute(History result) {
-		this.setListAdapter(historyAdapter);
-		historyAdapter.clear();
+		this.setListAdapter(adapter);
+		adapter.clear();
+		String lastDate = "";
 		for ( HistoryItem item : result.items ) {
-			historyAdapter.add(item);
+			if ( item.date.regionMatches(0, lastDate, 0, 10) == false ) {
+				adapter.addSection(item.date.substring(0, 10));
+				lastDate = item.date;
+			}
+			adapter.add(item);
 		}
-		if ( historyAdapter.getCount() == 0 ) {
+		if ( adapter.getCount() == 0 ) {
 			this.setListStatus(ListStatus.EMPTY);
 		}
-		historyAdapter.notifyDataSetChanged();
+		adapter.notifyDataSetChanged();
+	}
+
+	@Override
+	protected int getSectionLayoutId() {
+		return R.layout.section_item;
+	}
+
+	@Override
+	protected int getListTypeLayoutId() {
+		return R.layout.history_item;
+	}
+
+	@Override
+	protected View getSectionView(int position, String item, View convertView, ViewGroup parent) {
+		View row = convertView;
+		TextView label = (TextView)row.findViewById(R.id.sectionTextView);
+		label.setText(item);
+		return row;
+	}
+
+	@Override
+	protected View getListTypeView(int position, HistoryItem item, View convertView, ViewGroup parent) {
+		View row = convertView;
+//		((TextView)row.findViewById(R.id.historyDateTextView)).setText(item.date);
+		((TextView)row.findViewById(R.id.historyEpisodeTextView)).setText(item.date.substring(11) + " - " + item.show + " - " + item.season + "x" + item.episode + " [" + item.quality + " ]");
+		if ( item.status.compareTo("Downloaded") == 0 ) {
+			row.setBackgroundResource(R.color.sickbeard_today_background);
+		} else {
+			row.setBackgroundResource(R.color.sickbeard_soon_background);
+		}
+		return row;
 	}
 }

@@ -24,7 +24,7 @@ import java.util.Comparator;
 import org.sickbeard.SearchResult;
 
 
-public class SearchResultComparator implements Comparator<SearchResult> {
+public class SearchResultByYearComparator implements Comparator<SearchResult> {
 
 	@Override
 	public int compare(SearchResult lhs, SearchResult rhs) {

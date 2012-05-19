@@ -28,7 +28,7 @@
     <string name="cache_item_title">Delete Cache</string>
     <string name="history_item_title">History</string>
     <string name="log_item_title">Log</string>
-    <string name="about_item_title">About SickGoatee</string>
+    <string name="about_item_title">About SickStache</string>
     
 	<!-- CAD Menu Item Values -->
 	<string name="edit_item_title">Edit</string>
