@@ -207,6 +207,8 @@ public class AddShowFragment extends SherlockFragment {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+						if ( which == 0 )
+							return;
 						if ( isChecked ) {
 							archiveQuality.add(QualityEnum.fromOrdinal(which));
 						} else {
