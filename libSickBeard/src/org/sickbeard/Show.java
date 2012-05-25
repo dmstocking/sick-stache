@@ -21,6 +21,7 @@ package org.sickbeard;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.List;
 
 import org.sickbeard.json.ShowJson;
@@ -49,6 +50,19 @@ public class Show {
 		public static QualityEnum fromOrdinal(int index)
 		{
 			return QualityEnum.values()[index];
+		}
+		
+		public static EnumSet<QualityEnum> fromBooleans( boolean[] values )
+		{
+			QualityEnum[] enums = QualityEnum.values();
+			if ( values.length != enums.length )
+				throw new RuntimeException("QualityEnum.fromBoolens: Array Mismatch values must be length \"" + enums.length + "\"");
+			EnumSet<QualityEnum> ret = EnumSet.noneOf(QualityEnum.class);
+			for ( int i=0; i < enums.length; i++ ) {
+				if ( values[i] )
+					ret.add(enums[i]);
+			}
+			return ret;
 		}
 	}
 	

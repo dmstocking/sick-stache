@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.io.BufferedReader;
@@ -43,6 +44,8 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
+
+import android.text.TextUtils;
 
 import com.google.gson.*;
 import com.google.gson.reflect.*;
@@ -370,6 +373,39 @@ public class SickBeard {
 		return this.getServerUri(builder.toString());
 	}
 	
+	public GetQuality showGetQuality( String tvdbid ) throws Exception
+	{
+		StringBuilder builder = new StringBuilder("show.getquality");
+		builder.append("&tvdbid=");
+		builder.append(tvdbid);
+		
+		GetQualityJson result = this.<GetQualityJson>commandData( builder.toString(), new TypeToken<JsonResponse<GetQualityJson>>(){}.getType() );
+		
+		return new GetQuality(result);
+	}
+	
+	public boolean showPause( String tvdbid, Boolean pause ) throws Exception
+	{
+		StringBuilder builder = new StringBuilder("show.pause");
+		builder.append("&tvdbid=");
+		builder.append(tvdbid);
+		if ( pause != null ) {
+			builder.append("&pause=");
+			builder.append( pause ? "1" : "0" );
+		}
+		
+		return this.<Object>commandSuccessful( builder.toString(), new TypeToken<JsonResponse<Object>>(){}.getType() );
+	}
+	
+	public boolean showRefresh( String tvdbid ) throws Exception
+	{
+		StringBuilder builder = new StringBuilder("show.refresh");
+		builder.append("&tvdbid=");
+		builder.append(tvdbid);
+		
+		return this.<Object>commandSuccessful( builder.toString(), new TypeToken<JsonResponse<Object>>(){}.getType() );
+	}
+	
 	public List<Integer> showSeasonList( String tvdbid ) throws Exception
 	{
 		StringBuilder builder = new StringBuilder("show.seasonlist");
@@ -405,6 +441,46 @@ public class SickBeard {
 		
 		SeasonsJson result = this.<SeasonsJson>commandData( builder.toString(), new TypeToken<JsonResponse<SeasonsJson>>(){}.getType() );
 		return new Season( season, result );
+	}
+	
+	public boolean showSetQuality( String tvdbid, EnumSet<QualityEnum> initial, EnumSet<QualityEnum> archive ) throws Exception
+	{
+		StringBuilder builder = new StringBuilder("show.setquality");
+		builder.append("&tvdbid=");
+		builder.append(tvdbid);
+		if ( initial != null ) {
+			builder.append("&initial=");
+			Iterator<QualityEnum> iter = initial.iterator();
+			if ( iter.hasNext() ) {
+				builder.append(iter.next().toString().toLowerCase());
+				while ( iter.hasNext() ) {
+					builder.append("|");
+					builder.append(iter.next().toString().toLowerCase());
+				}
+			}
+		}
+		if ( archive != null ) {
+			builder.append("&archive=");
+			Iterator<QualityEnum> iter = archive.iterator();
+			if ( iter.hasNext() ) {
+				builder.append(iter.next().toString().toLowerCase());
+				while ( iter.hasNext() ) {
+					builder.append("|");
+					builder.append(iter.next().toString().toLowerCase());
+				}
+			}
+		}
+		
+		return this.<Object>commandSuccessful( builder.toString(), new TypeToken<JsonResponse<Object>>(){}.getType() );
+	}
+	
+	public boolean showUpdate( String tvdbid ) throws Exception
+	{
+		StringBuilder builder = new StringBuilder("show.update");
+		builder.append("&tvdbid=");
+		builder.append(tvdbid);
+		
+		return this.<Object>commandSuccessful( builder.toString(), new TypeToken<JsonResponse<Object>>(){}.getType() );
 	}
 	
 	public ArrayList<Show> shows() throws Exception
