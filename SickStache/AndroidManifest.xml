@@ -35,6 +35,9 @@
             android:name=".AddShowActivity" >
         </activity>
         <activity
+            android:name=".EditShowActivity" >
+        </activity>
+        <activity
             android:name=".ShowActivity" >
         </activity>
         <activity

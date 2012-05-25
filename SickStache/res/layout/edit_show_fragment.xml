@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
-
+        
         <org.sickstache.widget.DefaultImageView
             android:id="@+id/showImage"
             android:layout_width="match_parent"
@@ -27,84 +27,40 @@
             android:textSize="15sp"
             android:textStyle="bold" />
         
-         <TextView
-            android:id="@+id/bannerTextView"
-            style="@style/ClickableText"
+        <org.sickstache.widget.WorkingTextView
+            android:id="@+id/bannerWorkingTextView"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:drawableRight="@android:drawable/ic_menu_more"
-            android:gravity="center_vertical"
-            android:paddingLeft="3dp"
-            android:text="Fetch Banner"
-            android:state_enabled="false" />
+            android:layout_height="wrap_content" />
         
-        <TextView
-            android:id="@+id/intialQualityTextView"
-            style="@style/ClickableText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:drawableRight="@android:drawable/ic_menu_more"
-            android:gravity="center_vertical"
-            android:paddingLeft="3dp"
-            android:text="Initial Quality"
-            android:state_enabled="false"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/archiveQualityTextView"
-            style="@style/ClickableText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:drawableRight="@android:drawable/ic_menu_more"
-            android:gravity="center_vertical"
-            android:paddingLeft="3dp"
-            android:text="Archive Quality"
-            android:state_enabled="false"
-            android:visibility="gone" />
-
-<!--         <TextView -->
-<!--             android:id="@+id/languageTextView" -->
-<!--             style="@style/ClickableText" -->
-<!--             android:layout_width="fill_parent" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:drawableRight="@android:drawable/ic_menu_more" -->
-<!--             android:gravity="center_vertical" -->
-<!--             android:paddingLeft="3dp" -->
-<!--             android:text="Language" -->
-<!--             android:state_enabled="false" /> -->
-
-        <TextView
-            android:id="@+id/seasonFolderTextView"
-            style="@style/ClickableText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:drawableRight="@android:drawable/ic_menu_more"
-            android:gravity="center_vertical"
-            android:paddingLeft="3dp"
-            android:text="Season Folders"
-            android:state_enabled="false" />
+<!--         <ImageView -->
+<!-- 		    android:background="@android:drawable/divider_horizontal_dark" -->
+<!-- 		    android:layout_width="fill_parent" -->
+<!-- 		    android:layout_height="2px" /> -->
         
-        <TextView
-            android:id="@+id/directoryTextView"
-            style="@style/ClickableText"
+        <org.sickstache.widget.WorkingTextView
+            android:id="@+id/qualityWorkingTextView"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:drawableRight="@android:drawable/ic_menu_more"
-            android:gravity="center_vertical"
-            android:paddingLeft="3dp"
-            android:text="Pause"
-            android:state_enabled="false" />
-
-        <TextView
-            android:id="@+id/airbydateTextView"
-            style="@style/ClickableText"
+            android:layout_height="wrap_content" />
+        
+        <org.sickstache.widget.WorkingTextView
+            android:id="@+id/archiveQualityWorkingTextView"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:drawableRight="@android:drawable/ic_menu_more"
-            android:gravity="center_vertical"
-            android:paddingLeft="3dp"
-            android:text="Air By Date"
-            android:state_enabled="false" />
+            android:layout_height="wrap_content" />
+        
+        <org.sickstache.widget.WorkingTextView
+            android:id="@+id/pauseWorkingTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        
+        <org.sickstache.widget.WorkingTextView
+            android:id="@+id/refreshWorkingTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        
+        <org.sickstache.widget.WorkingTextView
+            android:id="@+id/updateWorkingTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
         
     </LinearLayout>
     

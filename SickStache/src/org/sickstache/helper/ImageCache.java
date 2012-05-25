@@ -139,6 +139,29 @@ public class ImageCache {
 		return null;
 	}
 	
+	public boolean remove( String key )
+	{
+		String filename = sanatizeKey(key);
+		if ( memCache.containsKey(filename) ) {
+			memCache.remove(filename);
+		}
+		try {
+			File tmp = new File( cacheDir, filename );
+			if ( tmp.exists() ) {
+				if ( tmp.delete() ) {
+					Log.i(cacheLogName, "Deleted the file \"" + filename + "\" from the disk cache.");
+				} else {
+					Log.e(cacheLogName, "Failed to delete file \"" + filename + "\" from the disk cache.");
+				}
+			} else {
+				Log.e(cacheLogName, "File did not existed in cache and was not deleted.");
+			}
+		} catch (Exception e) {
+			Log.e(cacheLogName, "Error deleting File. ERROR:" + e.getMessage());
+		}
+		return true;
+	}
+	
 	public void clear()
 	{
 		clearMem();

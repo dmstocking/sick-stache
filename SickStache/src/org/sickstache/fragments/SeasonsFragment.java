@@ -26,6 +26,7 @@ import org.sickbeard.Episode;
 import org.sickbeard.Season;
 import org.sickbeard.Show;
 
+import org.sickstache.EditShowActivity;
 import org.sickstache.EpisodeActivity;
 import org.sickstache.EpisodesActivity;
 import org.sickstache.app.ExpandableLoadingListFragment;
@@ -33,6 +34,10 @@ import org.sickstache.app.LoadingListFragment;
 import org.sickstache.helper.Preferences;
 import org.sickstache.widget.DefaultImageView;
 import org.sickstache.R;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -78,10 +83,16 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	}
 
 	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.seasons_menu, menu);
+	}
+
+	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		if ( hasHeader() ) {
-			this.getListView().addHeaderView(header,null,false);
+			this.getListView().addHeaderView(header,null,true);
 		}
 		showView = (TextView) view.findViewById(R.id.show);
 		showView.setText(show);
@@ -96,6 +107,19 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 		} catch (Exception e) {
 			;
 		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch ( item.getItemId() ) {
+		case R.id.editShowMenuItem:
+			Intent intent = new Intent( this.getActivity(), EditShowActivity.class );
+			intent.putExtra("tvdbid", tvdbid);
+			intent.putExtra("show", show);
+			this.startActivity(intent);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 	
 	@Override
@@ -200,7 +224,11 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		if ( hasHeader() ) {
 			if ( position == 0 ) {
-				// clicked on show options section
+				// when the header is clicked
+//				Intent intent = new Intent( this.getActivity(), EditShowActivity.class );
+//				intent.putExtra("tvdbid", tvdbid);
+//				intent.putExtra("show", show);
+//				this.startActivity(intent);
 			}
 			super.onListItemClick(l, v, position-1, id);
 		} else {
