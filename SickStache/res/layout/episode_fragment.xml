@@ -174,27 +174,37 @@
 	        android:dividerHeight="1px"
 	        android:showDividers="middle" >
 		    
-			<TextView
-	            android:id="@+id/searchTextView"
-	            android:enabled="false"
-	            style="@style/ShowOptionTitle"
+		    <org.sickstache.widget.WorkingTextView
+	            android:id="@+id/searchWorkingTextView"
 	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:text="Search for Episode"
-	            android:gravity="center_vertical"
-	            android:drawableRight="@drawable/ic_go"
-	            android:clickable="true" />
+	            android:layout_height="wrap_content" />
+		    
+		    <org.sickstache.widget.WorkingTextView
+	            android:id="@+id/setStatusWorkingTextView"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content" />
+		    
+<!-- 			<TextView -->
+<!-- 	            android:id="@+id/searchTextView" -->
+<!-- 	            android:enabled="false" -->
+<!-- 	            style="@style/ShowOptionTitle" -->
+<!-- 	            android:layout_width="fill_parent" -->
+<!-- 	            android:layout_height="wrap_content" -->
+<!-- 	            android:text="Search for Episode" -->
+<!-- 	            android:gravity="center_vertical" -->
+<!-- 	            android:drawableRight="@drawable/ic_go" -->
+<!-- 	            android:clickable="true" /> -->
 			
-			<TextView
-	            android:id="@+id/setstatusTextView"
-	            android:enabled="false"
-	            style="@style/ShowOptionTitle"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:text="Set Status"
-	            android:gravity="center_vertical"
-	            android:drawableRight="@drawable/ic_go"
-	            android:clickable="true" />
+<!-- 			<TextView -->
+<!-- 	            android:id="@+id/setstatusTextView" -->
+<!-- 	            android:enabled="false" -->
+<!-- 	            style="@style/ShowOptionTitle" -->
+<!-- 	            android:layout_width="fill_parent" -->
+<!-- 	            android:layout_height="wrap_content" -->
+<!-- 	            android:text="Set Status" -->
+<!-- 	            android:gravity="center_vertical" -->
+<!-- 	            android:drawableRight="@drawable/ic_go" -->
+<!-- 	            android:clickable="true" /> -->
 			
 		</LinearLayout>
 	

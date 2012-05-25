@@ -19,6 +19,7 @@
  */
 package org.sickstache.dialogs;
 
+import org.sickbeard.Episode.StatusEnum;
 import org.sickbeard.Show.QualityEnum;
 import org.sickstache.R;
 
@@ -35,18 +36,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class QualityDialog extends SherlockDialogFragment {
+public class StatusDialog extends SherlockDialogFragment {
 
 	String title = null;
-	boolean[] selected = null;
-	OnMultiChoiceClickListener listListener = null;
-	DialogInterface.OnClickListener okListener = null;
+	DialogInterface.OnClickListener listListener = null;
 	
 	
-	public QualityDialog()
+	public StatusDialog()
 	{
 		super();
-		selected = new boolean[7];
 	}
 
 	@Override
@@ -59,26 +57,8 @@ public class QualityDialog extends SherlockDialogFragment {
 		String[] items = getItems();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this.getSherlockActivity());
 		builder.setTitle(title);
-		builder.setMultiChoiceItems(items, selected, new OnMultiChoiceClickListener(){
-			@Override
-			public void onClick(DialogInterface arg0, int arg1, boolean arg2) {
-				selected[arg1] = arg2;
-				if ( listListener != null )
-					listListener.onClick(arg0, arg1, arg2);
-			}});
-		builder.setPositiveButton("Ok", okListener);
-		builder.setNegativeButton("Cancel", null);
+		builder.setItems(items, listListener);
 		return builder.create();
-	}
-	
-	public void setSelected( boolean[] selected )
-	{
-		this.selected = selected;
-	}
-	
-	public boolean[] getSelected()
-	{
-		return selected;
 	}
 	
 	public void setTitle( String title )
@@ -91,19 +71,14 @@ public class QualityDialog extends SherlockDialogFragment {
 		return title;
 	}
 	
-	public void setOnListClick( OnMultiChoiceClickListener listener )
+	public void setOnListClick( OnClickListener listener )
 	{
 		listListener = listener;
 	}
 	
-	public void setOnOkClick( OnClickListener listener )
-	{
-		okListener = listener;
-	}
-	
 	protected String[] getItems()
 	{
-		return QualityEnum.valuesToString();
+		return StatusEnum.valuesSetableToString();
 	}
 
 }

@@ -92,7 +92,7 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		if ( hasHeader() ) {
-			this.getListView().addHeaderView(header,null,true);
+			this.getListView().addHeaderView(header,null,false);
 		}
 		showView = (TextView) view.findViewById(R.id.show);
 		showView.setText(show);

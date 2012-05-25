@@ -7,8 +7,12 @@ import org.sickbeard.Episode;
 import org.sickbeard.SickBeard;
 import org.sickbeard.Episode.StatusEnum;
 import org.sickstache.app.LoadingFragment;
+import org.sickstache.dialogs.StatusDialog;
 import org.sickstache.helper.Preferences;
+import org.sickstache.task.EpisodeSearchTask;
+import org.sickstache.task.SetStatusTask;
 import org.sickstache.widget.DefaultImageView;
+import org.sickstache.widget.WorkingTextView;
 import org.sickstache.R;
 
 import android.app.Activity;
@@ -43,8 +47,8 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 	public TextView name;
 	public TextView descirption;
 	
-	public TextView search;
-	public TextView setStatusView;
+	public WorkingTextView search;
+	public WorkingTextView setStatusView;
 
 
 	@Override
@@ -57,29 +61,49 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 		this.airbydate = (TextView)view.findViewById(R.id.airbydateTextView);
 		this.name = (TextView)view.findViewById(R.id.nameTextView);
 		this.descirption = (TextView)view.findViewById(R.id.descriptionTextView);
-		this.search = (TextView)view.findViewById(R.id.searchTextView);
+		this.search = (WorkingTextView)view.findViewById(R.id.searchWorkingTextView);
 		this.statusView = (TextView)view.findViewById(R.id.statusTextView);
-		this.setStatusView = (TextView)view.findViewById(R.id.setstatusTextView);
+		this.setStatusView = (WorkingTextView)view.findViewById(R.id.setStatusWorkingTextView);
 		
-		this.search.setOnClickListener( new View.OnClickListener() {
+		this.search.text.setText("Search for Episode");
+		this.search.text.setOnClickListener( new View.OnClickListener() {
 			public void onClick(View v) {
-				Toast searching = Toast.makeText(EpisodeFragment.this.getActivity(), "Searching for Episode. (may take a while)", Toast.LENGTH_LONG);
-				searching.show();
-				new SearchDownloader().execute();
+				search.setIsWorking(true);
+				EpisodeSearchTask task = new EpisodeSearchTask(tvdbid,season,episode){
+					@Override
+					protected void onPostExecute(Boolean result) {
+						if ( result != null && result == true ) {
+							search.setIsSuccessful(true);
+						} else {
+							search.setIsSuccessful(false);
+						}
+					}};
+				task.execute();
 			}
 		});
 		
-		this.setStatusView.setOnClickListener( new View.OnClickListener() {
+		this.setStatusView.text.setText("Set Status");
+		this.setStatusView.text.setOnClickListener( new View.OnClickListener() {
 			public void onClick(View v) {
-				AlertDialog.Builder build = new AlertDialog.Builder(EpisodeFragment.this.getActivity());
-				build.setTitle("Set Status");
-				build.setItems(Episode.StatusEnum.valuesSetableToString(), new DialogInterface.OnClickListener() {
+				StatusDialog sDialog = new StatusDialog();
+				sDialog.setTitle("Set Status");
+				sDialog.setOnListClick( new DialogInterface.OnClickListener() {
+					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						StatusDownloader downloader = new StatusDownloader();
-						downloader.execute(StatusEnum.values()[which]);
+						SetStatusTask task = new SetStatusTask(tvdbid,season,episode,StatusEnum.values()[which]){
+							@Override
+							protected void onPostExecute(Boolean result) {
+								if ( result != null && result == true ) {
+									setStatusView.setIsSuccessful(true);
+									refresh();
+								} else {
+									setStatusView.setIsSuccessful(false);
+								}
+							}};
+						task.execute();
 					}
 				});
-				build.create().show();
+				sDialog.show(getFragmentManager(), "status");
 			}
 		});
 	}
@@ -163,69 +187,4 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 		descirption.setText(result.description);
 		setStatusEnum(status);
 	}
-	
-	private class SearchDownloader extends AsyncTask<Void, Void, Boolean> {
-
-    	public Exception error;
-    	
-    	@Override
-    	protected Boolean doInBackground(Void... arg0) {
-    		try {
-    			return Preferences.singleton.getSickBeard().episodeSearch(tvdbid, season, episode);
-    		} catch (Exception e) {
-    			error = e;
-    		}
-    		return false;
-    	}
-
-    	@Override
-    	protected void onPostExecute(Boolean result) {
-    		// checking if the fragment and the activity is alive otherwise we will crash
-    		if ( EpisodeFragment.this != null &&
-    				EpisodeFragment.this.getSherlockActivity() != null ) {
-	    		if ( result != null && result == true ) {
-	    			Toast searching = Toast.makeText(EpisodeFragment.this.getSherlockActivity(), "Searching Successful", Toast.LENGTH_LONG);
-					searching.show();
-					refresh();
-	    		} else {
-	    			Toast searching = Toast.makeText(EpisodeFragment.this.getSherlockActivity(), "Searching Failed", Toast.LENGTH_LONG);
-					searching.show();
-	    		}
-    		}
-    	}
-    }
-	
-	private class StatusDownloader extends AsyncTask<StatusEnum, Void, Boolean> {
-
-    	public Exception error;
-    	
-    	public StatusEnum status;
-    	
-    	@Override
-    	protected Boolean doInBackground(StatusEnum... arg0) {
-    		try {
-    			status = arg0[0];
-    			return Preferences.singleton.getSickBeard().episodeSetStatus(tvdbid, season, episode,arg0[0]);
-    		} catch (Exception e) {
-    			error = e;
-    		}
-    		return false;
-    	}
-
-    	@Override
-    	protected void onPostExecute(Boolean result) {
-    		// checking if the fragment and the activity is alive otherwise we will crash
-    		if ( EpisodeFragment.this != null && 
-    				EpisodeFragment.this.getSherlockActivity() != null ) {
-	    		if ( result != null && result == true ) {
-	    			setStatusEnum(status);
-	    			Toast searching = Toast.makeText(EpisodeFragment.this.getSherlockActivity(), "Set Status Successful", Toast.LENGTH_LONG);
-					searching.show();
-	    		} else {
-	    			Toast searching = Toast.makeText(EpisodeFragment.this.getSherlockActivity(), "Set Status Failed", Toast.LENGTH_LONG);
-					searching.show();
-	    		}
-    		}
-    	}
-    }
 }

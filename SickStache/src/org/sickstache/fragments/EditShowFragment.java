@@ -25,11 +25,11 @@ import org.sickbeard.LanguageEnum;
 import org.sickbeard.Episode.StatusEnum;
 import org.sickbeard.Show.QualityEnum;
 import org.sickstache.HomeActivity;
+import org.sickstache.dialogs.ArchiveQualityDialog;
 import org.sickstache.dialogs.PauseDialog;
 import org.sickstache.dialogs.QualityDialog;
 import org.sickstache.helper.ImageCache;
 import org.sickstache.helper.Preferences;
-import org.sickstache.helper.SickDialogBuilder;
 import org.sickstache.task.FetchBannerTask;
 import org.sickstache.task.PauseTask;
 import org.sickstache.task.RefreshTask;
@@ -154,13 +154,18 @@ public class EditShowFragment extends SherlockFragment {
 		archiveQuality.text.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				final QualityDialog qDialog = new QualityDialog();
+				final ArchiveQualityDialog qDialog = new ArchiveQualityDialog();
 				qDialog.setTitle("Set Archive Quality");
 				qDialog.setOnOkClick( new DialogInterface.OnClickListener(){
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
 						archiveQuality.setIsWorking(true);
-						boolean[] qualities = qDialog.getSelected();
+						boolean[] rawQualities = qDialog.getSelected();
+						boolean[] qualities = new boolean[7];
+						qualities[0] = false;
+						for ( int i=0; i < 6; i++ ) {
+							qualities[i+1] = rawQualities[i];
+						}
 						EnumSet<QualityEnum> archive = QualityEnum.fromBooleans( qualities );
 						SetQualityTask task = new SetQualityTask(tvdbid,null,archive){
 							@Override

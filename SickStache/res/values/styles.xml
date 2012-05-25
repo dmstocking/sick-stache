@@ -61,6 +61,7 @@
         <item name="android:titleTextStyle">@style/BoldTitle</item>
     </style>
     <style name="Theme.SickStache" parent="Theme.Sherlock">
+<!--         <item name="absForceOverflow">true</item> -->
         <item name="actionBarStyle">@style/Widget.SickStache.ActionBar</item>
         <item name="android:actionBarStyle">@style/Widget.SickStache.ActionBar</item>
         <item name="actionButtonStyle">@style/Widget.SickStache.ActionButton</item>
