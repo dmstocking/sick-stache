@@ -19,13 +19,9 @@
  */
 package org.sickstache;
 
-import org.sickstache.R;
 import org.sickstache.app.SickActivity;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-
 import android.os.Bundle;
-import android.view.View;
 
 public class AddShowActivity extends SickActivity {
 

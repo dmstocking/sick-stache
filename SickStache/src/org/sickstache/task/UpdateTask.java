@@ -1,34 +1,35 @@
 package org.sickstache.task;
 
-import java.net.URI;
-import java.util.EnumSet;
-
-import org.sickbeard.Show.QualityEnum;
-import org.sickstache.helper.ImageCache;
 import org.sickstache.helper.Preferences;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
-
-public class UpdateTask extends AsyncTask<Void,Void,Boolean> {
-
-	private static final String updateTaskLogName = "UpdateTask";
+public class UpdateTask extends SickTask<Void,Void,Boolean> {
 	
-	protected String  tvdbid;
+	protected String[] tvdbids;
 	
 	public UpdateTask( String tvdbid )
 	{
-		this.tvdbid = tvdbid;
+		this.tvdbids = new String[]{ tvdbid };
+	}
+	
+	public UpdateTask( String[] tvdbids )
+	{
+		this.tvdbids = tvdbids;
+	}
+
+	@Override
+	public String getTaskLogName() {
+		return "UpdateTask";
 	}
 	
 	@Override
 	protected Boolean doInBackground(Void... arg0) {
 		try {
-			return Preferences.singleton.getSickBeard().showUpdate(tvdbid);
+			if ( tvdbids.length == 1 )
+				return Preferences.singleton.getSickBeard().showUpdate(tvdbids[0]);
+			else
+				return Preferences.singleton.getSickBeard().showUpdate(tvdbids);
 		} catch (Exception e) {
-			Log.e(updateTaskLogName, "Exception while updating show. ERROR: " + e.getMessage());
+			error=e;
 			return null;
 		}
 	}

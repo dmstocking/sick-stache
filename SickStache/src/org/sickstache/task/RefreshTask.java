@@ -1,34 +1,35 @@
 package org.sickstache.task;
 
-import java.net.URI;
-import java.util.EnumSet;
-
-import org.sickbeard.Show.QualityEnum;
-import org.sickstache.helper.ImageCache;
 import org.sickstache.helper.Preferences;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
-
-public class RefreshTask extends AsyncTask<Void,Void,Boolean> {
-
-	private static final String refreshTaskLogName = "RefreshTask";
+public class RefreshTask extends SickTask<Void,Void,Boolean> {
 	
-	protected String  tvdbid;
+	protected String[] tvdbids;
 	
 	public RefreshTask( String tvdbid )
 	{
-		this.tvdbid = tvdbid;
+		this.tvdbids = new String[]{ tvdbid };
+	}
+	
+	public RefreshTask( String[] tvdbids )
+	{
+		this.tvdbids = tvdbids;
+	}
+
+	@Override
+	public String getTaskLogName() {
+		return "RefreshTask";
 	}
 	
 	@Override
 	protected Boolean doInBackground(Void... arg0) {
 		try {
-			return Preferences.singleton.getSickBeard().showRefresh(tvdbid);
+			if ( tvdbids.length == 1 )
+				return Preferences.singleton.getSickBeard().showRefresh(tvdbids[0]);
+			else
+				return Preferences.singleton.getSickBeard().showRefresh(tvdbids);
 		} catch (Exception e) {
-			Log.e(refreshTaskLogName, "Exception while refreshing show. ERROR: " + e.getMessage());
+			error=e;
 			return null;
 		}
 	}

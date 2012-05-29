@@ -19,45 +19,26 @@
  */
 package org.sickstache;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import org.sickstache.fragments.FutureFragment;
+import org.sickstache.fragments.ShowsFragment;
+import org.sickstache.helper.ImageCache;
+import org.sickstache.helper.Preferences;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.MenuInflater;
-import android.view.View;
-import android.widget.Toast;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-
-import org.sickbeard.Show;
-import org.sickbeard.json.ShowJson;
-import org.sickstache.fragments.*;
-import org.sickstache.helper.ImageCache;
-import org.sickstache.helper.Preferences;
-import org.sickstache.R;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.SubMenu;
-
-import com.viewpagerindicator.TabPageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 import com.viewpagerindicator.TitleProvider;
 
@@ -76,7 +57,7 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 	private ShowsFragment showFrag;
 	private FutureFragment futureFrag;
 	
-	private PingChecker pinger;
+//	private PingChecker pinger;
 	
     /** Called when the activity is first created. */
     @Override
@@ -221,34 +202,34 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 		}
     }
 	
-	private class PingChecker extends AsyncTask<Void, Void, Boolean> {
-
-    	public Exception error;
-    	
-    	@Override
-    	protected Boolean doInBackground(Void... arg0) {
-    		try {
-    			return Preferences.singleton.getSickBeard().sbPing();
-    		} catch (Exception e) {
-    			error = e;
-    		}
-    		return false;
-    	}
-
-    	@Override
-    	protected void onPostExecute(Boolean result) {
-    		if ( HomeActivity.this != null ) {
-				if ( result == false ) {
-					Toast warning = Toast.makeText(HomeActivity.this, "Cannot connect to SickBeard Server. Please check settings.", Toast.LENGTH_LONG);
-					warning.show();
-				} else {
-					// I think this isn't necessary anymore
-//					Toast success = Toast.makeText(HomeActivity.this, "Successfully connected to SickBeard. Refreshing now.", Toast.LENGTH_LONG);
-//					success.show();
-//					showFrag.refresh();
-//					futureFrag.refresh();
-				}
-    		}
-    	}
-    }
+//	private class PingChecker extends AsyncTask<Void, Void, Boolean> {
+//
+//    	public Exception error;
+//    	
+//    	@Override
+//    	protected Boolean doInBackground(Void... arg0) {
+//    		try {
+//    			return Preferences.singleton.getSickBeard().sbPing();
+//    		} catch (Exception e) {
+//    			error = e;
+//    		}
+//    		return false;
+//    	}
+//
+//    	@Override
+//    	protected void onPostExecute(Boolean result) {
+//    		if ( HomeActivity.this != null ) {
+//				if ( result == false ) {
+//					Toast warning = Toast.makeText(HomeActivity.this, "Cannot connect to SickBeard Server. Please check settings.", Toast.LENGTH_LONG);
+//					warning.show();
+//				} else {
+//					// I think this isn't necessary anymore
+////					Toast success = Toast.makeText(HomeActivity.this, "Successfully connected to SickBeard. Refreshing now.", Toast.LENGTH_LONG);
+////					success.show();
+////					showFrag.refresh();
+////					futureFrag.refresh();
+//				}
+//    		}
+//    	}
+//    }
 }

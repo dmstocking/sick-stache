@@ -19,19 +19,10 @@
  */
 package org.sickstache.fragments;
 
-import org.sickbeard.SickBeard;
-import org.sickstache.helper.Preferences;
 import org.sickstache.R;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 

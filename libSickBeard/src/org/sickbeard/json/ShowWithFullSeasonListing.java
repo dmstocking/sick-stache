@@ -19,10 +19,6 @@
  */
 package org.sickbeard.json;
 
-import java.util.ArrayList;
-
-import org.sickbeard.json.type.JsonBoolean;
-
 import com.google.gson.annotations.SerializedName;
 
 public class ShowWithFullSeasonListing {

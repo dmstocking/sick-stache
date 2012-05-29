@@ -1,7 +1,6 @@
 package org.sickstache.app;
 
 import org.sickstache.HomeActivity;
-import org.sickstache.R;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -20,16 +20,11 @@
 package org.sickstache.fragments;
 
 import org.sickbeard.Logs;
-import org.sickbeard.Show;
+import org.sickstache.R;
 import org.sickstache.app.LoadingListFragment;
 import org.sickstache.helper.Preferences;
-import org.sickstache.R;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;

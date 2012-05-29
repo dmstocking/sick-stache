@@ -20,26 +20,24 @@
 package org.sickstache.fragments;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.sickbeard.Show;
 import org.sickbeard.comparator.ShowNameComparator;
-import org.sickbeard.SickBeard;
-
+import org.sickstache.R;
 import org.sickstache.SeasonsActivity;
 import org.sickstache.app.LoadingListFragment;
+import org.sickstache.dialogs.PauseDialog;
 import org.sickstache.helper.Preferences;
+import org.sickstache.task.PauseTask;
+import org.sickstache.task.RefreshTask;
+import org.sickstache.task.UpdateTask;
 import org.sickstache.widget.DefaultImageView;
-import org.sickstache.R;
 
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -47,6 +45,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Show>> {
 
@@ -102,56 +105,116 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 		startActivity(intent);
 	}
 
-//	@Override
-//	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//		if ( actionMode == null ) {
-//			actionMode = getSherlockActivity().startActionMode( new ActionMode.Callback() {
-//				
-//				@Override
-//				public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-//					return false;
-//				}
-//				
-//				@Override
-//				public void onDestroyActionMode(ActionMode mode) {
-//					showAdapter.notifyDataSetChanged();
-//					selected.clear();
-//					actionMode = null;
-//				}
-//				
-//				@Override
-//				public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-//					MenuInflater inflate = getSherlockActivity().getSupportMenuInflater();
-//					inflate.inflate(R.menu.shows_cab_menu, menu);
-//					return true;
-//				}
-//				
-//				@Override
-//				public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-//					switch ( item.getItemId() ) {
+	@Override
+	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		if ( actionMode == null ) {
+			actionMode = getSherlockActivity().startActionMode( new ActionMode.Callback() {
+				
+				@Override
+				public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+					return false;
+				}
+				
+				@Override
+				public void onDestroyActionMode(ActionMode mode) {
+					showAdapter.notifyDataSetChanged();
+					selected.clear();
+					actionMode = null;
+				}
+				
+				@Override
+				public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+					MenuInflater inflate = getSherlockActivity().getSupportMenuInflater();
+					inflate.inflate(R.menu.shows_cab_menu, menu);
+					return true;
+				}
+				
+				@Override
+				public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+					switch ( item.getItemId() ) {
+					case R.id.pauseMenuItem:
+						final PauseDialog pDialog = new PauseDialog();
+						pDialog.setTitle("Set Pause");
+						pDialog.setOnOkClick( new OnClickListener(){
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+								final ProgressDialog dialog = ProgressDialog.show(ShowsFragment.this.getSherlockActivity(), "","Pausing Shows. Please wait...", true);
+								dialog.setCancelable(true);
+								dialog.show();
+								String[] tvdbids = new String[selected.size()];
+								for ( int i=0; i < selected.size(); i++ ) {
+									tvdbids[i] = showAdapter.getItem(selected.get(i)).id;
+								}
+								PauseTask pause = new PauseTask(tvdbids, pDialog.getPause()){
+									@Override
+									protected void onPostExecute(Boolean result) {
+										if ( dialog != null && dialog.isShowing() )
+											dialog.hide();
+									}};
+								pause.execute();
+							}} );
+						pDialog.show(getFragmentManager(), "update");
+						return true;
+					case R.id.refreshMenuItem:
+						{
+							final ProgressDialog dialog = ProgressDialog.show(ShowsFragment.this.getSherlockActivity(), "","Refreshing Shows. Please wait...", true);
+							dialog.setCancelable(true);
+							dialog.show();
+							String[] tvdbids = new String[selected.size()];
+							for ( int i=0; i < selected.size(); i++ ) {
+								tvdbids[i] = showAdapter.getItem(selected.get(i)).id;
+							}
+							RefreshTask refresh = new RefreshTask(tvdbids){
+								@Override
+								protected void onPostExecute(Boolean result) {
+									if ( dialog != null && dialog.isShowing() )
+										dialog.hide();
+								}};
+								refresh.execute();
+						}
+						return true;
+					case R.id.updateMenuItem:
+						{
+							final ProgressDialog dialog = ProgressDialog.show(ShowsFragment.this.getSherlockActivity(), "","Updating Shows. Please wait...", true);
+							dialog.setCancelable(true);
+							dialog.show();
+							String[] tvdbids = new String[selected.size()];
+							for ( int i=0; i < selected.size(); i++ ) {
+								tvdbids[i] = showAdapter.getItem(selected.get(i)).id;
+							}
+							UpdateTask update = new UpdateTask(tvdbids){
+								@Override
+								protected void onPostExecute(Boolean result) {
+									if ( dialog != null && dialog.isShowing() )
+										dialog.hide();
+								}};
+							update.execute();
+						}
+						return true;
 //					case R.id.editMenuItem:
 //						// get all selected items and create the edit show activity passing all of them
 //						actionMode.finish();
-//						break;
-//					}
-//					return true;
-//				}
-//			});
-//		}
-//		ImageView overlay = (ImageView)arg1.findViewById(R.id.showSelectedOverlay);
-//		int i = selected.indexOf(arg2);
-//		if ( i >= 0 ) {
-//			selected.remove(i);
-//			overlay.setVisibility(View.INVISIBLE);
-//		} else {
-//			selected.add(arg2);
-//			overlay.setVisibility(View.VISIBLE);
-//		}
-//		if ( selected.size() == 0 ) {
-//			actionMode.finish();
-//		}
-//		return true;
-//	}
+//						return true;
+					}
+					return false;
+				}
+			});
+		}
+		ImageView overlay = (ImageView)arg1.findViewById(R.id.showSelectedOverlay);
+		int i = selected.indexOf(arg2);
+		if ( i >= 0 ) {
+			selected.remove(i);
+			overlay.setVisibility(View.INVISIBLE);
+		} else {
+			selected.add(arg2);
+			overlay.setVisibility(View.VISIBLE);
+		}
+		actionMode.setTitle(selected.size() + " Items Selected");
+		if ( selected.size() == 0 ) {
+			actionMode.finish();
+		}
+		return true;
+	}
 
 	@Override
 	protected String getEmptyText() {

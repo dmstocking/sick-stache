@@ -4,8 +4,6 @@ import org.sickstache.app.SickActivity;
 
 import android.os.Bundle;
 
-import com.actionbarsherlock.app.SherlockActivity;
-
 public class EditShowActivity extends SickActivity {
 
 	@Override

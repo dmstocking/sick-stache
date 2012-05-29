@@ -37,8 +37,8 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 public abstract class LoadingListFragment<Params, Progress, Result> extends SherlockListFragment implements AdapterView.OnItemLongClickListener {
 	

@@ -21,14 +21,11 @@ package org.sickstache.fragments;
 
 import java.util.EnumSet;
 
-import org.sickbeard.LanguageEnum;
-import org.sickbeard.Episode.StatusEnum;
 import org.sickbeard.Show.QualityEnum;
-import org.sickstache.HomeActivity;
+import org.sickstache.R;
 import org.sickstache.dialogs.ArchiveQualityDialog;
 import org.sickstache.dialogs.PauseDialog;
 import org.sickstache.dialogs.QualityDialog;
-import org.sickstache.helper.ImageCache;
 import org.sickstache.helper.Preferences;
 import org.sickstache.task.FetchBannerTask;
 import org.sickstache.task.PauseTask;
@@ -37,25 +34,18 @@ import org.sickstache.task.SetQualityTask;
 import org.sickstache.task.UpdateTask;
 import org.sickstache.widget.DefaultImageView;
 import org.sickstache.widget.WorkingTextView;
-import org.sickstache.R;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
+
+import com.actionbarsherlock.app.SherlockFragment;
 
 public class EditShowFragment extends SherlockFragment {
 	

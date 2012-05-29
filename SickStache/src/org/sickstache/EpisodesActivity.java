@@ -19,14 +19,9 @@
  */
 package org.sickstache;
 
-import org.sickstache.R;
 import org.sickstache.app.SickActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
 
 public class EpisodesActivity extends SickActivity {
 

@@ -20,23 +20,18 @@
 package org.sickstache.widget;
 
 import java.net.URI;
-import java.net.URL;
 
 import org.sickstache.helper.ImageCache;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.provider.MediaStore;
 
 public class DefaultImageView extends ImageView {
 

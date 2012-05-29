@@ -19,13 +19,8 @@
  */
 package org.sickstache;
 
-import org.sickstache.R;
 import org.sickstache.app.SickActivity;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
-
-import android.content.Intent;
 import android.os.Bundle;
 
 public class LogActivity extends SickActivity {

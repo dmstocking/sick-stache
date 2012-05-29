@@ -20,35 +20,29 @@
 package org.sickstache.fragments;
 
 import java.util.Collections;
-import java.util.Comparator;
 
 import org.sickbeard.Episode;
 import org.sickbeard.Season;
 import org.sickbeard.Show;
-
 import org.sickstache.EditShowActivity;
 import org.sickstache.EpisodeActivity;
-import org.sickstache.EpisodesActivity;
+import org.sickstache.R;
 import org.sickstache.app.ExpandableLoadingListFragment;
-import org.sickstache.app.LoadingListFragment;
 import org.sickstache.helper.Preferences;
 import org.sickstache.widget.DefaultImageView;
-import org.sickstache.R;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episode,String, Void, Show> {
 

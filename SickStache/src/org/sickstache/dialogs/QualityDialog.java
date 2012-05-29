@@ -20,9 +20,6 @@
 package org.sickstache.dialogs;
 
 import org.sickbeard.Show.QualityEnum;
-import org.sickstache.R;
-
-import com.actionbarsherlock.app.SherlockDialogFragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -30,10 +27,8 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+
+import com.actionbarsherlock.app.SherlockDialogFragment;
 
 public class QualityDialog extends SherlockDialogFragment {
 

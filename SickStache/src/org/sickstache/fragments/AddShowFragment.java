@@ -21,14 +21,12 @@ package org.sickstache.fragments;
 
 import java.util.EnumSet;
 
-import org.sickbeard.LanguageEnum;
 import org.sickbeard.Episode.StatusEnum;
+import org.sickbeard.LanguageEnum;
 import org.sickbeard.Show.QualityEnum;
 import org.sickstache.HomeActivity;
-import org.sickstache.helper.Preferences;
 import org.sickstache.R;
-
-import com.actionbarsherlock.app.SherlockFragment;
+import org.sickstache.helper.Preferences;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -43,6 +41,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.actionbarsherlock.app.SherlockFragment;
 
 public class AddShowFragment extends SherlockFragment {
 	

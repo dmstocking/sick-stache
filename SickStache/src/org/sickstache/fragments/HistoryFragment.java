@@ -19,24 +19,20 @@
  */
 package org.sickstache.fragments;
 
-import java.text.SimpleDateFormat;
-
 import org.sickbeard.History;
 import org.sickbeard.HistoryItem;
-import org.sickstache.app.LoadingListFragment;
+import org.sickstache.R;
 import org.sickstache.app.LoadingSectionListFragment;
 import org.sickstache.helper.Preferences;
-import org.sickstache.R;
 
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 public class HistoryFragment extends LoadingSectionListFragment<HistoryItem, Void, Void, History> {
 	
-	private ArrayAdapter<HistoryItem> historyAdapter;
+//	private ArrayAdapter<HistoryItem> historyAdapter;
 	
 //	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	

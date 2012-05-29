@@ -24,13 +24,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.concurrent.ConcurrentMap;
 
-import com.google.common.collect.MapMaker;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+
+import com.google.common.collect.MapMaker;
 
 public class ImageCache {
 	

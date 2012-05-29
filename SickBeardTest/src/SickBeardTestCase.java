@@ -1,19 +1,21 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.net.URI;
-
-import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.BeforeClass;
-
-import org.sickbeard.*;
+import org.sickbeard.FutureEpisodes;
 import org.sickbeard.FutureEpisodes.SortEnum;
-import org.sickbeard.SickBeard.*;
-import org.sickbeard.json.*;
+import org.sickbeard.History;
+import org.sickbeard.Logs;
+import org.sickbeard.Season;
+import org.sickbeard.Show;
+import org.sickbeard.SickBeard;
+import org.sickbeard.json.CommandsJson;
+import org.sickbeard.json.MessageJson;
 
 public class SickBeardTestCase {
 	

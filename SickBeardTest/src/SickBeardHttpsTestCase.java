@@ -1,17 +1,5 @@
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import junit.framework.Assert;
-
 import org.junit.Before;
-import org.junit.Test;
-import org.junit.BeforeClass;
-
-import org.sickbeard.*;
-import org.sickbeard.SickBeard.*;
-import org.sickbeard.json.*;
+import org.sickbeard.SickBeard;
 
 
 public class SickBeardHttpsTestCase extends SickBeardTestCase {

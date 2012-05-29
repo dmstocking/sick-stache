@@ -27,20 +27,16 @@ import org.sickbeard.FutureEpisode;
 import org.sickbeard.FutureEpisode.TimeEnum;
 import org.sickbeard.FutureEpisodes;
 import org.sickbeard.FutureEpisodes.SortEnum;
-import org.sickbeard.SickBeard;
 import org.sickstache.EpisodeActivity;
-import org.sickstache.app.LoadingListFragment;
+import org.sickstache.R;
 import org.sickstache.app.LoadingSectionListFragment;
 import org.sickstache.helper.Preferences;
 import org.sickstache.widget.DefaultImageView;
-import org.sickstache.R;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 

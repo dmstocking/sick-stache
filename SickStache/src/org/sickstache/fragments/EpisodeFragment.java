@@ -1,11 +1,8 @@
 package org.sickstache.fragments;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-
 import org.sickbeard.Episode;
-import org.sickbeard.SickBeard;
 import org.sickbeard.Episode.StatusEnum;
+import org.sickstache.R;
 import org.sickstache.app.LoadingFragment;
 import org.sickstache.dialogs.StatusDialog;
 import org.sickstache.helper.Preferences;
@@ -13,21 +10,13 @@ import org.sickstache.task.EpisodeSearchTask;
 import org.sickstache.task.SetStatusTask;
 import org.sickstache.widget.DefaultImageView;
 import org.sickstache.widget.WorkingTextView;
-import org.sickstache.R;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 

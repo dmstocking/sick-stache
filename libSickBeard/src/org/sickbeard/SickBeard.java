@@ -19,6 +19,15 @@
  */
 package org.sickbeard;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.net.Authenticator;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,15 +37,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.lang.reflect.Type;
-import java.net.Authenticator;
-import java.net.URI;
-import java.net.HttpURLConnection;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -45,20 +45,31 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 
-import android.text.TextUtils;
-
-import com.google.gson.*;
-import com.google.gson.reflect.*;
-
 import org.sickbeard.Episode.StatusEnum;
 import org.sickbeard.FutureEpisode.TimeEnum;
 import org.sickbeard.Show.QualityEnum;
-import org.sickbeard.json.*;
+import org.sickbeard.json.CommandsJson;
+import org.sickbeard.json.GetQualityJson;
+import org.sickbeard.json.HistoryJson;
+import org.sickbeard.json.JsonResponse;
+import org.sickbeard.json.MessageJson;
+import org.sickbeard.json.OptionsJson;
+import org.sickbeard.json.PingJson;
+import org.sickbeard.json.RootDirJson;
+import org.sickbeard.json.SeasonsJson;
+import org.sickbeard.json.SeasonsListJson;
+import org.sickbeard.json.ShowJson;
 import org.sickbeard.json.ShowJson.CacheStatusJson;
+import org.sickbeard.json.ShowWithFullSeasonListing;
+import org.sickbeard.json.TvDbResultJson;
+import org.sickbeard.json.TvDbResultsJson;
 import org.sickbeard.json.deserializer.JsonBooleanDeserializer;
 import org.sickbeard.json.type.JsonBoolean;
 import org.sickbeard.net.SickAuthenticator;
 import org.sickbeard.net.ssl.DefaultTrustManager;
+
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 public class SickBeard {
 	
@@ -397,12 +408,52 @@ public class SickBeard {
 		return this.<Object>commandSuccessful( builder.toString(), new TypeToken<JsonResponse<Object>>(){}.getType() );
 	}
 	
+	public boolean showPause( String[] tvdbids, Boolean pause ) throws Exception
+	{
+		StringBuilder builder = new StringBuilder();
+		for ( int i=0; i < tvdbids.length; i++ ) {
+			builder.append("show.pause_");
+			builder.append(i);
+			if ( i < tvdbids.length-1 )
+				builder.append("|");
+		}
+		for ( int i=0; i < tvdbids.length; i++ ) {
+			builder.append("&show.pause_");
+			builder.append(i);
+			builder.append(".tvdbid=");
+			builder.append(tvdbids[i]);
+		}
+		if ( pause != null ) {
+			builder.append("&pause=");
+			builder.append( pause ? "1" : "0" );
+		}
+		return this.<Object>commandSuccessful( builder.toString(), new TypeToken<JsonResponse<Object>>(){}.getType() );
+	}
+	
 	public boolean showRefresh( String tvdbid ) throws Exception
 	{
 		StringBuilder builder = new StringBuilder("show.refresh");
 		builder.append("&tvdbid=");
 		builder.append(tvdbid);
 		
+		return this.<Object>commandSuccessful( builder.toString(), new TypeToken<JsonResponse<Object>>(){}.getType() );
+	}
+	
+	public boolean showRefresh( String[] tvdbids ) throws Exception
+	{
+		StringBuilder builder = new StringBuilder();
+		for ( int i=0; i < tvdbids.length; i++ ) {
+			builder.append("show.refresh_");
+			builder.append(i);
+			if ( i < tvdbids.length-1 )
+				builder.append("|");
+		}
+		for ( int i=0; i < tvdbids.length; i++ ) {
+			builder.append("&show.refresh_");
+			builder.append(i);
+			builder.append(".tvdbid=");
+			builder.append(tvdbids[i]);
+		}
 		return this.<Object>commandSuccessful( builder.toString(), new TypeToken<JsonResponse<Object>>(){}.getType() );
 	}
 	
@@ -480,6 +531,24 @@ public class SickBeard {
 		builder.append("&tvdbid=");
 		builder.append(tvdbid);
 		
+		return this.<Object>commandSuccessful( builder.toString(), new TypeToken<JsonResponse<Object>>(){}.getType() );
+	}
+	
+	public boolean showUpdate( String[] tvdbids ) throws Exception
+	{
+		StringBuilder builder = new StringBuilder();
+		for ( int i=0; i < tvdbids.length; i++ ) {
+			builder.append("show.update_");
+			builder.append(i);
+			if ( i < tvdbids.length-1 )
+				builder.append("|");
+		}
+		for ( int i=0; i < tvdbids.length; i++ ) {
+			builder.append("&show.update_");
+			builder.append(i);
+			builder.append(".tvdbid=");
+			builder.append(tvdbids[i]);
+		}
 		return this.<Object>commandSuccessful( builder.toString(), new TypeToken<JsonResponse<Object>>(){}.getType() );
 	}
 	

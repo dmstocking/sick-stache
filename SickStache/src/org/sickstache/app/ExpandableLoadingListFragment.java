@@ -19,17 +19,13 @@
  */
 package org.sickstache.app;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 public abstract class ExpandableLoadingListFragment<GroupType, ItemType, Params, Progress, Result> extends LoadingListFragment<Params, Progress, Result> {
 	

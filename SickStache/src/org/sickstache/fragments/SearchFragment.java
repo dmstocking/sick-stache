@@ -20,21 +20,17 @@
 package org.sickstache.fragments;
 
 import java.util.Comparator;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.sickbeard.SearchResult;
 import org.sickbeard.SearchResults;
 import org.sickbeard.comparator.SearchResultByTitleComparator;
 import org.sickbeard.comparator.SearchResultByYearComparator;
 import org.sickstache.AddShowActivity;
+import org.sickstache.R;
 import org.sickstache.app.LoadingListFragment;
 import org.sickstache.helper.Preferences;
-import org.sickstache.R;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 import android.app.SearchManager;
 import android.content.Intent;
@@ -44,6 +40,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 public class SearchFragment extends LoadingListFragment<String, Void, SearchResults> {
 	

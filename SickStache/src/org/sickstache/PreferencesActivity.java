@@ -19,12 +19,9 @@
  */
 package org.sickstache;
 
-import org.sickstache.R;
+import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
-
-import android.os.Bundle;
-import android.preference.PreferenceActivity;
 
 public class PreferencesActivity extends SherlockPreferenceActivity {
 	

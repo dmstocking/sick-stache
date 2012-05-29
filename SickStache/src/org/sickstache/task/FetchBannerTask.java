@@ -6,14 +6,15 @@ import org.sickstache.helper.ImageCache;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
 
-public class FetchBannerTask extends AsyncTask<URI,Void,Bitmap> {
+public class FetchBannerTask extends SickTask<URI,Void,Bitmap> {
 
-	private static final String fetchBannerTaskLogName = "FetchBannerTask";
-	
 	protected String key;
+	
+	@Override
+	public String getTaskLogName() {
+		return "FetchBannerTask";
+	}
 	
 	@Override
 	protected Bitmap doInBackground(URI... arg0) {
@@ -21,13 +22,14 @@ public class FetchBannerTask extends AsyncTask<URI,Void,Bitmap> {
 			key = arg0[0].toURL().toString();
 			return BitmapFactory.decodeStream(arg0[0].toURL().openStream());
 		} catch (Exception e) {
-			Log.e(fetchBannerTaskLogName, "Exception while fetching banner. ERROR: " + e.getMessage());
+			error=e;
 			return null;
 		}
 	}
 
 	@Override
 	protected void onPostExecute(Bitmap result) {
+		super.onPostExecute(result);
 		if ( result != null ) {
 			ImageCache.cache.remove(key);
 			ImageCache.cache.add(key, result);

@@ -19,7 +19,6 @@
  */
 package org.sickbeard;
 
-import org.sickbeard.SickBeard;
 
 public class FutureEpisode {
 	
