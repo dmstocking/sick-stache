@@ -6,10 +6,10 @@
         android:icon="@drawable/ic_menu_star"
         android:showAsAction="ifRoom" />
     
-    <item
-        android:id="@+id/searchMenuItem"
-        android:title="@string/search_item_title"
-        android:icon="@drawable/ic_menu_search"
-        android:showAsAction="ifRoom" />
+<!--     <item -->
+<!--         android:id="@+id/searchMenuItem" -->
+<!--         android:title="@string/search_item_title" -->
+<!--         android:icon="@drawable/ic_menu_search" -->
+<!--         android:showAsAction="ifRoom" /> -->
 
 </menu>

@@ -357,9 +357,9 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 			}
 		}
 		adapter.notifyDataSetChanged();
+		actionMode.setTitle(selected.size() + " Items Selected");
 		if ( selected.size() == 0 )
 			actionMode.finish(); // stop cab
-		actionMode.setTitle(selected.size() + " Items Selected");
 		return true;
 	}
 	
@@ -378,9 +378,9 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 			}
 		}
 		adapter.notifyDataSetChanged();
+		actionMode.setTitle(selected.size() + " Items Selected");
 		if ( selected.size() == 0 )
 			actionMode.finish(); // stop cab
-		actionMode.setTitle(selected.size() + " Items Selected");
 		return true;
 	}
 
