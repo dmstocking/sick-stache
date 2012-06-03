@@ -25,6 +25,7 @@ import org.sickbeard.Show.QualityEnum;
 import org.sickstache.R;
 import org.sickstache.dialogs.ArchiveQualityDialog;
 import org.sickstache.dialogs.PauseDialog;
+import org.sickstache.dialogs.InitialQualityDialog;
 import org.sickstache.dialogs.QualityDialog;
 import org.sickstache.helper.Preferences;
 import org.sickstache.task.FetchBannerTask;
@@ -120,38 +121,55 @@ public class EditShowFragment extends SherlockFragment {
 		quality.text.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				final QualityDialog qDialog = new QualityDialog( true );
-				qDialog.setTitle("Set Quality");
-				qDialog.setOnOkClick( new DialogInterface.OnClickListener(){
+				final QualityDialog qDialog = new QualityDialog();
+				qDialog.setOnListClick( new DialogInterface.OnClickListener(){
 					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						final ArchiveQualityDialog aDialog = new ArchiveQualityDialog();
-						aDialog.setTitle("Set Archive Quality");
-						aDialog.setOnOkClick( new DialogInterface.OnClickListener(){
+					public void onClick(DialogInterface dialog, int which) {
+						quality.setIsWorking(true);
+						SetQualityTask task = new SetQualityTask(tvdbid,qDialog.getInitialQuality(),qDialog.getArchiveQuality()){
 							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								quality.setIsWorking(true);
-								boolean[] archiveQualities = new boolean[7];
-								archiveQualities[0] = false;
-								for ( int i=0; i < 6; i++ ) {
-									archiveQualities[i+1] = aDialog.getSelected()[i];
-								}
-								EnumSet<QualityEnum> initial = QualityEnum.fromBooleans( qDialog.getSelected() );
-								EnumSet<QualityEnum> archive = QualityEnum.fromBooleans( archiveQualities );
-								SetQualityTask task = new SetQualityTask(tvdbid,initial,archive){
-									@Override
-									protected void onPostExecute(Boolean result) {
-										if ( result != null && result == true )
-											quality.setIsSuccessful(true);
-										else
-											quality.setIsSuccessful(false);
-									}
-								};
-								task.execute();
-							}});
-						aDialog.show(getFragmentManager(), "archive quality");
-					}});
+							protected void onPostExecute(Boolean result) {
+								if ( result != null && result == true )
+									quality.setIsSuccessful(true);
+								else
+									quality.setIsSuccessful(false);
+							}
+						};
+						task.execute();
+					}} );
 				qDialog.show(getFragmentManager(), "quality");
+//				final InitialQualityDialog qDialog = new InitialQualityDialog( true );
+//				qDialog.setTitle("Set Quality");
+//				qDialog.setOnOkClick( new DialogInterface.OnClickListener(){
+//					@Override
+//					public void onClick(DialogInterface arg0, int arg1) {
+//						final ArchiveQualityDialog aDialog = new ArchiveQualityDialog();
+//						aDialog.setTitle("Set Archive Quality");
+//						aDialog.setOnOkClick( new DialogInterface.OnClickListener(){
+//							@Override
+//							public void onClick(DialogInterface dialog, int which) {
+//								quality.setIsWorking(true);
+//								boolean[] archiveQualities = new boolean[7];
+//								archiveQualities[0] = false;
+//								for ( int i=0; i < 6; i++ ) {
+//									archiveQualities[i+1] = aDialog.getSelected()[i];
+//								}
+//								EnumSet<QualityEnum> initial = QualityEnum.fromBooleans( qDialog.getSelected() );
+//								EnumSet<QualityEnum> archive = QualityEnum.fromBooleans( archiveQualities );
+//								SetQualityTask task = new SetQualityTask(tvdbid,initial,archive){
+//									@Override
+//									protected void onPostExecute(Boolean result) {
+//										if ( result != null && result == true )
+//											quality.setIsSuccessful(true);
+//										else
+//											quality.setIsSuccessful(false);
+//									}
+//								};
+//								task.execute();
+//							}});
+//						aDialog.show(getFragmentManager(), "archive quality");
+//					}});
+//				qDialog.show(getFragmentManager(), "quality");
 			}
 		});
 		// removed and make two dialogs for quality

@@ -21,7 +21,7 @@ package org.sickstache.dialogs;
 
 import org.sickbeard.Show.QualityEnum;
 
-public class ArchiveQualityDialog extends QualityDialog {
+public class ArchiveQualityDialog extends InitialQualityDialog {
 
 	public ArchiveQualityDialog()
 	{

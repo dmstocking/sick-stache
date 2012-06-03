@@ -19,8 +19,11 @@
  */
 package org.sickstache.dialogs;
 
+import java.util.EnumSet;
+
 import org.sickbeard.Show.QualityEnum;
 import org.sickstache.R;
+import org.sickstache.task.SetQualityTask;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -33,10 +36,10 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 
 public class QualityDialog extends SherlockDialogFragment {
 
-	protected String title = null;
-	protected boolean[] selected = null;
-	protected OnMultiChoiceClickListener listListener = null;
-	protected DialogInterface.OnClickListener okListener = null;
+	protected String title = "Set Quality";
+	protected OnClickListener listListener = null;
+	protected EnumSet<QualityEnum> initialQuality;
+	protected EnumSet<QualityEnum> archiveQuality;
 	
 	protected boolean useContinue = false;
 	
@@ -44,14 +47,6 @@ public class QualityDialog extends SherlockDialogFragment {
 	public QualityDialog()
 	{
 		super();
-		selected = new boolean[7];
-	}
-	
-	public QualityDialog( boolean useContinue )
-	{
-		super();
-		selected = new boolean[7];
-		this.useContinue = useContinue;
 	}
 
 	@Override
@@ -64,29 +59,56 @@ public class QualityDialog extends SherlockDialogFragment {
 		String[] items = getItems();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this.getSherlockActivity());
 		builder.setTitle(title);
-		builder.setMultiChoiceItems(items, selected, new OnMultiChoiceClickListener(){
+		builder.setItems(items, new DialogInterface.OnClickListener() {
 			@Override
-			public void onClick(DialogInterface arg0, int arg1, boolean arg2) {
-				selected[arg1] = arg2;
-				if ( listListener != null )
-					listListener.onClick(arg0, arg1, arg2);
-			}});
-		if ( useContinue )
-			builder.setPositiveButton(R.string.continue_name, okListener);
-		else
-			builder.setPositiveButton(R.string.ok, okListener);
-		builder.setNegativeButton(R.string.cancel, null);
+			public void onClick(DialogInterface dialog, int which) {
+				switch( which ) {
+				case 0:
+					// SD
+					initialQuality = EnumSet.of(QualityEnum.SDTV, QualityEnum.SDDVD);
+					break;
+				case 1:
+					// HD
+					initialQuality = EnumSet.of(QualityEnum.HDTV, QualityEnum.HDWEBDL, QualityEnum.HDBLURAY);
+					break;
+				case 2:
+					// CUSTOM
+					final InitialQualityDialog qDialog = new InitialQualityDialog( true );
+					qDialog.setTitle("Set Quality");
+					qDialog.setOnOkClick( new DialogInterface.OnClickListener(){
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							final ArchiveQualityDialog aDialog = new ArchiveQualityDialog();
+							aDialog.setTitle("Set Archive Quality");
+							aDialog.setOnOkClick( new DialogInterface.OnClickListener(){
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									boolean[] archiveQualities = new boolean[7];
+									archiveQualities[0] = false;
+									for ( int i=0; i < 6; i++ ) {
+										archiveQualities[i+1] = aDialog.getSelected()[i];
+									}
+									initialQuality = QualityEnum.fromBooleans(qDialog.getSelected());
+									archiveQuality = QualityEnum.fromBooleans( archiveQualities );
+									if ( listListener != null ) {
+										listListener.onClick(dialog, which);
+									}
+								}});
+							aDialog.show(qDialog.getFragmentManager(), "archiveQuality");
+						}});
+					qDialog.show(QualityDialog.this.getFragmentManager(), "initialQuality");
+					break;
+				case 3:
+					// ANY
+					initialQuality = EnumSet.of(QualityEnum.SDTV, QualityEnum.SDDVD, QualityEnum.HDTV, QualityEnum.HDWEBDL, QualityEnum.HDBLURAY, QualityEnum.UNKNOWN);
+					break;
+				}
+				if ( which != 2 )
+					listListener.onClick(dialog,which);
+				return;
+			}
+		});
 		return builder.create();
-	}
-	
-	public void setSelected( boolean[] selected )
-	{
-		this.selected = selected;
-	}
-	
-	public boolean[] getSelected()
-	{
-		return selected;
 	}
 	
 	public void setTitle( String title )
@@ -99,19 +121,24 @@ public class QualityDialog extends SherlockDialogFragment {
 		return title;
 	}
 	
-	public void setOnListClick( OnMultiChoiceClickListener listener )
+	public EnumSet<QualityEnum> getInitialQuality()
+	{
+		return initialQuality;
+	}
+	
+	public EnumSet<QualityEnum> getArchiveQuality()
+	{
+		return archiveQuality;
+	}
+	
+	public void setOnListClick( OnClickListener listener )
 	{
 		listListener = listener;
 	}
 	
-	public void setOnOkClick( OnClickListener listener )
-	{
-		okListener = listener;
-	}
-	
 	protected String[] getItems()
 	{
-		return QualityEnum.valuesToString();
+		return new String[]{"SD","HD","CUSTOM","ANY"};
 	}
 
 }
