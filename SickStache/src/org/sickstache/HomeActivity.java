@@ -137,10 +137,10 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
     		Intent logIntent = new Intent( this, LogActivity.class );
     		this.startActivity(logIntent);
     		return true;
-//    	case R.id.aboutMenuItem:
-//    		Intent aboutIntent = new Intent( this, AboutActivity.class );
-//    		this.startActivity(aboutIntent);
-//    		return true;
+    	case R.id.aboutMenuItem:
+    		Intent aboutIntent = new Intent( this, AboutActivity.class );
+    		this.startActivity(aboutIntent);
+    		return true;
     	}
 		return super.onOptionsItemSelected(item);
 	}

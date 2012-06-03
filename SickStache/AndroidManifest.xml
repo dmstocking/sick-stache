@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.sickstache"
-    android:versionCode="23"
-    android:versionName="1.4" >
+    android:versionCode="24"
+    android:versionName="1.5" >
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="15" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -30,6 +30,9 @@
             </intent-filter>
             <meta-data android:name="android.app.searchable"
                    android:resource="@xml/searchable"/>
+        </activity>
+        <activity
+            android:name=".AboutActivity" >
         </activity>
         <activity
             android:name=".AddShowActivity" >
