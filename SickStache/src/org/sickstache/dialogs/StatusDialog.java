@@ -64,6 +64,11 @@ public class StatusDialog extends SherlockDialogFragment {
 		return title;
 	}
 	
+	public StatusEnum getStatus( int clicked )
+	{
+		return StatusEnum.fromOrdinal(clicked);
+	}
+	
 	public void setOnListClick( OnClickListener listener )
 	{
 		listListener = listener;

@@ -19,30 +19,48 @@
  */
 package org.sickstache.fragments;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.sickbeard.Episode;
 import org.sickbeard.Season;
+import org.sickbeard.SeasonEpisodePair;
 import org.sickbeard.Show;
 import org.sickstache.EditShowActivity;
 import org.sickstache.EpisodeActivity;
 import org.sickstache.R;
 import org.sickstache.app.ExpandableLoadingListFragment;
+import org.sickstache.app.ExpandableLoadingListFragment.EasyExpandableListAdapter.Pair;
+import org.sickstache.dialogs.PauseDialog;
+import org.sickstache.dialogs.StatusDialog;
 import org.sickstache.helper.Preferences;
+import org.sickstache.task.PauseTask;
+import org.sickstache.task.RefreshTask;
+import org.sickstache.task.SetStatusTask;
+import org.sickstache.task.UpdateTask;
 import org.sickstache.widget.DefaultImageView;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.viewpagerindicator.TitlePageIndicator;
 
 public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episode,String, Void, Show> {
 
@@ -158,11 +176,12 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	}
 
 	@Override
-	protected View getChildView(Integer group, Episode item, int groupNum, int itemNum, boolean isLastView, View convertView, ViewGroup root) {
+	protected View getChildView(Integer group, Episode item, int groupNum, int itemNum, View convertView, ViewGroup root) {
 		if ( convertView == null )
 			convertView = LayoutInflater.from(getSherlockActivity()).inflate(R.layout.episodes_item, root, false);
 		View row = convertView;
 		TextView text = (TextView) row.findViewById(R.id.episodesItemTextView);
+		View overlay = (View) row.findViewById(R.id.episodesSelectedOverlay);
 		text.setText(item.episode + " - " + item.name);
 		switch ( item.status ) {
 		case WANTED:
@@ -181,15 +200,23 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 			text.setBackgroundResource(R.color.sickbeard_unaired_background);
 			break;
 		}
+		int groupGid = adapter.getGid(groupNum,0)-1;
+		int itemGid = adapter.getGid(groupNum,itemNum);
+		if ( selected.contains(groupGid) || selected.contains(itemGid) ) {
+			overlay.setVisibility(View.VISIBLE);
+		} else {
+			overlay.setVisibility(View.INVISIBLE);
+		}
 		return row;
 	}
 
 	@Override
-	protected View getGroupView(Integer group, int groupNum, boolean visible, boolean isLastView, View convertView, ViewGroup root) {
+	protected View getGroupView(Integer group, int groupNum, boolean visible, View convertView, ViewGroup root) {
 		if ( convertView == null )
 			convertView = LayoutInflater.from(getSherlockActivity()).inflate(R.layout.seasons_item, root, false);
 		View row = convertView;
 		TextView text = (TextView) row.findViewById(R.id.seasonsItemTextView);
+		View overlay = row.findViewById(R.id.seasonsSelectedOverlay);
 		if ( group == 0 ) {
 			text.setText("Specials" );
 		} else {
@@ -199,6 +226,12 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 			text.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.expander_close_holo_dark, 0);
 		} else {
 			text.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.expander_open_holo_dark, 0);
+		}
+		int groupGid = adapter.getGid(groupNum,0)-1;
+		if ( selected.contains(groupGid) ) {
+			overlay.setVisibility(View.VISIBLE);
+		} else {
+			overlay.setVisibility(View.INVISIBLE);
 		}
 		return row;
 	}
@@ -214,20 +247,141 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 		startActivity(intent);
 	}
 	
+//	@Override
+//	public void onListItemClick(ListView l, View v, int position, long id) {
+//		if ( hasHeader() ) {
+//			if ( position == 0 ) {
+//				// when the header is clicked
+////				Intent intent = new Intent( this.getActivity(), EditShowActivity.class );
+////				intent.putExtra("tvdbid", tvdbid);
+////				intent.putExtra("show", show);
+////				this.startActivity(intent);
+//			}
+//			super.onListItemClick(l, v, position-1, id);
+//		} else {
+//			super.onListItemClick(l, v, position, id);
+//		}
+//	}
+
 	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		if ( hasHeader() ) {
-			if ( position == 0 ) {
-				// when the header is clicked
-//				Intent intent = new Intent( this.getActivity(), EditShowActivity.class );
-//				intent.putExtra("tvdbid", tvdbid);
-//				intent.putExtra("show", show);
-//				this.startActivity(intent);
-			}
-			super.onListItemClick(l, v, position-1, id);
-		} else {
-			super.onListItemClick(l, v, position, id);
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
+		if ( actionMode == null ) {
+			actionMode = getSherlockActivity().startActionMode( new ActionMode.Callback() {
+				
+				@Override
+				public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+					return false;
+				}
+				
+				@Override
+				public void onDestroyActionMode(ActionMode mode) {
+					selected.clear();
+					actionMode = null;
+					adapter.notifyDataSetChanged();
+				}
+				
+				@Override
+				public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+					MenuInflater inflate = getSherlockActivity().getSupportMenuInflater();
+					inflate.inflate(R.menu.seasons_cab_menu, menu);
+					return true;
+				}
+				
+				@Override
+				public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+					switch ( item.getItemId() ) {
+					case R.id.setStatusMenuItem:
+						final StatusDialog sDialog = new StatusDialog();
+						sDialog.setTitle("Status");
+						sDialog.setOnListClick( new OnClickListener(){
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+								final ProgressDialog dialog = ProgressDialog.show(SeasonsFragment.this.getSherlockActivity(), "","Setting Status. Please wait...", true);
+								dialog.setCancelable(true);
+								dialog.show();
+								SetStatusTask task = new SetStatusTask(SeasonsFragment.this.tvdbid, SeasonsFragment.this.getSelected(), sDialog.getStatus(arg1)){
+									@Override
+									protected void onPostExecute(Boolean result) {
+										super.onPostExecute(result);
+										if ( dialog != null && dialog.isShowing() )
+											dialog.dismiss();
+									}};
+								task.execute();
+							}});
+						sDialog.show(getFragmentManager(), "setStatus");
+						return true;
+					}
+					return false;
+				}
+			});
 		}
+		return super.onItemLongClick(parent, view, pos, id);
+	}
+
+	@Override
+	protected boolean onLongChildItemClick(AdapterView<?> parent, View view, Episode item, int pos, long id)
+	{
+		// WOW this isn't overly verbose
+		// TODO this entire expandable list needs a redesign this is just retarded
+		ExpandableLoadingListFragment<Integer,Episode,String, Void, Show>.EasyExpandableListAdapter.Pair p = adapter.getGroupNChild((int) id);
+		int group = adapter.getGid(p.group, -1);
+		int size = adapter.getChildCount(p.group);
+		if ( selected.contains((Object) group) ) {
+			selected.remove((Object) group);
+			// add everyone else
+			for ( int i=1; i <= size; i++) {
+				selected.add(group+i);
+			}
+			// remove this one
+			selected.remove((Object)((int) id));
+		} else {
+			if ( selected.contains((int) id) ) {
+				selected.remove((Object)((int) id));
+			} else {
+				selected.add((int) id);
+				boolean groupSelected = true;
+				for ( int i=1; i <= size; i++) {
+					if ( selected.contains((Object) (group+i)) ) {
+						;
+					} else {
+						groupSelected = false;
+						break;
+					}
+				}
+				if ( groupSelected ) {
+					selected.add(group);
+					for ( int i=1; i <= size; i++) {
+						selected.remove((Object) (group+i));
+					}
+				}
+			}
+		}
+		adapter.notifyDataSetChanged();
+		if ( selected.size() == 0 )
+			actionMode.finish(); // stop cab
+		actionMode.setTitle(selected.size() + " Items Selected");
+		return true;
+	}
+	
+	@Override
+	protected boolean onLongGroupItemClick(AdapterView<?> parent, View view, Integer group, int pos, long id)
+	{
+		if ( selected.contains((Object)((int) id)) ) {
+			selected.remove((Object)((int) id));
+		} else {
+			selected.add((int) id);
+			ExpandableLoadingListFragment<Integer,Episode,String, Void, Show>.EasyExpandableListAdapter.Pair p = adapter.getGroupNChild((int) id);
+			int first = (int) id + 1;
+			int last = first + adapter.getChildCount(p.group);
+			for ( int i=first; i <= last; i++ ) {
+				selected.remove((Object) i);
+			}
+		}
+		adapter.notifyDataSetChanged();
+		if ( selected.size() == 0 )
+			actionMode.finish(); // stop cab
+		actionMode.setTitle(selected.size() + " Items Selected");
+		return true;
 	}
 
 	protected boolean hasHeader() {
@@ -236,5 +390,25 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 
 	protected boolean hasFooter() {
 		return false;
+	}
+	
+	private List<SeasonEpisodePair> getSelected()
+	{
+		List<SeasonEpisodePair> ret = new ArrayList<SeasonEpisodePair>();
+		for ( int gid : selected ) {
+			ExpandableLoadingListFragment<Integer,Episode,String, Void, Show>.EasyExpandableListAdapter.Pair p = adapter.getGroupNChild(gid);
+			Integer season = adapter.getGroup(p.group);
+			if ( p.child < 0 ) {
+				// add all of the items for this season
+				for ( int i=0; i < adapter.getChildCount(p.group); i++ ) {
+					Episode ep = adapter.getChild(p.group, i);
+					ret.add( new SeasonEpisodePair( season, Integer.valueOf(ep.episode) ) );
+				}
+			} else {
+				Episode ep = adapter.getChild(p.group, p.child);
+				ret.add( new SeasonEpisodePair( season, Integer.valueOf(ep.episode) ) ); // just add this one
+			}
+		}
+		return ret;
 	}
 }

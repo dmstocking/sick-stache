@@ -38,6 +38,8 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -50,12 +52,15 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.viewpagerindicator.TitlePageIndicator;
 
-public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Show>> {
+public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Show>> implements ViewPager.OnPageChangeListener {
 
 //	private static final String[] showActions = { "Set Quality", "Pause", "Refresh", "Update" };
 	
 	private ArrayAdapter<Show> showAdapter;
+	
+	private TitlePageIndicator pageIndicator = null;
 	
 	@Override
 	protected int getChoiceMode() {
@@ -92,6 +97,18 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 				return row;
 			}
 		};
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		try {
+			pageIndicator = (TitlePageIndicator)this.getActivity().findViewById(R.id.viewPagerIndicator);
+			pageIndicator.setOnPageChangeListener(this);
+		} catch (Exception e) {
+			; // there is no viewPagerIndicator
+			// tried to do this with a check but it always failed
+		}
 	}
 
 	@Override
@@ -149,7 +166,7 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 									@Override
 									protected void onPostExecute(Boolean result) {
 										if ( dialog != null && dialog.isShowing() )
-											dialog.hide();
+											dialog.dismiss();
 									}};
 								pause.execute();
 							}} );
@@ -168,7 +185,7 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 								@Override
 								protected void onPostExecute(Boolean result) {
 									if ( dialog != null && dialog.isShowing() )
-										dialog.hide();
+										dialog.dismiss();
 								}};
 								refresh.execute();
 						}
@@ -186,7 +203,7 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 								@Override
 								protected void onPostExecute(Boolean result) {
 									if ( dialog != null && dialog.isShowing() )
-										dialog.hide();
+										dialog.dismiss();
 								}};
 							update.execute();
 						}
@@ -214,6 +231,22 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 			actionMode.finish();
 		}
 		return true;
+	}
+	@Override
+	public void onPageScrollStateChanged(int arg0) {
+		// do nothing
+	}
+
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2) {
+		// do nothing
+	}
+
+	@Override
+	public void onPageSelected(int arg0) {
+		if ( arg0 != 0 && actionMode != null ) {
+			actionMode.finish();
+		}
 	}
 
 	@Override

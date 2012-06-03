@@ -16,5 +16,14 @@
         android:paddingTop="3dp"
         android:paddingBottom="3dp"
         android:background="@color/sickbeard_unaired_background" />
+    
+    <ImageView
+        android:id="@+id/episodesSelectedOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/list_selector_selected"
+        android:layout_alignRight="@id/episodesItemTextView"
+        android:layout_alignBottom="@id/episodesItemTextView"
+        android:visibility="invisible" />
 
 </RelativeLayout>

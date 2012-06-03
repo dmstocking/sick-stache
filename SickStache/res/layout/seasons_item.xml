@@ -18,11 +18,13 @@
 		android:background="#000000"
 		android:drawableRight="@drawable/expander_close_holo_dark" />
     
-<!--     <View -->
-<!--         android:id="@+id/seasonsSeperator" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="1px" -->
-<!--         android:layout_below="@id/seasonsItemTextView" -->
-<!--         android:background="#AAAAAA" /> -->
+    <ImageView
+        android:id="@+id/seasonsSelectedOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/list_selector_selected"
+        android:layout_alignRight="@id/seasonsItemTextView"
+        android:layout_alignBottom="@id/seasonsItemTextView"
+        android:visibility="invisible" />
 
 </RelativeLayout>

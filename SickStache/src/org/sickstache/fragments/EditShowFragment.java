@@ -57,7 +57,7 @@ public class EditShowFragment extends SherlockFragment {
 	
 	protected WorkingTextView banner;
 	protected WorkingTextView quality;
-	protected WorkingTextView archiveQuality;
+//	protected WorkingTextView archiveQuality;
 	protected WorkingTextView pause;
 	protected WorkingTextView refresh;
 	protected WorkingTextView update;
@@ -77,7 +77,7 @@ public class EditShowFragment extends SherlockFragment {
 		showTextView = (TextView)root.findViewById(R.id.showTextView);
 		banner = (WorkingTextView)root.findViewById(R.id.bannerWorkingTextView);
 		quality = (WorkingTextView)root.findViewById(R.id.qualityWorkingTextView);
-		archiveQuality = (WorkingTextView)root.findViewById(R.id.archiveQualityWorkingTextView);
+//		archiveQuality = (WorkingTextView)root.findViewById(R.id.archiveQualityWorkingTextView);
 		pause = (WorkingTextView)root.findViewById(R.id.pauseWorkingTextView);
 		refresh = (WorkingTextView)root.findViewById(R.id.refreshWorkingTextView);
 		update = (WorkingTextView)root.findViewById(R.id.updateWorkingTextView);
@@ -87,10 +87,11 @@ public class EditShowFragment extends SherlockFragment {
 		showTextView.setText(show);
 		banner.text.setText("Fetch Banner");
 		quality.text.setText("Quality");
-		archiveQuality.text.setText("Archive Quality");
+//		archiveQuality.text.setText("Archive Quality");
 		pause.text.setText("Pause");
 		refresh.text.setText("Refresh");
 		update.text.setText("Update");
+		// C# async LOOKS REALLY AWSOME DOESNT IT!!
 		banner.text.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
@@ -119,58 +120,71 @@ public class EditShowFragment extends SherlockFragment {
 		quality.text.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				final QualityDialog qDialog = new QualityDialog();
+				final QualityDialog qDialog = new QualityDialog( true );
 				qDialog.setTitle("Set Quality");
 				qDialog.setOnOkClick( new DialogInterface.OnClickListener(){
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
-						quality.setIsWorking(true);
-						boolean[] qualities = qDialog.getSelected();
-						EnumSet<QualityEnum> initial = QualityEnum.fromBooleans( qualities );
-						SetQualityTask task = new SetQualityTask(tvdbid,initial,null){
+						final ArchiveQualityDialog aDialog = new ArchiveQualityDialog();
+						aDialog.setTitle("Set Archive Quality");
+						aDialog.setOnOkClick( new DialogInterface.OnClickListener(){
 							@Override
-							protected void onPostExecute(Boolean result) {
-								if ( result != null && result == true )
-									quality.setIsSuccessful(true);
-								else
-									quality.setIsSuccessful(false);
-							}
-						};
-						task.execute();
+							public void onClick(DialogInterface dialog, int which) {
+								quality.setIsWorking(true);
+								boolean[] archiveQualities = new boolean[7];
+								archiveQualities[0] = false;
+								for ( int i=0; i < 6; i++ ) {
+									archiveQualities[i+1] = aDialog.getSelected()[i];
+								}
+								EnumSet<QualityEnum> initial = QualityEnum.fromBooleans( qDialog.getSelected() );
+								EnumSet<QualityEnum> archive = QualityEnum.fromBooleans( archiveQualities );
+								SetQualityTask task = new SetQualityTask(tvdbid,initial,archive){
+									@Override
+									protected void onPostExecute(Boolean result) {
+										if ( result != null && result == true )
+											quality.setIsSuccessful(true);
+										else
+											quality.setIsSuccessful(false);
+									}
+								};
+								task.execute();
+							}});
+						aDialog.show(getFragmentManager(), "archive quality");
 					}});
 				qDialog.show(getFragmentManager(), "quality");
 			}
 		});
-		archiveQuality.text.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View arg0) {
-				final ArchiveQualityDialog qDialog = new ArchiveQualityDialog();
-				qDialog.setTitle("Set Archive Quality");
-				qDialog.setOnOkClick( new DialogInterface.OnClickListener(){
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						archiveQuality.setIsWorking(true);
-						boolean[] rawQualities = qDialog.getSelected();
-						boolean[] qualities = new boolean[7];
-						qualities[0] = false;
-						for ( int i=0; i < 6; i++ ) {
-							qualities[i+1] = rawQualities[i];
-						}
-						EnumSet<QualityEnum> archive = QualityEnum.fromBooleans( qualities );
-						SetQualityTask task = new SetQualityTask(tvdbid,null,archive){
-							@Override
-							protected void onPostExecute(Boolean result) {
-								if ( result != null && result == true )
-									archiveQuality.setIsSuccessful(true);
-								else
-									archiveQuality.setIsSuccessful(false);
-							}
-						};
-						task.execute();
-					}});
-				qDialog.show(getFragmentManager(), "archiveQuality");
-			}
-		});
+		// removed and make two dialogs for quality
+//		archiveQuality.text.setOnClickListener(new OnClickListener(){
+//			@Override
+//			public void onClick(View arg0) {
+//				final ArchiveQualityDialog qDialog = new ArchiveQualityDialog();
+//				qDialog.setTitle("Set Archive Quality");
+//				qDialog.setOnOkClick( new DialogInterface.OnClickListener(){
+//					@Override
+//					public void onClick(DialogInterface arg0, int arg1) {
+//						archiveQuality.setIsWorking(true);
+//						boolean[] rawQualities = qDialog.getSelected();
+//						boolean[] qualities = new boolean[7];
+//						qualities[0] = false;
+//						for ( int i=0; i < 6; i++ ) {
+//							qualities[i+1] = rawQualities[i];
+//						}
+//						EnumSet<QualityEnum> archive = QualityEnum.fromBooleans( qualities );
+//						SetQualityTask task = new SetQualityTask(tvdbid,null,archive){
+//							@Override
+//							protected void onPostExecute(Boolean result) {
+//								if ( result != null && result == true )
+//									archiveQuality.setIsSuccessful(true);
+//								else
+//									archiveQuality.setIsSuccessful(false);
+//							}
+//						};
+//						task.execute();
+//					}});
+//				qDialog.show(getFragmentManager(), "archiveQuality");
+//			}
+//		});
 		pause.text.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {

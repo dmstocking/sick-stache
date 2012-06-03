@@ -184,6 +184,32 @@ public class SickBeard {
 		return this.<Object>commandSuccessful( builder.toString(), new TypeToken<JsonResponse<Object>>(){}.getType() );
 	}
 	
+	public boolean episodeSetStatus( String tvdbid, List<SeasonEpisodePair> episodes, StatusEnum status ) throws Exception
+	{
+		StringBuilder builder = new StringBuilder();
+		builder.append("episode.setstatus_0");
+		for ( int i=1; i < episodes.size(); i++ ) {
+			builder.append("|episode.setstatus_");
+			builder.append(i);
+		}
+		builder.append("&tvdbid=");
+		builder.append(tvdbid);
+		builder.append("&status=");
+		builder.append(status.toJson());
+		for ( int i=0; i < episodes.size(); i++ ) {
+			SeasonEpisodePair p = episodes.get(i);
+			builder.append("&episode.setstatus_");
+			builder.append(i);
+			builder.append(".season=");
+			builder.append(p.season);
+			builder.append("&episode.setstatus_");
+			builder.append(i);
+			builder.append(".episode=");
+			builder.append(p.episode);
+		}
+		return this.<Object>commandSuccessful( builder.toString(), new TypeToken<JsonResponse<Object>>(){}.getType() );
+	}
+	
 	public ArrayList<String> exceptions( String tvdbid ) throws Exception
 	{
 		StringBuilder builder = new StringBuilder("exceptions");
@@ -655,7 +681,7 @@ public class SickBeard {
 		} else {
 			server = (HttpURLConnection)uri.toURL().openConnection();
 		}
-		server.setConnectTimeout(10000);
+		server.setConnectTimeout(30000);
 		Reader reader = new BufferedReader( new InputStreamReader(server.getInputStream() ) );
 		// TypeToken cannot figure out T so instead it must be supplied
 		//Type type = new TypeToken< JSONResponse<T> >() {}.getType();

@@ -19,6 +19,8 @@
  */
 package org.sickstache.dialogs;
 
+import org.sickstache.R;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -69,8 +71,8 @@ public class PauseDialog extends SherlockDialogFragment {
 				return;
 			}
 		});
-		builder.setPositiveButton("Ok", okListener);
-		builder.setNegativeButton("Cancel", null);
+		builder.setPositiveButton(R.string.ok, okListener);
+		builder.setNegativeButton(R.string.cancel, null);
 		return builder.create();
 	}
 	

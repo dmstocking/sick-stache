@@ -22,44 +22,109 @@ package org.sickstache.app;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sickstache.app.ExpandableLoadingListFragment.EasyExpandableListAdapter.Pair;
+
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 public abstract class ExpandableLoadingListFragment<GroupType, ItemType, Params, Progress, Result> extends LoadingListFragment<Params, Progress, Result> {
 	
 	protected EasyExpandableListAdapter adapter = new EasyExpandableListAdapter();
+	
+	protected abstract boolean hasHeader();
 
-	protected abstract View getChildView(GroupType group, ItemType item, int groupNum, int itemNum, boolean isLastView, View convertView, ViewGroup root);
-	protected abstract View getGroupView(GroupType group, int groupNum, boolean visible, boolean isLastView, View convertView, ViewGroup root);
+	protected abstract View getChildView(GroupType group, ItemType item, int groupNum, int itemNum, View convertView, ViewGroup root);
+	protected abstract View getGroupView(GroupType group, int groupNum, boolean visible, View convertView, ViewGroup root);
 	
 	protected abstract void onChildItemClick(ListView l, View v, GroupType group, ItemType item);
-
+	
+	protected boolean onLongChildItemClick(AdapterView<?> parent, View view, ItemType item, int pos, long id)
+	{
+		return false;
+	}
+	
+	protected boolean onLongGroupItemClick(AdapterView<?> parent, View view, GroupType group, int pos, long id)
+	{
+		return false;
+	}
+	
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
+		if ( hasHeader() ) {
+			pos--;
+		}
+		if ( adapter.getItemViewType(pos) == 0 ) {
+			// section
+			return onLongGroupItemClick(parent,view,(GroupType)adapter.getItem(pos),pos,id);
+		} else {
+			// item
+			return onLongChildItemClick(parent,view,(ItemType)adapter.getItem(pos),pos,id);
+		}
+	}
+	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
+		if ( hasHeader() ) {
+			position--;
+		}
 		// if click is a group 
 		if ( adapter.getItemViewType(position) == 0 ) {
 			// then expand it
 			adapter.setSwitchGroupVisibility(position);
 		} else {
 			// else hand it off to onChildItemClick
-			ItemType item = (ItemType)adapter.getItem(position);
-			GroupType group = (GroupType)adapter.getGroupOf(position);
+			Pair p = adapter.getGroupNChildFromPos(position);
+			ItemType item = (ItemType)adapter.getChild(p.group, p.child);
+			GroupType group = (GroupType)adapter.getGroup(p.group);
 			onChildItemClick(l,v,group,item);
 		}
 		super.onListItemClick(l, v, position, id);
 	}
 	
+	// LOLOLOL nice class name Me maybe I should just rename this Horribly Complicated Expandable List Adapter
 	public class EasyExpandableListAdapter extends BaseAdapter {
 
-		public class Container {
+		public class GroupWrapper {
 			public boolean visible = false;
 			public GroupType group;
 			public List<ItemType> items;
+
+//			public boolean isSelected() {
+//				for ( ItemWrapper item : items ) {
+//					if ( item.selected == false )
+//						return false;
+//				}
+//				return true;
+//			}
 		}
 		
-		List<Container> items = new ArrayList<Container>();
+		public class ItemWrapper {
+			public boolean visible = false;
+			public boolean selected = false;
+			public ItemType item;
+			
+			public ItemWrapper( ItemType item )
+			{
+				this.item = item;
+			}
+		}
+		
+		public class Pair
+		{
+			public int group;
+			public int child;
+			
+			public Pair( int group, int child )
+			{
+				this.group = group;
+				this.child = child;
+			}
+		}
+		
+		List<GroupWrapper> items = new ArrayList<GroupWrapper>();
 
 		public void clear()
 		{
@@ -67,7 +132,7 @@ public abstract class ExpandableLoadingListFragment<GroupType, ItemType, Params,
 		}
 		
 		public int addGroup(GroupType g) {
-			Container c = new Container();
+			GroupWrapper c = new GroupWrapper();
 			c.group = g;
 			c.items = new ArrayList<ItemType>();
 			items.add(c);
@@ -86,28 +151,18 @@ public abstract class ExpandableLoadingListFragment<GroupType, ItemType, Params,
 			return items.get(arg0).items.get(arg1);
 		}
 		
-//		public long getChildId(int arg0, int arg1) {
-//			int id = 0;
-//			int i = 0;
-//			while (i < arg0) {
-//				id += items.get(i).items.size()+1;
-//				i++;
-//			}
-//			return id + arg1;
-//		}
-		
-		public View getChildView(int arg0, int arg1, boolean arg2, View arg3, ViewGroup arg4) {
-			GroupType g = getGroup(arg0);
-			ItemType item = getChild(arg0, arg1);
-			return ExpandableLoadingListFragment.this.getChildView(g, item, arg0, arg1, arg2, arg3, arg4);
+		public View getChildView(int groupNum, int itemNum, View convertView, ViewGroup parent) {
+			GroupType g = getGroup(groupNum);
+			ItemType item = getChild(groupNum, itemNum);
+			return ExpandableLoadingListFragment.this.getChildView(g, item, groupNum, itemNum, convertView, parent);
 		}
 		
-		public View getGroupView(int arg0, boolean arg1, View arg2, ViewGroup arg3) {
-			GroupType g = getGroup(arg0);
-			if ( arg0 == items.size()-1)
-				return ExpandableLoadingListFragment.this.getGroupView(g, arg0, items.get(arg0).visible, true, arg2, arg3);
+		public View getGroupView(int groupNum, View convertView, ViewGroup parent) {
+			GroupWrapper g = this.items.get(groupNum);
+			if ( groupNum == items.size()-1)
+				return ExpandableLoadingListFragment.this.getGroupView(g.group, groupNum, g.visible, convertView, parent);
 			else
-				return ExpandableLoadingListFragment.this.getGroupView(g, arg0, items.get(arg0).visible, false, arg2, arg3);
+				return ExpandableLoadingListFragment.this.getGroupView(g.group, groupNum, g.visible, convertView, parent);
 
 		}
 		
@@ -127,7 +182,7 @@ public abstract class ExpandableLoadingListFragment<GroupType, ItemType, Params,
 		@Override
 		public int getCount() {
 			int size = 0;
-			for ( Container c : items ) {
+			for ( GroupWrapper c : items ) {
 				if ( c.visible == true ) {
 					size += c.items.size();
 				}
@@ -135,72 +190,126 @@ public abstract class ExpandableLoadingListFragment<GroupType, ItemType, Params,
 			}
 			return size;
 		}
-
-		@Override
-		public Object getItem(int arg0) {
+		
+		public int getGlobalCount() {
 			int size = 0;
-			for ( Container c : items ) {
-				if ( size == arg0 ) {
-					// then its a group
-					return c.group;
-				}
-				if ( c.visible ) {
-					if (  arg0-size-1 < c.items.size() ) {
-						return c.items.get(arg0-size-1);
-					}
-					size += c.items.size()+1;
-				} else {
-					size++;
-				}
+			for ( GroupWrapper c : items ) {
+				size += c.items.size()+1;
 			}
-			return null;
+			return size;
 		}
 		
-		public Object getGroupOf(int arg0) {
-			int size = 0;
-			for ( Container c : items ) {
-				if ( c.visible ) {
-					if ( arg0-size-1 < c.items.size() ) {
-						return c.group;
-					}
-					size += c.items.size()+1;
-				} else {
-					size++;
-				}
+		public int getGroupCount() {
+			return items.size();
+		}
+		
+		public int getChildCount(int group) {
+			return items.get(group).items.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			Pair p = this.getGroupNChildFromPos(position);
+			if ( p.child < 0 ) {
+				return this.items.get(p.group).group;
+			} else {
+				return this.items.get(p.group).items.get(p.child);
 			}
-			return null;
 		}
-
-		@Override
-		public long getItemId(int arg0) {
-			return arg0;
+		
+		public Object getGlobalItem(int gid) {
+			Pair p = this.getGroupNChild(gid);
+			if ( p.child < 0 ) {
+				return this.items.get(p.group).group;
+			} else {
+				return this.items.get(p.group).items.get(p.child);
+			}
 		}
-
-		@Override
-		public View getView(int arg0, View arg1, ViewGroup arg2) {
-			int size = 0;
-			int i = 0;
-			for ( Container c : items ) {
-				if ( size == arg0 ) {
-					// then its a group
-					return getGroupView( i, true, arg1, arg2 );
-				}
-				if ( c.visible ) {
-					if ( arg0-size-1 < c.items.size() ) {
-						return getChildView( i, arg0-size-1, false, arg1, arg2 );
-					}
-//					} else if ( arg0-size-1 == c.items.size() ) {
-//						return getChildView( i, arg0-size-1, true, arg1, arg2 );
+		
+//		public int getGroupIndexOf(int arg0) {
+//			int size = 0;
+//			for ( int i=0; i < items.size(); i++ ) {
+//				GroupWrapper c = items.get(i);
+//				if ( arg0 == size )
+//					return i;
+//				if ( c.visible ) {
+//					if ( arg0-size-1 < c.items.size() ) {
+//						return i;
 //					}
-					size += c.items.size()+1;
-					i++;
-				} else {
-					size++;
-					i++;
-				}
+//					size += c.items.size()+1;
+//				} else {
+//					size++;
+//				}
+//			}
+//			return -1;
+//		}
+		
+//		public Object getGroupOf(int arg0) {
+//			return items.get( getGroupIndexOf(arg0) );
+//		}
+
+		@Override
+		public long getItemId(int pos) {
+			return this.getGid(pos);
+		}
+		
+//		/// Convert from position to global position because items are going to be hidden
+//		public int getGlobalItemId(int arg0) {
+//			int id = 0;
+//			int globalId = 0;
+//			for ( GroupWrapper c : items ) {
+//				if ( id == arg0 ) {
+//					return globalId;
+//				}
+//				if ( c.visible ) {
+//					// everything is the same
+//					if ( arg0-id-1 < c.items.size() ) {
+//						return globalId+arg0-id-1;
+//					} else {
+//						id += c.items.size()+1;
+//						globalId += c.items.size()+1;
+//					}
+//				} else {
+//					id++;
+//					globalId += c.items.size()+1;
+//				}
+////				if ( size == arg0 ) {
+////					// then its a group
+////					return c.group;
+////				}
+////				if (  arg0-size-1 < c.items.size() ) {
+////					return c.items.get(arg0-size-1);
+////				}
+////				size += c.items.size()+1;
+//			}
+//			return -1;
+//		}
+		
+//		/// Convert from position to global position because items are going to be hidden
+//		public int getGlobalItemId(int group, int child) {
+//			int id = 0;
+//			for ( int i=0; i < items.size(); i++ ) {
+//				if ( group == i ) {
+//					return id+child;
+//				}
+//				GroupWrapper c = items.get(i);
+//				if ( c.visible ) {
+//					id += c.items.size()+1;
+//				} else {
+//					id++;
+//				}
+//			}
+//			return -1;
+//		}
+
+		@Override
+		public View getView(int pos, View convertView, ViewGroup parent) {
+			Pair p = this.getGroupNChildFromPos(pos);
+			if ( p.child < 0 ) {
+				return getGroupView( p.group, convertView, parent );
+			} else {
+				return getChildView( p.group, p.child, convertView, parent );
 			}
-			throw new RuntimeException("Indexes are messed up. Given \"" + arg0 + "\"");
-//			return null;
 		}
 
 		@Override
@@ -215,37 +324,93 @@ public abstract class ExpandableLoadingListFragment<GroupType, ItemType, Params,
 
 		@Override
 		public int getItemViewType(int position) {
-			int size = 0;
-			for ( Container c : items ) {
-				if ( size == position ) {
-					// then its a group
-					return 0;
-				}
-				if ( c.visible ) {
-					if (  position-size-1 < c.items.size() ) {
-						return 1;
-					}
-					size += c.items.size()+1;
-				} else {
-					size++;
-				}
-			}
-			return 0;
+			Pair p = this.getGroupNChildFromPos(position);
+			if ( p.child < 0 )
+				return 0;
+			else
+				return 1;
 		}
 		
 		public void setSwitchGroupVisibility(int position) {
-			int size = 0;
-			for ( Container c : items ) {
-				if ( size == position ) {
-					c.visible = !c.visible;
-					break;
-				}
-				if ( c.visible )
-					size += c.items.size()+1;
-				else
-					size++;
-			}
+			Pair p = this.getGroupNChildFromPos(position);
+			GroupWrapper g = this.items.get(p.group);
+			g.visible = !g.visible;
 			this.notifyDataSetChanged();
+		}
+		
+		public int getGid( int pos )
+		{
+			int gid = 0;
+			int current = 0;
+			for ( int i=0; i < items.size(); i++ ) {
+				GroupWrapper g = items.get(i);
+				int size = g.items.size();
+				if ( g.visible ) {
+					if ( current+size >= pos ) {
+						return gid + pos - current;
+					}
+					current += size+1;
+				} else {
+					if ( current == pos ) {
+						return gid;
+					}
+					current++;
+				}
+				gid += size+1;
+			}
+			return -1;
+		}
+		
+		public int getGid( int group, int child )
+		{
+			int current = 0;
+			for ( int i=0; i < items.size(); i++ ) {
+				if ( group == i ) {
+					return current+child+1;
+				}
+				GroupWrapper g = items.get(i);
+				current += g.items.size()+1;
+			}
+			return -1;
+		}
+		
+		public Pair getGroupNChild( int gid )
+		{
+			int current = 0;
+			for ( int i=0; i < items.size(); i++ ) {
+				if ( current == gid ) {
+					return new Pair(i,-1);
+				} else {
+					int size = items.get(i).items.size();
+					if ( current+size >= gid ) {
+						return new Pair(i,gid-current-1);
+					} else {
+						current += size+1;
+					}
+				}
+			}
+			return null;
+		}
+		
+		public Pair getGroupNChildFromPos( int pos )
+		{
+			int current = 0;
+			for ( int i=0; i < items.size(); i++ ) {
+				GroupWrapper g = items.get(i);
+				if ( g.visible ) {
+					int size = g.items.size();
+					if ( current+size >= pos ) {
+						return new Pair(i,pos-current-1);
+					} else {
+						current += size+1;
+					}
+				} else {
+					if ( current == pos )
+						return new Pair(i,-1);
+					current++;
+				}
+			}
+			return null;
 		}
 	}
 }

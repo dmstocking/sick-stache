@@ -6,17 +6,20 @@
             android:title="Host or IP address"
             android:summary="The host name or ip address of your SickBeard server."
             android:defaultValue="192.168.0.101"
-            android:key="host" />
+            android:key="host"
+            android:inputType="textUri" />
         <EditTextPreference
             android:title="Port"
             android:summary="The port to connect to your SickBeard server."
             android:defaultValue="8081"
-            android:key="port" />
+            android:key="port"
+            android:inputType="number" />
         <EditTextPreference
             android:title="API Key"
             android:summary="The API key of your SickBeard server."
             android:defaultValue=""
-            android:key="api" />
+            android:key="api"
+            android:inputType="text|textNoSuggestions" />
         <CheckBoxPreference
             android:title="HTTPS"
             android:summary="Use HTTPS"
@@ -26,12 +29,14 @@
             android:title="Username"
             android:summary="The username to access your SickBeard server."
             android:defaultValue=""
-            android:key="username" />
+            android:key="username"
+            android:inputType="text|textNoSuggestions" />
         <EditTextPreference
             android:title="Password"
             android:summary="The password to access your SickBeard server."
             android:defaultValue=""
-            android:key="password" />
+            android:key="password"
+            android:inputType="textPassword" />
     </PreferenceCategory>
 <!--     <PreferenceCategory -->
 <!--         android:title="History"> -->

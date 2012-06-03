@@ -23,6 +23,11 @@ import org.sickbeard.Show.QualityEnum;
 
 public class ArchiveQualityDialog extends QualityDialog {
 
+	public ArchiveQualityDialog()
+	{
+		this.selected = new boolean[6];
+	}
+	
 	@Override
 	protected String[] getItems() {
 		String[] items = QualityEnum.valuesToString();

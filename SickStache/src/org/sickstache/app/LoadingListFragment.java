@@ -131,7 +131,7 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 	}
 	
 	@Override
-	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
 		return false;
 	}
 	

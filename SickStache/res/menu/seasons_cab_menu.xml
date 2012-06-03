@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
-        android:id="@+id/pauseMenuItem"
-        android:title="@string/pause_item_title"
-        android:icon="@drawable/ic_media_pause"
+        android:id="@+id/setStatusMenuItem"
+        android:title="@string/set_status_item_title"
+        android:icon="@drawable/ic_menu_star"
         android:showAsAction="ifRoom" />
     
     <item
-        android:id="@+id/refreshMenuItem"
-        android:title="@string/refresh_item_title"
-        android:icon="@drawable/ic_menu_refresh"
+        android:id="@+id/searchMenuItem"
+        android:title="@string/search_item_title"
+        android:icon="@drawable/ic_menu_search"
         android:showAsAction="ifRoom" />
-    
-    <item
-        android:id="@+id/updateMenuItem"
-        android:title="@string/update_item_title"
-        android:icon="@drawable/ic_menu_upload"
-        android:showAsAction="ifRoom" />
-    
-<!--     <item -->
-<!--         android:id="@+id/editMenuItem" -->
-<!--         android:title="@string/edit_item_title" -->
-<!--         android:icon="@drawable/ic_menu_manage" -->
-<!--         android:showAsAction="always|withText" /> -->
 
 </menu>

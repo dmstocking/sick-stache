@@ -20,6 +20,7 @@
 package org.sickstache.dialogs;
 
 import org.sickbeard.Show.QualityEnum;
+import org.sickstache.R;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -32,16 +33,25 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 
 public class QualityDialog extends SherlockDialogFragment {
 
-	String title = null;
-	boolean[] selected = null;
-	OnMultiChoiceClickListener listListener = null;
-	DialogInterface.OnClickListener okListener = null;
+	protected String title = null;
+	protected boolean[] selected = null;
+	protected OnMultiChoiceClickListener listListener = null;
+	protected DialogInterface.OnClickListener okListener = null;
+	
+	protected boolean useContinue = false;
 	
 	
 	public QualityDialog()
 	{
 		super();
 		selected = new boolean[7];
+	}
+	
+	public QualityDialog( boolean useContinue )
+	{
+		super();
+		selected = new boolean[7];
+		this.useContinue = useContinue;
 	}
 
 	@Override
@@ -61,8 +71,11 @@ public class QualityDialog extends SherlockDialogFragment {
 				if ( listListener != null )
 					listListener.onClick(arg0, arg1, arg2);
 			}});
-		builder.setPositiveButton("Ok", okListener);
-		builder.setNegativeButton("Cancel", null);
+		if ( useContinue )
+			builder.setPositiveButton(R.string.continue_name, okListener);
+		else
+			builder.setPositiveButton(R.string.ok, okListener);
+		builder.setNegativeButton(R.string.cancel, null);
 		return builder.create();
 	}
 	
