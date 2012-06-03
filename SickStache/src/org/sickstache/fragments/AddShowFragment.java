@@ -200,7 +200,10 @@ public class AddShowFragment extends SherlockFragment {
 		archiveQualityTextView.setOnClickListener( new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				String[] items = QualityEnum.valuesToString();
+				String[] rawItems = QualityEnum.valuesToString();
+				String[] items = new String[6];
+				for ( int i=0; i < items.length; i++ )
+					items[i] = rawItems[i+1];
 				AlertDialog.Builder builder = new AlertDialog.Builder(AddShowFragment.this.getSherlockActivity());
 				builder.setTitle("Select Archive Quality");
 				builder.setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
@@ -210,9 +213,9 @@ public class AddShowFragment extends SherlockFragment {
 						if ( which == 0 )
 							return;
 						if ( isChecked ) {
-							archiveQuality.add(QualityEnum.fromOrdinal(which));
+							archiveQuality.add(QualityEnum.fromOrdinal(which+1));
 						} else {
-							archiveQuality.remove(QualityEnum.fromOrdinal(which));
+							archiveQuality.remove(QualityEnum.fromOrdinal(which+1));
 						}
 					}
 				});
