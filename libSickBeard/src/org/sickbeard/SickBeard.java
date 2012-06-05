@@ -640,11 +640,15 @@ public class SickBeard {
 		return this.<Object>commandSuccessful( "sb.restart", new TypeToken<JsonResponse<Object>>(){}.getType() );
 	}
 	
-	public SearchResults sbSearchTvDb( String name ) throws Exception
+	public SearchResults sbSearchTvDb( String query, LanguageEnum language ) throws Exception
 	{
 		StringBuilder builder = new StringBuilder("sb.searchtvdb");
 		builder.append("&name=");
-		builder.append( URLEncoder.encode( name, "UTF-8" ) );
+		builder.append( query );
+		if ( language != null ) {
+			builder.append("&lang=");
+			builder.append( language.getAbbrev() );
+		}
 		// having to use all these generics is kind of annoying
 		TvDbResultsJson results = this.<TvDbResultsJson>commandData( builder.toString(), new TypeToken<JsonResponse<TvDbResultsJson>>(){}.getType() );
 		SearchResults ret = new SearchResults();

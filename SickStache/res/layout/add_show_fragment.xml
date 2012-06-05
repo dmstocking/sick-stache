@@ -50,15 +50,30 @@
 <!--                 android:layout_height="1px" -->
 <!--                 android:background="#212121" /> -->
 
+<!--             <TextView -->
+<!--                 android:id="@+id/languageTextView" -->
+<!--                 style="@style/ClickableText" -->
+<!--                 android:layout_width="fill_parent" -->
+<!--                 android:layout_height="72px" -->
+<!--                 android:drawableRight="@drawable/ic_menu_more" -->
+<!--                 android:gravity="center_vertical" -->
+<!--                 android:paddingLeft="3dp" -->
+<!--                 android:text="Language" /> -->
+            
+<!--             <View -->
+<!--                 android:layout_width="fill_parent" -->
+<!--                 android:layout_height="1px" -->
+<!--                 android:background="#212121" /> -->
+
             <TextView
-                android:id="@+id/languageTextView"
+                android:id="@+id/statusTextView"
                 style="@style/ClickableText"
                 android:layout_width="fill_parent"
                 android:layout_height="72px"
                 android:drawableRight="@drawable/ic_menu_more"
                 android:gravity="center_vertical"
                 android:paddingLeft="3dp"
-                android:text="Language" />
+                android:text="Status" />
             
             <View
                 android:layout_width="fill_parent"
@@ -79,51 +94,51 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1px"
                 android:background="#212121" />
-
+			
             <TextView
-                android:id="@+id/statusTextView"
+                android:id="@+id/qualityTextView"
                 style="@style/ClickableText"
                 android:layout_width="fill_parent"
                 android:layout_height="72px"
                 android:drawableRight="@drawable/ic_menu_more"
                 android:gravity="center_vertical"
                 android:paddingLeft="3dp"
-                android:text="Status" />
+                android:text="Quality" />
             
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1px"
                 android:background="#212121" />
+            
+<!--             <TextView -->
+<!--                 android:id="@+id/initialQualityTextView" -->
+<!--                 style="@style/ClickableText" -->
+<!--                 android:layout_width="fill_parent" -->
+<!--                 android:layout_height="72px" -->
+<!--                 android:drawableRight="@drawable/ic_menu_more" -->
+<!--                 android:gravity="center_vertical" -->
+<!--                 android:paddingLeft="3dp" -->
+<!--                 android:text="Initial Quality" /> -->
+            
+<!--             <View -->
+<!--                 android:layout_width="fill_parent" -->
+<!--                 android:layout_height="1px" -->
+<!--                 android:background="#212121" /> -->
 
-            <TextView
-                android:id="@+id/initialQualityTextView"
-                style="@style/ClickableText"
-                android:layout_width="fill_parent"
-                android:layout_height="72px"
-                android:drawableRight="@drawable/ic_menu_more"
-                android:gravity="center_vertical"
-                android:paddingLeft="3dp"
-                android:text="Initial Quality" />
+<!--             <TextView -->
+<!--                 android:id="@+id/archiveQualityTextView" -->
+<!--                 style="@style/ClickableText" -->
+<!--                 android:layout_width="fill_parent" -->
+<!--                 android:layout_height="72px" -->
+<!--                 android:drawableRight="@drawable/ic_menu_more" -->
+<!--                 android:gravity="center_vertical" -->
+<!--                 android:paddingLeft="3dp" -->
+<!--                 android:text="Archive Quality" /> -->
             
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1px"
-                android:background="#212121" />
-
-            <TextView
-                android:id="@+id/archiveQualityTextView"
-                style="@style/ClickableText"
-                android:layout_width="fill_parent"
-                android:layout_height="72px"
-                android:drawableRight="@drawable/ic_menu_more"
-                android:gravity="center_vertical"
-                android:paddingLeft="3dp"
-                android:text="Archive Quality" />
-            
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1px"
-                android:background="#212121" />
+<!--             <View -->
+<!--                 android:layout_width="fill_parent" -->
+<!--                 android:layout_height="1px" -->
+<!--                 android:background="#212121" /> -->
             
         </LinearLayout>
         

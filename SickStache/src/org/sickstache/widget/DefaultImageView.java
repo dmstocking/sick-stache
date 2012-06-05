@@ -179,13 +179,14 @@ public class DefaultImageView extends ImageView {
 		
 		public GetUrlImageTask(Context c, URI uri)
 		{
+			this(c,uri,uri.toString());
+		}
+		
+		public GetUrlImageTask(Context c, URI uri, String key)
+		{
 			this.c = c;
 			this.uri = uri;
-			try {
-				this.key = uri.toURL().toString();
-			} catch (Exception e) {
-				;
-			}
+			this.key = key;
 		}
 
 		@Override

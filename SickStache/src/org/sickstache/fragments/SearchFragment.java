@@ -23,16 +23,20 @@ import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.sickbeard.LanguageEnum;
 import org.sickbeard.SearchResult;
 import org.sickbeard.SearchResults;
 import org.sickbeard.comparator.SearchResultByTitleComparator;
 import org.sickbeard.comparator.SearchResultByYearComparator;
+import org.sickstache.fragments.SearchFragment.SearchParams;
 import org.sickstache.AddShowActivity;
 import org.sickstache.R;
 import org.sickstache.app.LoadingListFragment;
+import org.sickstache.dialogs.LanguageDialog;
 import org.sickstache.helper.Preferences;
 
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -45,9 +49,15 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class SearchFragment extends LoadingListFragment<String, Void, SearchResults> {
+public class SearchFragment extends LoadingListFragment<SearchParams, Void, SearchResults> {
+	
+	public class SearchParams {
+		public String query;
+		public LanguageEnum language;
+	}
 	
 	private String query;
+	private LanguageEnum language;
 	
 	private ArrayAdapter<SearchResult> searchAdapter;
 	private Comparator<SearchResult> sorter;
@@ -118,13 +128,15 @@ public class SearchFragment extends LoadingListFragment<String, Void, SearchResu
 		Intent intent = new Intent( this.getActivity(), AddShowActivity.class );
 		intent.putExtra("tvdbid", searchAdapter.getItem(position).getId());
 		intent.putExtra("show", searchAdapter.getItem(position).getTitle());
+		if ( language != null )
+			intent.putExtra("lang", language.toString());
 		startActivity(intent);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch ( item.getItemId() ) {
-		case R.id.sortByRelevance:
+		case R.id.sortByRelevanceMenuItem:
 			sorter = new Comparator<SearchResult>(){
 				@Override
 				public int compare(SearchResult lhs, SearchResult rhs) {
@@ -133,14 +145,26 @@ public class SearchFragment extends LoadingListFragment<String, Void, SearchResu
 			};
 			onPostExecute(lastResults);
 			return true;
-		case R.id.sortByTitle:
+		case R.id.sortByTitleMenuItem:
 			sorter = new SearchResultByTitleComparator();
 			searchAdapter.sort(sorter);
 			return true;
-		case R.id.sortByYear:
+		case R.id.sortByYearMenuItem:
 			sorter = new SearchResultByYearComparator();
 			searchAdapter.sort(sorter);
 			return true;
+		case R.id.searchLanguageMenuItem:
+			final LanguageDialog lDialog = new LanguageDialog();
+			lDialog.setTitle("Search Language");
+			lDialog.setOnListClick( new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					language = lDialog.getLang();
+					SearchFragment.this.refresh();
+				}
+			});
+			lDialog.show(getFragmentManager(), "language");
+			break;
 		case R.id.searchMenuItem:
 			return true;
 		}
@@ -153,13 +177,16 @@ public class SearchFragment extends LoadingListFragment<String, Void, SearchResu
 	}
 
 	@Override
-	protected String[] getRefreshParams() {
-		return new String[] { query };
+	protected SearchParams[] getRefreshParams() {
+		SearchParams params = new SearchParams();
+		params.query = query;
+		params.language = language;
+		return new SearchParams[] { params };
 	}
 
 	@Override
-	protected SearchResults doInBackground(String... arg0) throws Exception {
-		return Preferences.singleton.getSickBeard().sbSearchTvDb(arg0[0]);
+	protected SearchResults doInBackground(SearchParams... arg0) throws Exception {
+		return Preferences.singleton.getSickBeard().sbSearchTvDb(arg0[0].query, arg0[0].language);
 	}
 
 	@Override
