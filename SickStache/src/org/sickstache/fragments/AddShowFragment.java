@@ -291,20 +291,20 @@ public class AddShowFragment extends SherlockFragment {
     			// finished loading
 				working.dismiss();
     			// if we have a error
-    			if ( error != null ) {
-    				AlertDialog.Builder builder = new AlertDialog.Builder( AddShowFragment.this.getSherlockActivity() );
-    				builder.setTitle("Error Adding Show");
-    				builder.setIcon(android.R.drawable.ic_dialog_alert);
-    				builder.setMessage("Unable to add show to sickbeard. Check settings and try again.");
-    				builder.setPositiveButton(R.string.ok, null);
-    				builder.show();
-    			} else if ( result != null ) {
+    			if ( result != null && result == true ) {
     				Intent intent = new Intent( AddShowFragment.this.getActivity(), HomeActivity.class );
     	            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     	            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
     				intent.putExtra("activity", "ShowActivity");
     				intent.putExtra("tvdbid", tvdbid);
     				startActivity(intent);
+    			} else {
+    				AlertDialog.Builder builder = new AlertDialog.Builder( AddShowFragment.this.getSherlockActivity() );
+    				builder.setTitle("Error Adding Show");
+    				builder.setIcon(android.R.drawable.ic_dialog_alert);
+    				builder.setMessage("Unable to add show to sickbeard. Check settings and try again.");
+    				builder.setPositiveButton(R.string.ok, null);
+    				builder.show();
     			}
     		}
     	}

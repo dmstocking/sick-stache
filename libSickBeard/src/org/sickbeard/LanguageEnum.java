@@ -31,7 +31,7 @@ public enum LanguageEnum {
 	
 	public String getAbbrev()
 	{
-		return abbrevs[this.ordinal()];
+		return abbrevs[this.ordinal()].toLowerCase();
 	}
 	
 	public static String[] valuesToString()

@@ -348,18 +348,28 @@ public class SickBeard {
 		}
 		if ( status != null ) {
 			builder.append("&status=");
-			builder.append(status.toString());
+			builder.append(status.toJson());
 		}
-		if ( initial != null && initial.size() > 0 ) {
+		if ( initial != null ) {
 			builder.append("&initial=");
-			for ( QualityEnum q : initial ) {
-				builder.append(q.toString());
+			Iterator<QualityEnum> iter = initial.iterator();
+			if ( iter.hasNext() ) {
+				builder.append(iter.next().toString().toLowerCase());
+				while ( iter.hasNext() ) {
+					builder.append("|");
+					builder.append(iter.next().toString().toLowerCase());
+				}
 			}
 		}
-		if ( archive != null && archive.size() > 0 ) {
+		if ( archive != null ) {
 			builder.append("&archive=");
-			for ( QualityEnum q : archive ) {
-				builder.append(q.toString());
+			Iterator<QualityEnum> iter = archive.iterator();
+			if ( iter.hasNext() ) {
+				builder.append(iter.next().toString().toLowerCase());
+				while ( iter.hasNext() ) {
+					builder.append("|");
+					builder.append(iter.next().toString().toLowerCase());
+				}
 			}
 		}
 		
