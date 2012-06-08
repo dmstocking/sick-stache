@@ -22,6 +22,7 @@ package org.sickstache.fragments;
 import java.util.EnumSet;
 
 import org.sickbeard.Show.QualityEnum;
+import org.sickstache.HomeActivity;
 import org.sickstache.R;
 import org.sickstache.dialogs.ArchiveQualityDialog;
 import org.sickstache.dialogs.PauseDialog;
@@ -32,10 +33,13 @@ import org.sickstache.task.FetchBannerTask;
 import org.sickstache.task.PauseTask;
 import org.sickstache.task.RefreshTask;
 import org.sickstache.task.SetQualityTask;
+import org.sickstache.task.ShowDeleteTask;
 import org.sickstache.task.UpdateTask;
 import org.sickstache.widget.DefaultImageView;
 import org.sickstache.widget.WorkingTextView;
 
+import android.app.AlertDialog.Builder;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -62,6 +66,7 @@ public class EditShowFragment extends SherlockFragment {
 	protected WorkingTextView pause;
 	protected WorkingTextView refresh;
 	protected WorkingTextView update;
+	protected WorkingTextView delete;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +87,7 @@ public class EditShowFragment extends SherlockFragment {
 		pause = (WorkingTextView)root.findViewById(R.id.pauseWorkingTextView);
 		refresh = (WorkingTextView)root.findViewById(R.id.refreshWorkingTextView);
 		update = (WorkingTextView)root.findViewById(R.id.updateWorkingTextView);
+		delete = (WorkingTextView)root.findViewById(R.id.deleteWorkingTextView);
 		try {
 			showImage.setImageJavaURI(Preferences.singleton.getSickBeard().showGetBanner(tvdbid));
 		} catch (Exception e) {;}
@@ -92,6 +98,7 @@ public class EditShowFragment extends SherlockFragment {
 		pause.text.setText("Pause");
 		refresh.text.setText("Refresh");
 		update.text.setText("Update");
+		delete.text.setText("Delete");
 		// C# async LOOKS REALLY AWSOME DOESNT IT!!
 		banner.text.setOnClickListener(new OnClickListener(){
 			@Override
@@ -262,6 +269,39 @@ public class EditShowFragment extends SherlockFragment {
 					}
 				};
 				task.execute();
+			}
+		});
+		delete.text.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(getSherlockActivity());
+				builder.setTitle("Delete Show");
+				builder.setMessage("Are you sure you want to delete this show?\n\nThis operation CANNOT be undone.");
+				builder.setNegativeButton(R.string.cancel, null);
+				builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						delete.setIsWorking(true);
+						ShowDeleteTask task = new ShowDeleteTask(tvdbid){
+							@Override
+							protected void onPostExecute(Boolean result) {
+								super.onPostExecute(result);
+								if ( result != null && result == true ) {
+									delete.setIsSuccessful(true);
+									// we want to refresh so no SINGLE_TOP
+									Intent intent = new Intent( getSherlockActivity(), HomeActivity.class );
+				    	            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//				    	            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				    				startActivity(intent);
+								} else {
+									delete.setIsSuccessful(false);
+								}
+							}
+						};
+						task.execute();
+					}
+				});
+				builder.show();
 			}
 		});
 		return root;

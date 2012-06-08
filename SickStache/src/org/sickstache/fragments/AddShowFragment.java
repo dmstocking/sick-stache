@@ -292,11 +292,13 @@ public class AddShowFragment extends SherlockFragment {
 				working.dismiss();
     			// if we have a error
     			if ( result != null && result == true ) {
+    				// we want the activity to be recreated so no SINGLE_TOP
     				Intent intent = new Intent( AddShowFragment.this.getActivity(), HomeActivity.class );
     	            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-    	            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-    				intent.putExtra("activity", "ShowActivity");
-    				intent.putExtra("tvdbid", tvdbid);
+//    	            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    	            // this works to fast for sickbeard to refresh so just let the user scroll to it
+//    				intent.putExtra("activity", "ShowActivity");
+//    				intent.putExtra("tvdbid", tvdbid);
     				startActivity(intent);
     			} else {
     				AlertDialog.Builder builder = new AlertDialog.Builder( AddShowFragment.this.getSherlockActivity() );

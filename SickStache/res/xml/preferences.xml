@@ -15,6 +15,12 @@
             android:key="port"
             android:inputType="number" />
         <EditTextPreference
+            android:title="Extra Path"
+            android:summary="(OPTIONAL) An extra path if needed to connect to you SickBeard server."
+            android:defaultValue=""
+            android:key="path"
+            android:inputType="textUri" />
+        <EditTextPreference
             android:title="API Key"
             android:summary="The API key of your SickBeard server."
             android:defaultValue=""

@@ -58,6 +58,11 @@ public class Preferences implements OnSharedPreferenceChangeListener {
 		return pref.getBoolean("https", false);
 	}
 	
+	public String getPath()
+	{
+		return pref.getString("path","");
+	}
+	
 	public String getUsername()
 	{
 		return pref.getString("username", "");
@@ -74,12 +79,13 @@ public class Preferences implements OnSharedPreferenceChangeListener {
 		return sick;
 	}
 	
-	public void setSickBeard( String host, String port, String api, String username, String password )
+	public void setSickBeard( String host, String port, String api, String path, String username, String password )
 	{
 		SharedPreferences.Editor edit = pref.edit();
 		edit.putString("host", host);
 		edit.putString("port", port);
 		edit.putString("api", api);
+		edit.putString("path", path);
 		edit.putString("username", username);
 		edit.putString("password", password);
 		edit.commit();
@@ -88,7 +94,7 @@ public class Preferences implements OnSharedPreferenceChangeListener {
 	
 	private void updateSickBeard()
 	{
-		sick = new SickBeard( getHost(), getPort(), getAPI(), getHTTPS(), getUsername(), getPassword() );
+		sick = new SickBeard( getHost(), getPort(), getAPI(), getHTTPS(), getPath(), getUsername(), getPassword() );
 	}
 
 	public void onSharedPreferenceChanged(SharedPreferences arg0, String arg1) {

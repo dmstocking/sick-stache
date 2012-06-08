@@ -79,20 +79,26 @@ public class SickBeard {
 	private String scheme;
 	private String hostname;
 	private String port;
+	private String extraPath;
 	private String path;
 	
 	private String user;
 	private String password;
 	
 	public SickBeard( String hostname, String port, String api, boolean https ) {
-		this(hostname,port,api,https,"","");
+		this(hostname,port,api,https,"","","");
 	}
 	
-	public SickBeard( String hostname, String port, String api, boolean https, String user, String password )
+	public SickBeard( String hostname, String port, String api, boolean https, String extraPath ) {
+		this(hostname,port,api,https,extraPath,"","");
+	}
+	
+	public SickBeard( String hostname, String port, String api, boolean https, String extraPath, String user, String password )
 	{
 		this.hostname = hostname;
 		this.port = port;
-		this.path = "/api/" + api + "/";
+		this.extraPath = "/" + extraPath + "/";
+		this.path = this.extraPath + "/api/" + api + "/";
 		try {
 			this.https = https;
 			this.scheme = "http";
@@ -116,14 +122,15 @@ public class SickBeard {
 	
 	public SickBeard( SickBeard sick )
 	{
-		this( sick.scheme, sick.hostname, sick.port, sick.path, sick.user, sick.password );
+		this( sick.scheme, sick.hostname, sick.port, sick.path, sick.extraPath, sick.user, sick.password );
 	}
 	
-	private SickBeard( String scheme, String hostname, String port, String path, String user, String password ) {
+	private SickBeard( String scheme, String hostname, String port, String extraPath, String path, String user, String password ) {
 		this.scheme = scheme;
 		this.https = scheme.toLowerCase().compareTo("https") == 0 ? true : false;
 		this.hostname = hostname;
 		this.port = port;
+		this.extraPath = extraPath;
 		this.path = path;
 		this.user = user;
 		this.password = password;
