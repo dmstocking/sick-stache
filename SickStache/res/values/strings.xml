@@ -27,7 +27,7 @@
     <string name="settings_item_title">Settings</string>
     <string name="refresh_item_title">Refresh</string>
     <string name="search_item_title">Search</string>
-    <string name="cache_item_title">Delete Cache</string>
+    <string name="cache_item_title">Clear Cache</string>
     <string name="history_item_title">History</string>
     <string name="log_item_title">Log</string>
     <string name="about_item_title">About SickStache</string>

@@ -24,17 +24,31 @@ import org.sickstache.R;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class Preferences implements OnSharedPreferenceChangeListener {
 	
 	public static Preferences singleton;
 	
+	public boolean isUpdated;
+	
+	public static void setUpSingleton(Context c)
+	{
+		if ( singleton == null ) {
+			PreferenceManager.setDefaultValues(c, R.xml.preferences, false);
+			SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(c);
+		    singleton = new Preferences( pref, c );
+		}
+	}
+	
 	public static void newSingleton(Context c)
 	{
 		PreferenceManager.setDefaultValues(c, R.xml.preferences, false);
-        singleton = new Preferences( PreferenceManager.getDefaultSharedPreferences(c) );
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(c);
+        singleton = new Preferences( pref, c );
 	}
 	
 	private SharedPreferences pref;
@@ -42,10 +56,22 @@ public class Preferences implements OnSharedPreferenceChangeListener {
 	
 	private OnSharedPreferenceChangeListener listener;
 	
-	private Preferences( SharedPreferences pref )
+	private Preferences( SharedPreferences pref, Context c )
 	{
 		this.pref = pref;
 		pref.registerOnSharedPreferenceChangeListener( this );
+		try {
+			int versionCurrent = c.getPackageManager().getPackageInfo(c.getPackageName(), 0).versionCode;
+			int versionSave = pref.getInt("version", -1);
+			if ( versionCurrent != versionSave ) {
+				Editor edit = pref.edit();
+				edit.putInt("version", versionCurrent);
+				edit.apply();
+				isUpdated = true;
+			}
+		} catch (Exception e) {
+			Log.e("Preferences", "ERROR: " + e.getMessage(), e);
+		}
 		updateSickBeard();
 	}
 	
@@ -99,7 +125,7 @@ public class Preferences implements OnSharedPreferenceChangeListener {
 		edit.putString("path", path);
 		edit.putString("username", username);
 		edit.putString("password", password);
-		edit.commit();
+		edit.apply();
 		updateSickBeard();
 	}
 	

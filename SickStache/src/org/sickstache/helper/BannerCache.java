@@ -42,6 +42,12 @@ public class BannerCache {
 	private File cacheDir;
 	private LruCache<String,Bitmap> memCache;
 	
+	public static void setUpSingleton( Context c )
+	{
+		if ( singleton == null )
+			singleton = new BannerCache(c);
+	}
+	
 	public static void newSingleton( Context c )
 	{
 		singleton = new BannerCache(c);

@@ -19,6 +19,9 @@
  */
 package org.sickstache;
 
+import java.io.File;
+
+import org.sickstache.dialogs.WhatsNewDialog;
 import org.sickstache.fragments.FutureFragment;
 import org.sickstache.fragments.ShowsFragment;
 import org.sickstache.helper.BannerCache;
@@ -26,11 +29,13 @@ import org.sickstache.helper.Preferences;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -65,17 +70,9 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
         super.onCreate(savedInstanceState);
         // we have got to do this absolutely first
         // otherwise we could refresh a cache that doesn't exist
-        BannerCache.newSingleton(this);
-        Preferences.newSingleton(this);
+        Preferences.setUpSingleton(this);
         Preferences.singleton.registerSharedPreferencesChangedListener(this);
-//        if ( ImageCache.singleton == null ) {
-//	        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-//	        pref = PreferenceManager.getDefaultSharedPreferences(this);
-//        }
-//        Preferences.newSingleton(this);
-//        if ( Preferences.singleton == null )
-//        	Preferences.singleton = new Preferences( pref );
-//        pref.registerOnSharedPreferenceChangeListener(this);
+        BannerCache.setUpSingleton(this);
 
         setContentView(R.layout.main);
         showFrag = new ShowsFragment();
@@ -87,25 +84,22 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
         viewpager.setAdapter( pageAdapter );
         pageIndicator.setViewPager( viewpager );
         
-//        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        
-        Intent intent = this.getIntent();
-        if ( intent != null ) {
-        	Bundle extras = intent.getExtras();
-        	if ( extras != null ) {
-	        	String activity = extras.getString("activity");
-	        	if ( activity != null ) {
-	        		if ( activity.equals("ShowActivity") ) {
-	        			Intent next = new Intent( this, ShowActivity.class );
-	        			next.putExtras(intent);
-	        			startActivity(next);
-	        		}
-	        	}
+        if ( Preferences.singleton.isUpdated ) {
+        	// make sure the dialog box isnt already up
+        	Fragment f = getSupportFragmentManager().findFragmentByTag("whatsnew");
+        	if ( f == null ) {
+        		// since it isnt lets make it
+		        WhatsNewDialog diag = new WhatsNewDialog();
+		        diag.setTitle("Whats New?");
+		        diag.setOnOkClick( new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Preferences.singleton.isUpdated = false;
+					}
+				});
+		        diag.show(getSupportFragmentManager(), "whatsnew");
         	}
         }
-        
-//        pinger = new PingChecker();
-//        pinger.execute();
     }
     
 	@Override
@@ -122,6 +116,12 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 			       .setCancelable(false)
 			       .setPositiveButton( R.string.yes , new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
+			        	   // all caches are now in there own directory so this is to clear the data for all the old users
+			        	   for ( File f : getExternalCacheDir().listFiles() ) {
+			        		   if ( f.isFile() == true ) {
+			        			   f.delete();
+			        		   }
+			        	   }
 			        	   BannerCache.singleton.clear();
 			           }
 			       }).setNegativeButton( R.string.no , new DialogInterface.OnClickListener() {
@@ -204,35 +204,4 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 			return null;
 		}
     }
-	
-//	private class PingChecker extends AsyncTask<Void, Void, Boolean> {
-//
-//    	public Exception error;
-//    	
-//    	@Override
-//    	protected Boolean doInBackground(Void... arg0) {
-//    		try {
-//    			return Preferences.singleton.getSickBeard().sbPing();
-//    		} catch (Exception e) {
-//    			error = e;
-//    		}
-//    		return false;
-//    	}
-//
-//    	@Override
-//    	protected void onPostExecute(Boolean result) {
-//    		if ( HomeActivity.this != null ) {
-//				if ( result == false ) {
-//					Toast warning = Toast.makeText(HomeActivity.this, "Cannot connect to SickBeard Server. Please check settings.", Toast.LENGTH_LONG);
-//					warning.show();
-//				} else {
-//					// I think this isn't necessary anymore
-////					Toast success = Toast.makeText(HomeActivity.this, "Successfully connected to SickBeard. Refreshing now.", Toast.LENGTH_LONG);
-////					success.show();
-////					showFrag.refresh();
-////					futureFrag.refresh();
-//				}
-//    		}
-//    	}
-//    }
 }
