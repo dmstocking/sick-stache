@@ -28,11 +28,11 @@ import org.sickbeard.SearchResult;
 import org.sickbeard.SearchResults;
 import org.sickbeard.comparator.SearchResultByTitleComparator;
 import org.sickbeard.comparator.SearchResultByYearComparator;
-import org.sickstache.fragments.SearchFragment.SearchParams;
 import org.sickstache.AddShowActivity;
 import org.sickstache.R;
 import org.sickstache.app.LoadingListFragment;
 import org.sickstache.dialogs.LanguageDialog;
+import org.sickstache.fragments.SearchFragment.SearchParams;
 import org.sickstache.helper.Preferences;
 
 import android.app.SearchManager;

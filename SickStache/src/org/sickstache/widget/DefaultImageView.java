@@ -19,8 +19,6 @@
  */
 package org.sickstache.widget;
 
-import java.net.URI;
-
 import org.sickstache.helper.BannerCache;
 import org.sickstache.task.FetchBannerTask;
 
@@ -28,9 +26,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 

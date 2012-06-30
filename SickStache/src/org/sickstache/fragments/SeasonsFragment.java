@@ -31,23 +31,16 @@ import org.sickstache.EditShowActivity;
 import org.sickstache.EpisodeActivity;
 import org.sickstache.R;
 import org.sickstache.app.ExpandableLoadingListFragment;
-import org.sickstache.app.ExpandableLoadingListFragment.EasyExpandableListAdapter.Pair;
-import org.sickstache.dialogs.PauseDialog;
 import org.sickstache.dialogs.StatusDialog;
 import org.sickstache.helper.Preferences;
-import org.sickstache.task.PauseTask;
-import org.sickstache.task.RefreshTask;
 import org.sickstache.task.SetStatusTask;
-import org.sickstache.task.UpdateTask;
 import org.sickstache.widget.DefaultImageView;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +53,6 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.viewpagerindicator.TitlePageIndicator;
 
 public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episode,String, Void, Show> {
 

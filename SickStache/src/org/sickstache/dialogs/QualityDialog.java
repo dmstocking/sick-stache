@@ -22,14 +22,11 @@ package org.sickstache.dialogs;
 import java.util.EnumSet;
 
 import org.sickbeard.Show.QualityEnum;
-import org.sickstache.R;
-import org.sickstache.task.SetQualityTask;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;

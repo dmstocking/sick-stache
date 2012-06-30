@@ -22,9 +22,7 @@ package org.sickstache.fragments;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.sickbeard.Episode.StatusEnum;
 import org.sickbeard.FutureEpisode;
-import org.sickbeard.FutureEpisode.TimeEnum;
 import org.sickbeard.FutureEpisodes;
 import org.sickbeard.FutureEpisodes.SortEnum;
 import org.sickstache.EpisodeActivity;

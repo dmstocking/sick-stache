@@ -19,16 +19,10 @@
  */
 package org.sickstache.fragments;
 
-import java.util.EnumSet;
-
-import org.sickbeard.Show.QualityEnum;
 import org.sickstache.HomeActivity;
 import org.sickstache.R;
-import org.sickstache.dialogs.ArchiveQualityDialog;
 import org.sickstache.dialogs.PauseDialog;
-import org.sickstache.dialogs.InitialQualityDialog;
 import org.sickstache.dialogs.QualityDialog;
-import org.sickstache.helper.Preferences;
 import org.sickstache.task.FetchInternetBannerTask;
 import org.sickstache.task.PauseTask;
 import org.sickstache.task.RefreshTask;
@@ -38,7 +32,6 @@ import org.sickstache.task.UpdateTask;
 import org.sickstache.widget.DefaultImageView;
 import org.sickstache.widget.WorkingTextView;
 
-import android.app.AlertDialog.Builder;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;

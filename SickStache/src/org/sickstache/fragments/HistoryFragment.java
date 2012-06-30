@@ -19,11 +19,8 @@
  */
 package org.sickstache.fragments;
 
-import org.sickbeard.FutureEpisode;
 import org.sickbeard.History;
 import org.sickbeard.HistoryItem;
-import org.sickbeard.Episode.StatusEnum;
-import org.sickbeard.FutureEpisode.TimeEnum;
 import org.sickstache.EpisodeActivity;
 import org.sickstache.R;
 import org.sickstache.app.LoadingSectionListFragment;
