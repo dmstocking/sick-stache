@@ -30,6 +30,7 @@
     <string name="cache_item_title">Clear Cache</string>
     <string name="history_item_title">History</string>
     <string name="log_item_title">Log</string>
+    <string name="whats_new_item_title">What\'s New?</string>
     <string name="about_item_title">About SickStache</string>
     <string name="edit_show_title">Edit Show</string>
     

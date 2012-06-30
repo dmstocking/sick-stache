@@ -37,6 +37,7 @@ public class WhatsNewDialog extends SherlockDialogFragment {
 			"- Clicking an item in the History now opens the Episode View\n" +
 			"- Error messages are now displayed in views\n" +
 			"- Whats New? dialog :)\n" +
+			"- What's New? menu item\n" +
 			"\n" +
 			"Please show your support by purchasing this app on Goole Play!";
 	
