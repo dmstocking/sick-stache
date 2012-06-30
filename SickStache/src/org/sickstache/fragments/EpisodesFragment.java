@@ -100,7 +100,6 @@ public class EpisodesFragment extends LoadingListFragment<Void, Void, Season> {
 		intent.putExtra("show", this.show);
 		intent.putExtra("season", this.season);
 		intent.putExtra("episode", this.episodesAdapter.getItem(position).episode);
-		intent.putExtra("status", this.episodesAdapter.getItem(position).status.toString());
 		this.startActivity(intent);
 	}
 

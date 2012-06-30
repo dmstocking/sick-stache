@@ -19,15 +19,21 @@
  */
 package org.sickstache.fragments;
 
+import org.sickbeard.FutureEpisode;
 import org.sickbeard.History;
 import org.sickbeard.HistoryItem;
+import org.sickbeard.Episode.StatusEnum;
+import org.sickbeard.FutureEpisode.TimeEnum;
+import org.sickstache.EpisodeActivity;
 import org.sickstache.R;
 import org.sickstache.app.LoadingSectionListFragment;
 import org.sickstache.helper.Preferences;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class HistoryFragment extends LoadingSectionListFragment<HistoryItem, Void, Void, History> {
@@ -59,6 +65,23 @@ public class HistoryFragment extends LoadingSectionListFragment<HistoryItem, Voi
 //				return row;
 //			}
 //		};
+	}
+	
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		HistoryItem item = (HistoryItem)adapter.getItem(position);
+		Intent intent = new Intent( this.getActivity(), EpisodeActivity.class );
+		intent.putExtra("tvdbid", item.id);
+		intent.putExtra("show", item.show);
+		intent.putExtra("season", item.season);
+		intent.putExtra("episode", item.episode);
+//		if ( item.status == TimeEnum.MISSED ) {
+//			intent.putExtra("status", StatusEnum.WANTED.toString());
+//		} else {
+//			intent.putExtra("status", StatusEnum.UNAIRED.toString());
+//		}
+		startActivity(intent);
 	}
 	
 	@Override

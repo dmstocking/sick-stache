@@ -51,11 +51,6 @@ public class FutureFragment extends LoadingSectionListFragment<FutureEpisode, Vo
 		intent.putExtra("show", item.show_name);
 		intent.putExtra("season", item.season + "");
 		intent.putExtra("episode", item.episode + "");
-		if ( item.when == TimeEnum.MISSED ) {
-			intent.putExtra("status", StatusEnum.WANTED.toString());
-		} else {
-			intent.putExtra("status", StatusEnum.UNAIRED.toString());
-		}
 		startActivity(intent);
 	}
 	

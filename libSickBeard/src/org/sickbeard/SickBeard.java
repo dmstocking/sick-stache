@@ -49,6 +49,7 @@ import org.sickbeard.Episode.StatusEnum;
 import org.sickbeard.FutureEpisode.TimeEnum;
 import org.sickbeard.Show.QualityEnum;
 import org.sickbeard.json.CommandsJson;
+import org.sickbeard.json.EpisodeJson;
 import org.sickbeard.json.GetQualityJson;
 import org.sickbeard.json.HistoryJson;
 import org.sickbeard.json.JsonResponse;
@@ -162,7 +163,8 @@ public class SickBeard {
 		builder.append(episode);
 		builder.append("&full_path=");
 		builder.append( ( full_path ? "1" : "0" ) );
-		return this.<Episode>commandData( builder.toString(), new TypeToken<JsonResponse<Episode>>(){}.getType() );
+		EpisodeJson json = this.<EpisodeJson>commandData( builder.toString(), new TypeToken<JsonResponse<EpisodeJson>>(){}.getType() );
+		return new Episode(json);
 	}
 	
 	public boolean episodeSearch( String tvdbid, String season, String episode ) throws Exception

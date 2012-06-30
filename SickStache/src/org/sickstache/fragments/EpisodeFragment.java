@@ -105,11 +105,6 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 		this.show = parent.getStringExtra("show");
 		this.season = parent.getStringExtra("season");
 		this.episode = parent.getStringExtra("episode");
-		try {
-			this.status = StatusEnum.valueOf(parent.getStringExtra("status"));
-		} catch (Exception e) {
-			this.status = StatusEnum.UNAIRED;
-		}
 
 		this.showView.setText(this.show);
 		this.seasonView.setText(this.season);
@@ -117,7 +112,6 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 		
 		showImage.setBanner(tvdbid);
 		
-		setStatusEnum(this.status);
 		super.onActivityCreated(savedInstanceState);
 	}
 	
@@ -126,17 +120,15 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 		this.status = status;
 		this.statusView.setText(status.toString());
 
-		if ( this.status == StatusEnum.UNAIRED ) {
-			this.search.setEnabled(true);
-			this.setStatusView.setEnabled(false);
-		} else {
-			this.search.setEnabled(false);
-			this.setStatusView.setEnabled(true);
-		}
-		
-		if ( this.status == StatusEnum.WANTED ) {
-			this.search.setEnabled(true);
-		}
+		// let people do wtf they want
+//		switch ( this.status ) {
+//		case UNAIRED:
+//			this.search.setEnabled(true);
+//			this.setStatusView.setEnabled(false);
+//		default:
+//			this.search.setEnabled(true);
+//			this.setStatusView.setEnabled(true);
+//		}
 	}
 
 	@Override
@@ -170,6 +162,6 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 		airbydate.setText(result.airdate);
 		name.setText(result.name);
 		descirption.setText(result.description);
-		setStatusEnum(status);
+		setStatusEnum(result.status);
 	}
 }
