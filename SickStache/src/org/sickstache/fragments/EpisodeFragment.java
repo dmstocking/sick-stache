@@ -115,11 +115,7 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 		this.seasonView.setText(this.season);
 		this.episodeView.setText(this.episode);
 		
-		try {
-			showImage.setImageJavaURI( Preferences.singleton.getSickBeard().showGetBanner(tvdbid) );
-		} catch (Exception e) {
-			;
-		}
+		showImage.setBanner(tvdbid);
 		
 		setStatusEnum(this.status);
 		super.onActivityCreated(savedInstanceState);

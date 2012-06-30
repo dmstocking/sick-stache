@@ -21,7 +21,8 @@ package org.sickstache.widget;
 
 import java.net.URI;
 
-import org.sickstache.helper.ImageCache;
+import org.sickstache.helper.BannerCache;
+import org.sickstache.task.FetchBannerTask;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -41,8 +42,7 @@ public class DefaultImageView extends ImageView {
 	
 	public int defaultResource;
 	
-	private GetUrlImageTask urlTask;
-	private GetExternalCacheImageTask externalFileTask;
+	protected FetchBannerTask task;
 	
 	public DefaultImageView(Context context) {
 		super(context);
@@ -55,38 +55,6 @@ public class DefaultImageView extends ImageView {
 	public DefaultImageView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
-	
-	// not used at this moment in time
-//	@Override
-//	public void setImageURI(Uri uri) {
-//		// Clear current image with default
-//		this.setImageResource(defaultResource);
-//		// if our uri is trying to load something off the sd card
-//		if ( uri.toString().startsWith(MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString()) ) {
-//			if ( externalTask != null ) {
-//				externalTask.cancel(true);
-//			}
-//			externalTask = new GetExternalImageTask( this.getContext() );
-//			externalTask.execute(uri);
-//		// if i have no idea what the uri wants
-//		} else {
-//			super.setImageURI(uri);
-//		}
-//	}
-	
-//	public void setImageJavaURI(URI uri)
-//	{
-//		if ( ImageCache.cache.containsKey(uri.toURL().toString()) ) {
-//			setImageBitmap(uri.toURL().toString());
-//		} else {
-//			this.setImageResource(defaultResource);
-//			if ( urlTask != null ) {
-//				urlTask.cancel(true);
-//			}
-//			urlTask = new GetUrlImageTask( this.getContext(), filename );
-//			urlTask.execute(uri);
-//		}
-//	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -100,157 +68,29 @@ public class DefaultImageView extends ImageView {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 
-	public void setImageJavaURI(URI uri)
+	public void setBanner(String tvdbid)
 	{
 		// we are asking for a new uri so we do not want the current
-		if ( urlTask != null ) {
-			urlTask.cancel(true);
+		if ( task != null ) {
+			task.cancel(true);
 		}
-		// I will take a 1 time hit for the time being
-		if ( defaultBitmap == null ) {
-			defaultBitmap = BitmapFactory.decodeResource(this.getResources(), defaultResource);
-		}
-		this.setImageBitmap(defaultBitmap);
-		urlTask = new GetUrlImageTask( this.getContext(), uri );
-		urlTask.execute(this.getWidth(),this.getHeight());
-//		try {
-//			String filename = uri.toURL().toString();
-//			if ( ImageCache.cache.in(filename) ) {
-//				setImageBitmap( filename );
-//			} else {
-//				ConnectivityManager manage = (ConnectivityManager)this.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-//				switch ( manage.getActiveNetworkInfo().getType() ) {
-//				case ConnectivityManager.TYPE_ETHERNET:
-//				case ConnectivityManager.TYPE_WIFI:
-//					// everything after this point is only enabled because of testing
-//				case ConnectivityManager.TYPE_MOBILE:
-//					urlTask = new GetUrlImageTask( this.getContext(), filename );
-//					urlTask.execute(uri);
-//				}
-//			}
-//		} catch (Exception e) {
-//			Log.e("SickGoatee", "Bad stuff happended with the image set.");
-//		}
-	}
-	
-	public void setImageBitmap(String filename) {
-		if ( externalFileTask != null ) {
-			externalFileTask.cancel(true);
-		}
-		// Clear current image with default
-		this.setImageResource(defaultResource);
-		externalFileTask = new GetExternalCacheImageTask( this.getContext() );
-		externalFileTask.execute(filename);
-	}
-	
-//	public class GetExternalImageTask extends AsyncTask<Uri,Void,Bitmap>
-//	{
-//		public Context c;
-//		
-//		public GetExternalImageTask(Context c)
-//		{
-//			this.c = c;
-//		}
-//
-//		@Override
-//		protected Bitmap doInBackground(Uri... params) {
-//			try {
-//				return MediaStore.Images.Media.getBitmap(c.getContentResolver(), params[0]);
-//			} catch (Exception e) {
-//				;
-//			}
-//			return null;
-//		}
-//
-//		@Override
-//		protected void onPostExecute(Bitmap result) {
-//			super.onPostExecute(result);
-//			if ( result != null ) {
-//				DefaultImageView.super.setImageBitmap(result);
-//			}
-//		}
-//	}
-	
-	public class GetUrlImageTask extends AsyncTask<Integer,Void,Bitmap>
-	{
-		public Context c;
-		public URI uri;
-		public String key;
-		
-		public GetUrlImageTask(Context c, URI uri)
-		{
-			this(c,uri,uri.toString());
-		}
-		
-		public GetUrlImageTask(Context c, URI uri, String key)
-		{
-			this.c = c;
-			this.uri = uri;
-			this.key = key;
-		}
-
-		@Override
-		protected Bitmap doInBackground(Integer... params) {
-			try {
-				if ( ImageCache.cache.in(key) == true ) {
-					// createScaledBitmap is boned
-					Bitmap bitmap = ImageCache.cache.get(key);
-					// TODO figure out if this will make my views faster
-					if ( params[0] > 0 && params[1] > 0 ) {
-						bitmap = Bitmap.createScaledBitmap(bitmap, params[0], params[1], true);
-					}
-					return bitmap;
-				} else {
-					Bitmap bitmap = BitmapFactory.decodeStream(uri.toURL().openStream());
-					ImageCache.cache.add(key, bitmap);
-					if ( params[0] > 0 && params[1] > 0 ) {
-						bitmap = Bitmap.createScaledBitmap(bitmap, params[0], params[1], true);
-					}
-					return bitmap;
-				}
-			} catch (Exception e) {
-				Log.e(logName + ".GetUrlImageTaks.doInBackground", "ERROR: \"" + e.getMessage() + "\"");
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Bitmap result) {
-			super.onPostExecute(result);
-			if ( result != null ) {
-				DefaultImageView.super.setImageBitmap(result);
-			}
-		}
-	}
-	
-	public class GetExternalCacheImageTask extends AsyncTask<String,Void,Bitmap>
-	{
-		public Context c;
-		
-		public GetExternalCacheImageTask(Context c)
-		{
-			this.c = c;
-		}
-
-		@Override
-		protected Bitmap doInBackground(String... params) {
-			try {
-				if ( ImageCache.cache.in(params[0]) == true ) {
-					return ImageCache.cache.get(params[0]);
-				}
-				return null;
-			} catch (Exception e) {
-				Log.e(logName + ".GetExternalCacheImageTask.doInBackground", "ERROR: \"" + e.getMessage() + "\"");
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Bitmap result) {
-			super.onPostExecute(result);
-			if ( result != null ) {
-				DefaultImageView.super.setImageBitmap(result);
-			}
+		Bitmap bitmap = BannerCache.singleton.getFromMemory(tvdbid);
+		if ( bitmap != null ) {
+			// I dupe this statement mainly because i don't want to start a task before i set the bitmap
+			// granted the task currently doens't actually run before i would assign the bitmap
+			// but i don't want to assume it will
+			this.setImageBitmap(bitmap);
+		} else {
+			if ( defaultBitmap == null )
+				defaultBitmap = BitmapFactory.decodeResource(this.getResources(), defaultResource);
+			this.setImageBitmap(defaultBitmap);
+			task = new FetchBannerTask( tvdbid, this.getWidth(), this.getHeight() ){
+				@Override
+				protected void onPostExecute(Bitmap result) {
+					super.onPostExecute(result);
+					DefaultImageView.this.setImageBitmap(result);
+				}};
+				task.execute();
 		}
 	}
 }

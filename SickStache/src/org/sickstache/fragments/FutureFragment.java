@@ -89,11 +89,7 @@ public class FutureFragment extends LoadingSectionListFragment<FutureEpisode, Vo
 		}
 		DefaultImageView image = (DefaultImageView) row.findViewById(R.id.showImage);
 		image.defaultResource = R.drawable.default_banner;
-		try {
-			image.setImageJavaURI( Preferences.singleton.getSickBeard().showGetBanner(item.tvdbid+"") );
-		} catch (Exception e) {
-			;
-		}
+		image.setBanner( item.tvdbid+"" );
 		TextView ep = (TextView) row.findViewById(R.id.episode);
 		ep.setText(item.season + "x" + item.episode + " - " + item.ep_name + " " + item.airdate);
 		TextView air = (TextView) row.findViewById(R.id.airing);

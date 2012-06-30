@@ -52,8 +52,8 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 	protected ProgressBar refreshMenuActionView;
 	
 	protected ProgressBar spinner;
-	protected TextView error;
 	protected TextView empty;
+	protected TextView error;
 	// this should just be a string but i cant because java ... its always because java
 	protected abstract String getEmptyText();
 	protected abstract Params[] getRefreshParams();
@@ -74,9 +74,9 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View root = inflater.inflate(R.layout.loadable_list_fragment, container, false);
 		spinner = (ProgressBar)root.findViewById(R.id.workingProgressBar);
-		error = (TextView)root.findViewById(R.id.errorTextView);
 		empty = (TextView)root.findViewById(R.id.emptyTextView);
 		empty.setText(getEmptyText());
+		error = (TextView)root.findViewById(R.id.errorTextView);
 		
 		refreshMenuActionView = new ProgressBar(this.getActivity());
 	    refreshMenuActionView.setIndeterminateDrawable(this.getActivity().getResources().getDrawable(R.drawable.refresh_spinner));
@@ -204,6 +204,7 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 //    			}
     			// if we have a error
     			if ( error != null ) {
+    				LoadingListFragment.this.error.setText("Error Retrieving Results\n"+error.getMessage());
     				LoadingListFragment.this.setListStatus(ListStatus.ERROR);
     			} else if ( result != null ) {
     				LoadingListFragment.this.onPostExecute(result);

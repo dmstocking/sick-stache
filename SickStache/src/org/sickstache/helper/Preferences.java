@@ -20,18 +20,29 @@
 package org.sickstache.helper;
 
 import org.sickbeard.SickBeard;
+import org.sickstache.R;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.preference.PreferenceManager;
 
 public class Preferences implements OnSharedPreferenceChangeListener {
 	
 	public static Preferences singleton;
 	
+	public static void newSingleton(Context c)
+	{
+		PreferenceManager.setDefaultValues(c, R.xml.preferences, false);
+        singleton = new Preferences( PreferenceManager.getDefaultSharedPreferences(c) );
+	}
+	
 	private SharedPreferences pref;
 	private SickBeard sick;
 	
-	public Preferences( SharedPreferences pref )
+	private OnSharedPreferenceChangeListener listener;
+	
+	private Preferences( SharedPreferences pref )
 	{
 		this.pref = pref;
 		pref.registerOnSharedPreferenceChangeListener( this );
@@ -97,7 +108,15 @@ public class Preferences implements OnSharedPreferenceChangeListener {
 		sick = new SickBeard( getHost(), getPort(), getAPI(), getHTTPS(), getPath(), getUsername(), getPassword() );
 	}
 
+	public void registerSharedPreferencesChangedListener( OnSharedPreferenceChangeListener listener )
+	{
+		this.listener = listener;
+	}
+	
 	public void onSharedPreferenceChanged(SharedPreferences arg0, String arg1) {
 		this.updateSickBeard();
+		if ( listener != null ) {
+			listener.onSharedPreferenceChanged(arg0, arg1);
+		}
 	}
 }

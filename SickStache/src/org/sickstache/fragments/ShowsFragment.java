@@ -82,11 +82,7 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 				tv.setText(item.showName);
 				DefaultImageView image = (DefaultImageView) row.findViewById(R.id.showImage);
 				image.defaultResource = R.drawable.default_banner;
-				try {
-					image.setImageJavaURI( Preferences.singleton.getSickBeard().showGetBanner(item.id) );
-				} catch (Exception e) {
-					;
-				}
+				image.setBanner( item.id );
 
 				ImageView overlay = (ImageView)row.findViewById(R.id.showSelectedOverlay);
 				if ( selected.contains(position) ) {

@@ -21,7 +21,7 @@ package org.sickstache;
 
 import org.sickstache.fragments.FutureFragment;
 import org.sickstache.fragments.ShowsFragment;
-import org.sickstache.helper.ImageCache;
+import org.sickstache.helper.BannerCache;
 import org.sickstache.helper.Preferences;
 
 import android.app.AlertDialog;
@@ -65,14 +65,17 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
         super.onCreate(savedInstanceState);
         // we have got to do this absolutely first
         // otherwise we could refresh a cache that doesn't exist
-        if ( ImageCache.cache == null ) {
-	        ImageCache.cache = new ImageCache( this );
-	        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-	        pref = PreferenceManager.getDefaultSharedPreferences(this);
-        }
-        if ( Preferences.singleton == null )
-        	Preferences.singleton = new Preferences( pref );
-        pref.registerOnSharedPreferenceChangeListener(this);
+        BannerCache.newSingleton(this);
+        Preferences.newSingleton(this);
+        Preferences.singleton.registerSharedPreferencesChangedListener(this);
+//        if ( ImageCache.singleton == null ) {
+//	        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+//	        pref = PreferenceManager.getDefaultSharedPreferences(this);
+//        }
+//        Preferences.newSingleton(this);
+//        if ( Preferences.singleton == null )
+//        	Preferences.singleton = new Preferences( pref );
+//        pref.registerOnSharedPreferenceChangeListener(this);
 
         setContentView(R.layout.main);
         showFrag = new ShowsFragment();
@@ -119,7 +122,7 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 			       .setCancelable(false)
 			       .setPositiveButton( R.string.yes , new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
-			        	   ImageCache.cache.clear();
+			        	   BannerCache.singleton.clear();
 			           }
 			       }).setNegativeButton( R.string.no , new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {

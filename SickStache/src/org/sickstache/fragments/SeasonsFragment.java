@@ -114,11 +114,7 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 		paused = (TextView) view.findViewById(R.id.pausedTextView);
 		airbydate = (TextView) view.findViewById(R.id.airbydateTextView);
 		showImage = (DefaultImageView) view.findViewById(R.id.showImage);
-		try {
-			showImage.setImageJavaURI( Preferences.singleton.getSickBeard().showGetBanner(tvdbid) );
-		} catch (Exception e) {
-			;
-		}
+		showImage.setBanner( tvdbid );
 	}
 
 	@Override

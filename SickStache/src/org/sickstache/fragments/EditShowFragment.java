@@ -29,7 +29,7 @@ import org.sickstache.dialogs.PauseDialog;
 import org.sickstache.dialogs.InitialQualityDialog;
 import org.sickstache.dialogs.QualityDialog;
 import org.sickstache.helper.Preferences;
-import org.sickstache.task.FetchBannerTask;
+import org.sickstache.task.FetchInternetBannerTask;
 import org.sickstache.task.PauseTask;
 import org.sickstache.task.RefreshTask;
 import org.sickstache.task.SetQualityTask;
@@ -88,9 +88,7 @@ public class EditShowFragment extends SherlockFragment {
 		refresh = (WorkingTextView)root.findViewById(R.id.refreshWorkingTextView);
 		update = (WorkingTextView)root.findViewById(R.id.updateWorkingTextView);
 		delete = (WorkingTextView)root.findViewById(R.id.deleteWorkingTextView);
-		try {
-			showImage.setImageJavaURI(Preferences.singleton.getSickBeard().showGetBanner(tvdbid));
-		} catch (Exception e) {;}
+		showImage.setBanner(tvdbid);
 		showTextView.setText(show);
 		banner.text.setText("Fetch Banner");
 		quality.text.setText("Quality");
@@ -105,13 +103,13 @@ public class EditShowFragment extends SherlockFragment {
 			public void onClick(View arg0) {
 				try {
 					banner.setIsWorking(true);
-					FetchBannerTask task = new FetchBannerTask(){
+					FetchInternetBannerTask task = new FetchInternetBannerTask(tvdbid){
 						@Override
 						protected void onPostExecute(Bitmap result) {
 							super.onPostExecute(result);
 							if ( result != null ) {
 								try {
-									showImage.setImageJavaURI(Preferences.singleton.getSickBeard().showGetBanner(tvdbid));
+									showImage.setImageBitmap(result);
 								} catch (Exception e) {;}
 								banner.setIsSuccessful(true);
 							} else {
@@ -119,7 +117,7 @@ public class EditShowFragment extends SherlockFragment {
 							}
 						}
 					};
-					task.execute(Preferences.singleton.getSickBeard().showGetBanner(tvdbid));
+					task.execute();
 				} catch (Exception e) {
 					banner.setIsSuccessful(false);
 				}
