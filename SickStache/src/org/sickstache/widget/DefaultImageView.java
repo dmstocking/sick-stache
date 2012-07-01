@@ -84,7 +84,8 @@ public class DefaultImageView extends ImageView {
 				@Override
 				protected void onPostExecute(Bitmap result) {
 					super.onPostExecute(result);
-					DefaultImageView.this.setImageBitmap(result);
+					if ( result != null )
+						DefaultImageView.this.setImageBitmap(result);
 				}};
 				task.execute();
 		}

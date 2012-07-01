@@ -43,7 +43,8 @@ public class FetchBannerTask extends SickTask<Void,Void,Bitmap> {
 				if ( bitmap == null ) {
 					URI uri = Preferences.singleton.getSickBeard().showGetBanner(tvdbid);
 					bitmap = BitmapFactory.decodeStream(uri.toURL().openStream());
-					BannerCache.singleton.put(key, bitmap);
+					if ( bitmap != null )
+						BannerCache.singleton.put(key, bitmap);
 				}
 			}
 			// if we have a bitmap scale it

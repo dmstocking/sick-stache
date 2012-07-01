@@ -66,7 +66,7 @@ public class Preferences implements OnSharedPreferenceChangeListener {
 			if ( versionCurrent != versionSave ) {
 				Editor edit = pref.edit();
 				edit.putInt("version", versionCurrent);
-				edit.apply();
+				edit.commit();
 				isUpdated = true;
 			}
 		} catch (Exception e) {
@@ -125,7 +125,7 @@ public class Preferences implements OnSharedPreferenceChangeListener {
 		edit.putString("path", path);
 		edit.putString("username", username);
 		edit.putString("password", password);
-		edit.apply();
+		edit.commit();
 		updateSickBeard();
 	}
 	

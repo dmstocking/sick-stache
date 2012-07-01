@@ -30,7 +30,8 @@ public class FetchInternetBannerTask extends SickTask<Void,Void,Bitmap> {
 			
 			URI uri = Preferences.singleton.getSickBeard().showGetBanner(tvdbid);
 			Bitmap bitmap = BitmapFactory.decodeStream(uri.toURL().openStream());
-			BannerCache.singleton.put(key, bitmap);
+			if ( bitmap != null )
+				BannerCache.singleton.put(key, bitmap);
 			
 			return bitmap;
 		} catch (Exception e) {
