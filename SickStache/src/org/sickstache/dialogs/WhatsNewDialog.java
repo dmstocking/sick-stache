@@ -35,7 +35,7 @@ public class WhatsNewDialog extends SherlockDialogFragment {
 	private static String whatsNew =
 			"- Fixed crash on Android 4.1\n" +
 			"- Fixed crash on Android 2.2\n" +
-			"- Fixed problem when no image is present\n" +
+			"- Fixed problem when loading an image that doesnt exist\n" +
 			"\n" +
 			"Please show your support by purchasing this app on Goole Play!";
 	
