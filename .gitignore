@@ -1,0 +1,14 @@
+#Android
+bin
+gen
+
+#Eclipse
+.project
+.classpath
+.settings
+.metadata
+
+#Maven
+target
+release.properties
+pom.xml.*
