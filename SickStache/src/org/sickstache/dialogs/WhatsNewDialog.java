@@ -33,11 +33,9 @@ public class WhatsNewDialog extends SherlockDialogFragment {
 	DialogInterface.OnClickListener okListener = null;
 	
 	private static String whatsNew =
-			"- New Banner Cache (Clear your Cache first)\n" +
-			"- Clicking an item in the History now opens the Episode View\n" +
-			"- Error messages are now displayed in views\n" +
-			"- Whats New? dialog :)\n" +
-			"- What's New? menu item\n" +
+			"- Fixed crash on Android 4.1\n" +
+			"- Fixed crash on Android 2.2\n" +
+			"- Fixed problem when no image is present\n" +
 			"\n" +
 			"Please show your support by purchasing this app on Goole Play!";
 	
