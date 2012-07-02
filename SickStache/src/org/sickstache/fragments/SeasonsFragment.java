@@ -31,6 +31,7 @@ import org.sickstache.EditShowActivity;
 import org.sickstache.EpisodeActivity;
 import org.sickstache.R;
 import org.sickstache.app.ExpandableLoadingListFragment;
+import org.sickstache.dialogs.ErrorDialog;
 import org.sickstache.dialogs.StatusDialog;
 import org.sickstache.helper.Preferences;
 import org.sickstache.task.SetStatusTask;
@@ -293,6 +294,11 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 										super.onPostExecute(result);
 										if ( dialog != null && dialog.isShowing() )
 											dialog.dismiss();
+										if ( error != null && getFragmentManager() != null ) {
+											ErrorDialog dialog = new ErrorDialog();
+											dialog.setMessage("Error setting status.\nERROR: "+error.getMessage());
+											dialog.show(getFragmentManager(), "statusError");
+										}
 									}};
 								task.execute();
 							}});

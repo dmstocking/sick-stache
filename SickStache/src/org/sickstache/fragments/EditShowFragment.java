@@ -21,6 +21,7 @@ package org.sickstache.fragments;
 
 import org.sickstache.HomeActivity;
 import org.sickstache.R;
+import org.sickstache.dialogs.ErrorDialog;
 import org.sickstache.dialogs.PauseDialog;
 import org.sickstache.dialogs.QualityDialog;
 import org.sickstache.task.FetchInternetBannerTask;
@@ -101,12 +102,15 @@ public class EditShowFragment extends SherlockFragment {
 						protected void onPostExecute(Bitmap result) {
 							super.onPostExecute(result);
 							if ( result != null ) {
-								try {
-									showImage.setImageBitmap(result);
-								} catch (Exception e) {;}
+								showImage.setImageBitmap(result);
 								banner.setIsSuccessful(true);
 							} else {
 								banner.setIsSuccessful(false);
+							}
+							if ( error != null && getFragmentManager() != null ) {
+								ErrorDialog dialog = new ErrorDialog();
+								dialog.setMessage("Error fetching banner for show.\nERROR: "+error.getMessage());
+								dialog.show(getFragmentManager(), "bannerError");
 							}
 						}
 					};
@@ -127,10 +131,16 @@ public class EditShowFragment extends SherlockFragment {
 						SetQualityTask task = new SetQualityTask(tvdbid,qDialog.getInitialQuality(),qDialog.getArchiveQuality()){
 							@Override
 							protected void onPostExecute(Boolean result) {
-								if ( result != null && result == true )
+								if ( result != null && result == true ) {
 									quality.setIsSuccessful(true);
-								else
+								} else {
 									quality.setIsSuccessful(false);
+								}
+								if ( error != null && getFragmentManager() != null ) {
+									ErrorDialog dialog = new ErrorDialog();
+									dialog.setMessage("Error setting quality for show.\nERROR: "+error.getMessage());
+									dialog.show(getFragmentManager(), "qualityError");
+								}
 							}
 						};
 						task.execute();
@@ -219,6 +229,11 @@ public class EditShowFragment extends SherlockFragment {
 								} else {
 									EditShowFragment.this.pause.setIsSuccessful(false);
 								}
+								if ( error != null && getFragmentManager() != null ) {
+									ErrorDialog dialog = new ErrorDialog();
+									dialog.setMessage("Error un/pause for show.\nERROR: "+error.getMessage());
+									dialog.show(getFragmentManager(), "pauseError");
+								}
 							}
 						};
 						task.execute();
@@ -239,6 +254,11 @@ public class EditShowFragment extends SherlockFragment {
 						} else {
 							refresh.setIsSuccessful(false);
 						}
+						if ( error != null && getFragmentManager() != null ) {
+							ErrorDialog dialog = new ErrorDialog();
+							dialog.setMessage("Error refreshing show.\nERROR: "+error.getMessage());
+							dialog.show(getFragmentManager(), "refreshError");
+						}
 					}
 				};
 				task.execute();
@@ -256,6 +276,11 @@ public class EditShowFragment extends SherlockFragment {
 							update.setIsSuccessful(true);
 						} else {
 							update.setIsSuccessful(false);
+						}
+						if ( error != null && getFragmentManager() != null ) {
+							ErrorDialog dialog = new ErrorDialog();
+							dialog.setMessage("Error updating show.\nERROR: "+error.getMessage());
+							dialog.show(getFragmentManager(), "updateError");
 						}
 					}
 				};
@@ -286,6 +311,11 @@ public class EditShowFragment extends SherlockFragment {
 				    				startActivity(intent);
 								} else {
 									delete.setIsSuccessful(false);
+								}
+								if ( error != null && getFragmentManager() != null ) {
+									ErrorDialog dialog = new ErrorDialog();
+									dialog.setMessage("Error deleting show.\nERROR: "+error.getMessage());
+									dialog.show(getFragmentManager(), "deleteError");
 								}
 							}
 						};

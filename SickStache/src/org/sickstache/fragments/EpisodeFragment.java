@@ -4,6 +4,7 @@ import org.sickbeard.Episode;
 import org.sickbeard.Episode.StatusEnum;
 import org.sickstache.R;
 import org.sickstache.app.LoadingFragment;
+import org.sickstache.dialogs.ErrorDialog;
 import org.sickstache.dialogs.StatusDialog;
 import org.sickstache.helper.Preferences;
 import org.sickstache.task.EpisodeSearchTask;
@@ -66,6 +67,11 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 						} else {
 							search.setIsSuccessful(false);
 						}
+						if ( error != null && getFragmentManager() != null ) {
+							ErrorDialog dialog = new ErrorDialog();
+							dialog.setMessage("Error searching for show.\nERROR: "+error.getMessage());
+							dialog.show(getFragmentManager(), "searchError");
+						}
 					}};
 				task.execute();
 			}
@@ -87,6 +93,11 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 									refresh();
 								} else {
 									setStatusView.setIsSuccessful(false);
+								}
+								if ( error != null && getFragmentManager() != null ) {
+									ErrorDialog dialog = new ErrorDialog();
+									dialog.setMessage("Error setting status for show.\nERROR: "+error.getMessage());
+									dialog.show(getFragmentManager(), "statusError");
 								}
 							}};
 						task.execute();

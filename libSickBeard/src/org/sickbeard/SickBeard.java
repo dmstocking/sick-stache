@@ -74,7 +74,8 @@ import com.google.gson.reflect.TypeToken;
 
 public class SickBeard {
 	
-	private static final String success = "success";
+	private static final String SUCCESS = "success";
+	private static final String ERROR = "error";
 	
 	private boolean https = false;
 	private String scheme;
@@ -691,7 +692,7 @@ public class SickBeard {
 	private <T> T commandData( String command, Type type ) throws Exception
 	{
 		JsonResponse<T> response = this.commandResponse( command, type );
-		return ( response.result.equals(success) ? response.data : null );
+		return ( response.result.equals(SUCCESS) ? response.data : null );
 	}
 
 	private <T> JsonResponse<T> commandResponse( String command, Type type ) throws Exception
@@ -705,17 +706,36 @@ public class SickBeard {
 			server = (HttpURLConnection)uri.toURL().openConnection();
 		}
 		server.setConnectTimeout(30000);
-		Reader reader = new BufferedReader( new InputStreamReader(server.getInputStream() ) );
+		BufferedReader reader = new BufferedReader( new InputStreamReader(server.getInputStream() ) );
 		// TypeToken cannot figure out T so instead it must be supplied
 		//Type type = new TypeToken< JSONResponse<T> >() {}.getType();
 		GsonBuilder build = new GsonBuilder();
+		StringBuilder sBuild = new StringBuilder();
+		String input;
+        while ((input = reader.readLine()) != null) 
+            sBuild.append(input);
+        reader.close();
+        input = sBuild.toString();
 		build.registerTypeAdapter(JsonBoolean.class, new JsonBooleanDeserializer() );
-		JsonResponse<T> response = build.create().fromJson( reader, type );
+		JsonResponse<T> response = null;
+		try {
+			response = build.create().fromJson( input, type );
+		} catch (Exception e) {
+			// well something messed up
+			// if this part messes up then something REALLY bad happened
+			response = build.create().fromJson(input, new TypeToken<JsonResponse<Object>>(){}.getType());
+		}
+		if ( response.result.compareTo(ERROR) == 0 ) {
+			if ( response.message != null && response.message.length() > 0 )
+				throw new Exception( response.message );
+			else if ( response.data != null && response.data.toString().length() > 0 )
+					throw new Exception( response.data.toString() );
+		}
 		return response;
 	}
 
 	private <T> boolean commandSuccessful( String command, Type type ) throws Exception
 	{
-		return this.commandResponse(command, type).result.equals(success);
+		return this.commandResponse(command, type).result.equals(SUCCESS);
 	}
 }

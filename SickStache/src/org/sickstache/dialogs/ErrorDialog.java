@@ -28,20 +28,12 @@ import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
-public class WhatsNewDialog extends SherlockDialogFragment {
+public class ErrorDialog extends SherlockDialogFragment {
+
+	private String title = "Error";
+	private String message = "";
 	
-	// default
-	private String title = "What's New?";
-	private DialogInterface.OnClickListener okListener = null;
-	
-	private static String whatsNew =
-			"- Fixed crash on Android 4.1\n" +
-			"- Fixed crash on Android 2.2\n" +
-			"- Fixed problem when loading an image that doesnt exist\n" +
-			"\n" +
-			"Please show your support by purchasing this app on Goole Play!";
-	
-	public WhatsNewDialog()
+	public ErrorDialog()
 	{
 		super();
 	}
@@ -55,10 +47,21 @@ public class WhatsNewDialog extends SherlockDialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this.getSherlockActivity());
 		builder.setTitle(title);
-		builder.setMessage(whatsNew);
-		builder.setPositiveButton("Dismiss", okListener);
+		builder.setIcon(R.drawable.ic_dialog_alert);
+		builder.setMessage(message);
+		builder.setPositiveButton(R.string.ok, null);
 		builder.setCancelable(false);
 		return builder.create();
+	}
+	
+	public void setMessage( String message )
+	{
+		this.message = message;
+	}
+	
+	public String getMessage( String message )
+	{
+		return message;
 	}
 	
 	public void setTitle( String title )
@@ -69,11 +72,6 @@ public class WhatsNewDialog extends SherlockDialogFragment {
 	public String getTitle( String title )
 	{
 		return title;
-	}
-	
-	public void setOnOkClick( OnClickListener listener )
-	{
-		okListener = listener;
 	}
 	
 }

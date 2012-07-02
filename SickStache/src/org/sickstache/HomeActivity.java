@@ -88,7 +88,6 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
         	if ( f == null ) {
         		// since it isnt lets make it
 		        WhatsNewDialog diag = new WhatsNewDialog();
-		        diag.setTitle("What's New?");
 		        diag.setOnOkClick( new OnClickListener(){
 					@Override
 					public void onClick(DialogInterface dialog, int which) {

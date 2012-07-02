@@ -26,6 +26,7 @@ import org.sickbeard.comparator.ShowNameComparator;
 import org.sickstache.R;
 import org.sickstache.SeasonsActivity;
 import org.sickstache.app.LoadingListFragment;
+import org.sickstache.dialogs.ErrorDialog;
 import org.sickstache.dialogs.PauseDialog;
 import org.sickstache.helper.Preferences;
 import org.sickstache.task.PauseTask;
@@ -162,6 +163,11 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 									protected void onPostExecute(Boolean result) {
 										if ( dialog != null && dialog.isShowing() )
 											dialog.dismiss();
+										if ( error != null && getFragmentManager() != null ) {
+											ErrorDialog dialog = new ErrorDialog();
+											dialog.setMessage("Error pausing show.\nERROR: "+error.getMessage());
+											dialog.show(getFragmentManager(), "pauseError");
+										}
 									}};
 								pause.execute();
 							}} );
@@ -181,6 +187,11 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 								protected void onPostExecute(Boolean result) {
 									if ( dialog != null && dialog.isShowing() )
 										dialog.dismiss();
+									if ( error != null && getFragmentManager() != null ) {
+										ErrorDialog dialog = new ErrorDialog();
+										dialog.setMessage("Error refreshing show.\nERROR: "+error.getMessage());
+										dialog.show(getFragmentManager(), "refreshError");
+									}
 								}};
 								refresh.execute();
 						}
@@ -199,6 +210,11 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 								protected void onPostExecute(Boolean result) {
 									if ( dialog != null && dialog.isShowing() )
 										dialog.dismiss();
+									if ( error != null && getFragmentManager() != null ) {
+										ErrorDialog dialog = new ErrorDialog();
+										dialog.setMessage("Error updating show.\nERROR: "+error.getMessage());
+										dialog.show(getFragmentManager(), "updateError");
+									}
 								}};
 							update.execute();
 						}

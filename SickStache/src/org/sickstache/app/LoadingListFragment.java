@@ -204,7 +204,7 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 //    			}
     			// if we have a error
     			if ( error != null ) {
-    				LoadingListFragment.this.error.setText("Error Retrieving Results\n"+error.getMessage());
+    				LoadingListFragment.this.error.setText("Error Retrieving Results\nERROR: "+error.getMessage());
     				LoadingListFragment.this.setListStatus(ListStatus.ERROR);
     			} else if ( result != null ) {
     				LoadingListFragment.this.onPostExecute(result);

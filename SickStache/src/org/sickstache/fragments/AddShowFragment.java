@@ -26,6 +26,7 @@ import org.sickbeard.LanguageEnum;
 import org.sickbeard.Show.QualityEnum;
 import org.sickstache.HomeActivity;
 import org.sickstache.R;
+import org.sickstache.dialogs.ErrorDialog;
 import org.sickstache.dialogs.QualityDialog;
 import org.sickstache.dialogs.StatusDialog;
 import org.sickstache.helper.Preferences;
@@ -95,7 +96,7 @@ public class AddShowFragment extends SherlockFragment {
 		tvdbid = intent.getExtras().getString("tvdbid");
 		showName = intent.getExtras().getString("show");
 		try {
-			language = LanguageEnum.valueOf(intent.getExtras().getString("lang"));
+			language = LanguageEnum.valueOf(intent.getExtras().getString("lang").toLowerCase());
 		} catch (Exception e) { language = null; }
 		showTextView.setText(showName);
 	}
@@ -144,7 +145,6 @@ public class AddShowFragment extends SherlockFragment {
 		statusTextView.setOnClickListener( new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				// TODO probably should just make this once and save it
 				final StatusDialog sDialog = new StatusDialog();
 				sDialog.setTitle("Set Initial Status");
 				sDialog.setOnListClick( new DialogInterface.OnClickListener() {
@@ -176,7 +176,6 @@ public class AddShowFragment extends SherlockFragment {
 				final QualityDialog qDialog = new QualityDialog();
 				qDialog.setTitle("Select Initial Quality");
 				qDialog.setOnListClick( new DialogInterface.OnClickListener() {
-					
 					@Override
 					public void onClick(DialogInterface dialog, int which ) {
 						initialQuality = qDialog.getInitialQuality();
@@ -294,18 +293,12 @@ public class AddShowFragment extends SherlockFragment {
     				// we want the activity to be recreated so no SINGLE_TOP
     				Intent intent = new Intent( AddShowFragment.this.getActivity(), HomeActivity.class );
     	            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//    	            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-    	            // this works to fast for sickbeard to refresh so just let the user scroll to it
-//    				intent.putExtra("activity", "ShowActivity");
-//    				intent.putExtra("tvdbid", tvdbid);
     				startActivity(intent);
     			} else {
-    				AlertDialog.Builder builder = new AlertDialog.Builder( AddShowFragment.this.getSherlockActivity() );
-    				builder.setTitle("Error Adding Show");
-    				builder.setIcon(android.R.drawable.ic_dialog_alert);
-    				builder.setMessage("Unable to add show to sickbeard. Check settings and try again.");
-    				builder.setPositiveButton(R.string.ok, null);
-    				builder.show();
+    				ErrorDialog dialog = new ErrorDialog();
+    				dialog.setTitle("Error Adding Show");
+    				dialog.setMessage("Error adding show.\nERROR: "+error.getMessage());
+    				dialog.show(getFragmentManager(), "addShowError");
     			}
     		}
     	}
