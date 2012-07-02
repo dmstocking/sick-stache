@@ -35,9 +35,7 @@ public class WhatsNewDialog extends SherlockDialogFragment {
 	private DialogInterface.OnClickListener okListener = null;
 	
 	private static String whatsNew =
-			"- Fixed crash on Android 4.1\n" +
-			"- Fixed crash on Android 2.2\n" +
-			"- Fixed problem when loading an image that doesnt exist\n" +
+			"- Added an ungoddly amount of error messages to make debugging and error reports better.\n" +
 			"\n" +
 			"Please show your support by purchasing this app on Goole Play!";
 	
