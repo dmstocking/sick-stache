@@ -251,32 +251,55 @@ public class AddShowFragment extends SherlockFragment {
 
 	public void onAddShowClick(View v)
 	{
-		// put up a loading dialog
-		working = ProgressDialog.show(this.getActivity(), "Adding Show", "Adding Show to SickBeard ...", true);
-		// when this downloader returns display the show
-		Downloader downloader = new Downloader();
-		downloader.execute(new SearchParams(this.tvdbid,
-				this.language,
-				this.seasonFolder,
-				this.status,
-				this.initialQuality,
-				this.archiveQuality));
+		try {
+			// put up a loading dialog
+			working = ProgressDialog.show(this.getSherlockActivity(), "Adding Show", "Adding Show to SickBeard ...", true);
+			// when this downloader returns display the show
+			Downloader downloader = new Downloader(this.tvdbid,
+					this.language,
+					this.seasonFolder,
+					this.status,
+					this.initialQuality,
+					this.archiveQuality);
+			downloader.execute();
+		} catch (Exception e) {
+			ErrorDialog dialog = new ErrorDialog();
+			dialog.setTitle("Error On Clicking Add New Show");
+			dialog.setMessage("Error: \nERROR: "+e.getMessage());
+			dialog.show(getFragmentManager(), "addShowClickError");
+		}
 	}
 	
-	private class Downloader extends AsyncTask<SearchParams, Void, Boolean> {
+	private class Downloader extends AsyncTask<Void, Void, Boolean> {
 
     	public Exception error = null;
     	
+    	private String tvdbid = null;
+    	private LanguageEnum language = null;
+    	private StatusEnum status = null;
+    	private Boolean seasonFolder = null;
+    	private EnumSet<QualityEnum> initial = null;
+    	private EnumSet<QualityEnum> archive = null;
+    	
+    	public Downloader( String tvdbid, LanguageEnum langauge, Boolean seasonFolder, StatusEnum status, EnumSet<QualityEnum> inital, EnumSet<QualityEnum> archive )
+    	{
+    		this.tvdbid = tvdbid;
+    		this.language = language;
+    		this.status = status;
+    		this.seasonFolder = seasonFolder;
+    		this.initial = inital;
+    		this.archive = archive;
+    	}
+    	
     	@Override
-    	protected Boolean doInBackground(SearchParams... arg0) {
+    	protected Boolean doInBackground(Void... arg0) {
     		try {
-    			SearchParams params = arg0[0];
-    			return Preferences.singleton.getSickBeard().showAddNew(params.tvdbid,
-    					params.langauge,
-    					params.seasonFolder,
-    					params.status,
-    					params.initial,
-    					params.archive);
+    			return Preferences.singleton.getSickBeard().showAddNew(tvdbid,
+    					language,
+    					seasonFolder,
+    					status,
+    					initial,
+    					archive);
     		} catch (Exception e) {
     			error = e;
     		}
@@ -287,14 +310,16 @@ public class AddShowFragment extends SherlockFragment {
     	protected void onPostExecute(Boolean result) {
     		if ( AddShowFragment.this != null ) {
     			// finished loading
-				working.dismiss();
+    			if ( working != null )
+    				working.dismiss();
     			// if we have a error
     			if ( result != null && result == true ) {
     				// we want the activity to be recreated so no SINGLE_TOP
-    				Intent intent = new Intent( AddShowFragment.this.getActivity(), HomeActivity.class );
+    				Intent intent = new Intent( AddShowFragment.this.getSherlockActivity(), HomeActivity.class );
     	            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     				startActivity(intent);
-    			} else {
+    			}
+    			if ( error != null && getFragmentManager() != null ) {
     				ErrorDialog dialog = new ErrorDialog();
     				dialog.setTitle("Error Adding Show");
     				dialog.setMessage("Error adding show.\nERROR: "+error.getMessage());

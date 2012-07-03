@@ -76,6 +76,7 @@ public class SickBeard {
 	
 	private static final String SUCCESS = "success";
 	private static final String ERROR = "error";
+	private static final String FAILURE = "failure";
 	
 	private boolean https = false;
 	private String scheme;
@@ -720,22 +721,31 @@ public class SickBeard {
 		JsonResponse<T> response = null;
 		try {
 			response = build.create().fromJson( input, type );
+			tryExtractError(response);
+			return response;
 		} catch (Exception e) {
 			// well something messed up
 			// if this part messes up then something REALLY bad happened
 			response = build.create().fromJson(input, new TypeToken<JsonResponse<Object>>(){}.getType());
+			tryExtractError(response);
+			// DO NOT RETURN AN ACTUAL OBJECT!!!!!
+			// this makes the code in the UI confused
+			return null;
 		}
-		if ( response.result.compareTo(ERROR) == 0 ) {
-			if ( response.message != null && response.message.length() > 0 )
-				throw new Exception( response.message );
-			else if ( response.data != null && response.data.toString().length() > 0 )
-					throw new Exception( response.data.toString() );
-		}
-		return response;
 	}
 
 	private <T> boolean commandSuccessful( String command, Type type ) throws Exception
 	{
 		return this.commandResponse(command, type).result.equals(SUCCESS);
+	}
+
+	private <T> void tryExtractError(JsonResponse<T> response) throws Exception {
+		if ( response.result.compareTo(ERROR) == 0 || response.result.compareTo(FAILURE) == 0 ) {
+			if ( response.message != null && response.message.length() > 0 )
+				throw new Exception( response.message );
+			else if ( response.data != null && response.data.toString().length() > 0 )
+					throw new Exception( response.data.toString() );
+			throw new Exception( "Unknown Error occurred ... Ut Oh.");
+		}
 	}
 }
