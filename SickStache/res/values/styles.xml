@@ -70,5 +70,5 @@
         <item name="android:actionBarItemBackground">@drawable/action_button_selector</item>
         <item name="actionModeBackground">@drawable/action_button_selector</item>
         <item name="android:actionModeBackground">@drawable/action_button_selector</item>
-        </style>
+    </style>
 </resources>

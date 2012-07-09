@@ -48,9 +48,9 @@ public class FetchBannerTask extends SickTask<Void,Void,Bitmap> {
 				}
 			}
 			// if we have a bitmap scale it
-			if ( bitmap != null && width > 0 && height > 0 ) {
-				bitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
-			}
+//			if ( bitmap != null && width > 0 && height > 0 ) {
+//				bitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+//			}
 			return bitmap;
 		} catch (Exception e) {
 			error=e;
