@@ -22,6 +22,8 @@ package org.sickstache.app;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,13 +31,19 @@ import android.widget.BaseAdapter;
 
 public abstract class LoadingSectionListFragment<ListType, Params, Progress, Result> extends LoadingListFragment<Params, Progress, Result> {
 	
-	protected SectionAdapter adapter = new SectionAdapter();
+	protected SectionAdapter adapter;
 	
 	protected abstract int getSectionLayoutId();
 	protected abstract int getListTypeLayoutId();
 	
 	protected abstract View getSectionView(int position, String item, View convertView, ViewGroup parent);
 	protected abstract View getListTypeView(int position, ListType item, View convertView, ViewGroup parent);
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		this.adapter = new SectionAdapter(this.getActivity());
+	}
 
 	public class SectionAdapter extends BaseAdapter {
 
@@ -48,8 +56,14 @@ public abstract class LoadingSectionListFragment<ListType, Params, Progress, Res
 			public String label;
 		}
 
+		protected LayoutInflater layoutInflater;
+		
 		private List<ListType> items = new ArrayList<ListType>();
 		private List<SectionType> sections = new ArrayList<SectionType>();
+		
+		public SectionAdapter(Context context) {
+			layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
 		
 		public void add(ListType item) {
 			items.add(item);
@@ -93,8 +107,7 @@ public abstract class LoadingSectionListFragment<ListType, Params, Progress, Res
 			int layoutType = viewType == 0 ? getListTypeLayoutId() : getSectionLayoutId();
 			
 			if ( convertView == null ) {
-				convertView = LayoutInflater.from(LoadingSectionListFragment.this.getSherlockActivity())
-						.inflate(layoutType, parent,false);
+				convertView = layoutInflater.inflate(layoutType, parent,false);
 			}
 			
 			if ( viewType == 0 ) {

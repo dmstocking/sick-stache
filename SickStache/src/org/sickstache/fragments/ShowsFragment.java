@@ -33,13 +33,16 @@ import org.sickstache.task.PauseTask;
 import org.sickstache.task.RefreshTask;
 import org.sickstache.task.UpdateTask;
 import org.sickstache.widget.DefaultImageView;
+import org.sickstache.widget.SafeArrayAdapter;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -58,7 +61,7 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 
 //	private static final String[] showActions = { "Set Quality", "Pause", "Refresh", "Update" };
 	
-	private ArrayAdapter<Show> showAdapter;
+	private SafeArrayAdapter<Show> showAdapter;
 	
 	private TitlePageIndicator pageIndicator = null;
 	
@@ -70,12 +73,12 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	    showAdapter = new ArrayAdapter<Show>(this.getActivity(), R.layout.show_banner_item) {
+	    showAdapter = new SafeArrayAdapter<Show>(this.getActivity(), R.layout.show_banner_item) {
 			@Override
 			public View getView( int position, View convertView, ViewGroup parent ) {
 				View row = convertView;
 				if ( row == null ) {
-					row = getActivity().getLayoutInflater().inflate(R.layout.show_banner_item, null);
+					row = layoutInflater.inflate(R.layout.show_banner_item, null);
 				}
 				Show item = getItem(position);
 				TextView tv = (TextView) row.findViewById(R.id.show);

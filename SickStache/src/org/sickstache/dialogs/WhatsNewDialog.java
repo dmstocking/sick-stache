@@ -35,9 +35,7 @@ public class WhatsNewDialog extends SherlockDialogFragment {
 	private DialogInterface.OnClickListener okListener = null;
 	
 	private static String whatsNew =
-			"- Added many more error messages to make debugging and error reports better.\n" +
-			"- Fixed a problem when fetching a banner that caused it to never be saved.\n" +
-			"- Startup should be slightly faster.\n" +
+			"- Fixed a series of bugs on screen rotation.\n" +
 			"\n" +
 			"Please show your support by purchasing this app on Goole Play!";
 	

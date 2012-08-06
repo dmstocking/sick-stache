@@ -38,6 +38,7 @@ import org.sickstache.task.SetStatusTask;
 import org.sickstache.widget.DefaultImageView;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -70,6 +71,8 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	private TextView paused;
 	private TextView airbydate;
 	
+	private LayoutInflater layoutInflater;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -78,6 +81,12 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 		show = parent.getStringExtra("show");
 	}
 	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		layoutInflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -167,7 +176,7 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	@Override
 	protected View getChildView(Integer group, Episode item, int groupNum, int itemNum, View convertView, ViewGroup root) {
 		if ( convertView == null )
-			convertView = LayoutInflater.from(getSherlockActivity()).inflate(R.layout.episodes_item, root, false);
+			convertView = layoutInflater.inflate(R.layout.episodes_item, root, false);
 		View row = convertView;
 		TextView text = (TextView) row.findViewById(R.id.episodesItemTextView);
 		View overlay = (View) row.findViewById(R.id.episodesSelectedOverlay);
@@ -202,7 +211,7 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	@Override
 	protected View getGroupView(Integer group, int groupNum, boolean visible, View convertView, ViewGroup root) {
 		if ( convertView == null )
-			convertView = LayoutInflater.from(getSherlockActivity()).inflate(R.layout.seasons_item, root, false);
+			convertView = layoutInflater.inflate(R.layout.seasons_item, root, false);
 		View row = convertView;
 		TextView text = (TextView) row.findViewById(R.id.seasonsItemTextView);
 		View overlay = row.findViewById(R.id.seasonsSelectedOverlay);

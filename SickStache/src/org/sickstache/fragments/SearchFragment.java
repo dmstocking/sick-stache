@@ -34,6 +34,7 @@ import org.sickstache.app.LoadingListFragment;
 import org.sickstache.dialogs.LanguageDialog;
 import org.sickstache.fragments.SearchFragment.SearchParams;
 import org.sickstache.helper.Preferences;
+import org.sickstache.widget.SafeArrayAdapter;
 
 import android.app.SearchManager;
 import android.content.DialogInterface;
@@ -59,7 +60,7 @@ public class SearchFragment extends LoadingListFragment<SearchParams, Void, Sear
 	private String query;
 	private LanguageEnum language;
 	
-	private ArrayAdapter<SearchResult> searchAdapter;
+	private SafeArrayAdapter<SearchResult> searchAdapter;
 	private Comparator<SearchResult> sorter;
 	private Pattern hasYear = Pattern.compile("\\(\\d{4}\\)\\s*$");
 	
@@ -73,12 +74,12 @@ public class SearchFragment extends LoadingListFragment<SearchParams, Void, Sear
 				return 0;
 			}
 		};
-		searchAdapter = new ArrayAdapter<SearchResult>(this.getActivity(), R.layout.search_item) {
+		searchAdapter = new SafeArrayAdapter<SearchResult>(this.getActivity(), R.layout.search_item) {
 			@Override
 			public View getView( int position, View convertView, ViewGroup parent ) {
 				View row = convertView;
 				if ( convertView == null ) {
-					row = getActivity().getLayoutInflater().inflate(R.layout.search_item, null);
+					row = layoutInflater.inflate(R.layout.search_item, null);
 				}
 				SearchResult item = getItem(position);
 				TextView ep = (TextView) row.findViewById(R.id.searchItemTextView);

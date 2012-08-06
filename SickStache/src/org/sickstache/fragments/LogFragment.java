@@ -23,6 +23,7 @@ import org.sickbeard.Logs;
 import org.sickstache.R;
 import org.sickstache.app.LoadingListFragment;
 import org.sickstache.helper.Preferences;
+import org.sickstache.widget.SafeArrayAdapter;
 
 import android.os.Bundle;
 import android.view.View;
@@ -36,14 +37,12 @@ public class LogFragment extends LoadingListFragment<Void, Void, Logs> {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		logAdapter = new ArrayAdapter<String>(this.getActivity(), R.layout.simple_text_item) {
+		logAdapter = new SafeArrayAdapter<String>(this.getActivity(), R.layout.simple_text_item) {
 			@Override
 			public View getView( int position, View convertView, ViewGroup parent ) {
-				View row;
-				if ( convertView == null ) {
-					row = getActivity().getLayoutInflater().inflate(R.layout.simple_text_item, null);
-				} else {
-					row = convertView;
+				View row = convertView;
+				if ( row == null ) {
+					row = layoutInflater.inflate(R.layout.simple_text_item, null);
 				}
 				((TextView)row.findViewById(R.id.simple_text_item)).setText(getItem(position));
 				return row;
