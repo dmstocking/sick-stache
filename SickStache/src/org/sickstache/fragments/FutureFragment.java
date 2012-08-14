@@ -32,6 +32,7 @@ import org.sickstache.helper.Preferences;
 import org.sickstache.widget.DefaultImageView;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class FutureFragment extends LoadingSectionListFragment<FutureEpisode, Void, Void, FutureEpisodes> {
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		this.setRetainInstance(true);
+	}
+
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {

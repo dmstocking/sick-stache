@@ -40,6 +40,21 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 	public WorkingTextView search;
 	public WorkingTextView setStatusView;
 
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		Intent parent = activity.getIntent();
+		this.tvdbid = parent.getStringExtra("tvdbid");
+		this.show = parent.getStringExtra("show");
+		this.season = parent.getStringExtra("season");
+		this.episode = parent.getStringExtra("episode");
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		this.setRetainInstance(true);
+	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -54,6 +69,12 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 		this.search = (WorkingTextView)view.findViewById(R.id.searchWorkingTextView);
 		this.statusView = (TextView)view.findViewById(R.id.statusTextView);
 		this.setStatusView = (WorkingTextView)view.findViewById(R.id.setStatusWorkingTextView);
+		
+		this.showView.setText(this.show);
+		this.seasonView.setText(this.season);
+		this.episodeView.setText(this.episode);
+		
+		showImage.setBanner(tvdbid);
 		
 		this.search.text.setText("Search for Episode");
 		this.search.text.setOnClickListener( new View.OnClickListener() {
@@ -108,24 +129,6 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 		});
 	}
 	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		Activity a = this.getActivity();
-		Intent parent = a.getIntent();
-		this.tvdbid = parent.getStringExtra("tvdbid");
-		this.show = parent.getStringExtra("show");
-		this.season = parent.getStringExtra("season");
-		this.episode = parent.getStringExtra("episode");
-
-		this.showView.setText(this.show);
-		this.seasonView.setText(this.season);
-		this.episodeView.setText(this.episode);
-		
-		showImage.setBanner(tvdbid);
-		
-		super.onActivityCreated(savedInstanceState);
-	}
-	
 	public void setStatusEnum(StatusEnum status)
 	{
 		this.status = status;
@@ -145,7 +148,7 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 	@Override
 	protected String getEmptyText() {
 		// no way to be empty
-		return null;
+		return "How is this empty? Please File a bug report so I can fix this.";
 	}
 
 	@Override

@@ -58,6 +58,8 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 	protected abstract String getEmptyText();
 	protected abstract Params[] getRefreshParams();
 	
+	protected boolean justCreated = false;
+	
 	protected int getChoiceMode() {
 		return ListView.CHOICE_MODE_NONE;
 	}
@@ -68,6 +70,7 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setHasOptionsMenu(true);
+		justCreated = true;
 	}
 	
 	@Override
@@ -94,7 +97,9 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		this.refresh();
+		if ( justCreated )
+			this.refresh();
+		justCreated = false;
 	}
 	
 	@Override

@@ -76,21 +76,16 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.setRetainInstance(true);
 		Intent parent = this.getActivity().getIntent();
 		tvdbid = parent.getStringExtra("tvdbid");
 		show = parent.getStringExtra("show");
 	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		layoutInflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		if ( hasHeader() ) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		layoutInflater = inflater;
+		if ( hasHeader() && justCreated ) {
 			header = (LinearLayout)inflater.inflate(R.layout.show_fragment_header, null);
 		}
 		return super.onCreateView(inflater, container, savedInstanceState);
@@ -106,17 +101,22 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		if ( hasHeader() ) {
+			this.getListView().setAdapter(null);
 			this.getListView().addHeaderView(header,null,false);
+			if ( !justCreated )
+				this.getListView().setAdapter(adapter);
 		}
-		showView = (TextView) view.findViewById(R.id.show);
-		showView.setText(show);
-		airs = (TextView) view.findViewById(R.id.airsTextView);
-		quality = (TextView) view.findViewById(R.id.qualityTextView);
-		language = (TextView) view.findViewById(R.id.languageTextView);
-		paused = (TextView) view.findViewById(R.id.pausedTextView);
-		airbydate = (TextView) view.findViewById(R.id.airbydateTextView);
-		showImage = (DefaultImageView) view.findViewById(R.id.showImage);
-		showImage.setBanner( tvdbid );
+		if ( justCreated ) {
+			showView = (TextView) view.findViewById(R.id.show);
+			showView.setText(show);
+			airs = (TextView) view.findViewById(R.id.airsTextView);
+			quality = (TextView) view.findViewById(R.id.qualityTextView);
+			language = (TextView) view.findViewById(R.id.languageTextView);
+			paused = (TextView) view.findViewById(R.id.pausedTextView);
+			airbydate = (TextView) view.findViewById(R.id.airbydateTextView);
+			showImage = (DefaultImageView) view.findViewById(R.id.showImage);
+			showImage.setBanner( tvdbid );
+		}
 	}
 
 	@Override

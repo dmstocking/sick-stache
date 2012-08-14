@@ -37,7 +37,7 @@ public class WhatsNewDialog extends SherlockDialogFragment {
 	private static String whatsNew =
 			"- Fixed a series of bugs on screen rotation.\n" +
 			"\n" +
-			"Please show your support by purchasing this app on Goole Play!";
+			"Please show your support by rating and reviewing this app on Goole Play!";
 	
 	public WhatsNewDialog()
 	{

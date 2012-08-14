@@ -55,10 +55,13 @@ public abstract class LoadingFragment<Params, Progress, Result> extends Sherlock
 	
 	protected AsyncTask<Params,Progress,Result> downloader = new Downloader();
 	
+	protected boolean justCreated = false;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setHasOptionsMenu(true);
+		justCreated = true;
 	}
 	
 	@Override
@@ -88,7 +91,9 @@ public abstract class LoadingFragment<Params, Progress, Result> extends Sherlock
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		this.refresh();
+		if ( justCreated )
+			this.refresh();
+		justCreated = false;
 	}
 	
 	@Override

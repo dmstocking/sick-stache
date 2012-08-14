@@ -40,11 +40,11 @@ public abstract class LoadingSectionListFragment<ListType, Params, Progress, Res
 	protected abstract View getListTypeView(int position, ListType item, View convertView, ViewGroup parent);
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		this.adapter = new SectionAdapter(this.getActivity());
 	}
-
+	
 	public class SectionAdapter extends BaseAdapter {
 
 		private class SectionType {

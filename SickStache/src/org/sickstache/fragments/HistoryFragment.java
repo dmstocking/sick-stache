@@ -42,6 +42,7 @@ public class HistoryFragment extends LoadingSectionListFragment<HistoryItem, Voi
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.setRetainInstance(true);
 //		historyAdapter = new ArrayAdapter<HistoryItem>( this.getActivity(), R.layout.history_item ){
 //			@Override
 //			public View getView( int position, View convertView, ViewGroup parent ) {

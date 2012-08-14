@@ -37,6 +37,7 @@ public class LogFragment extends LoadingListFragment<Void, Void, Logs> {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.setRetainInstance(true);
 		logAdapter = new SafeArrayAdapter<String>(this.getActivity(), R.layout.simple_text_item) {
 			@Override
 			public View getView( int position, View convertView, ViewGroup parent ) {

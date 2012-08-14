@@ -73,6 +73,7 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.setRetainInstance(true);
 	    showAdapter = new SafeArrayAdapter<Show>(this.getActivity(), R.layout.show_banner_item) {
 			@Override
 			public View getView( int position, View convertView, ViewGroup parent ) {
@@ -246,6 +247,7 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 		}
 		return true;
 	}
+	
 	@Override
 	public void onPageScrollStateChanged(int arg0) {
 		// do nothing
@@ -280,7 +282,7 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 	
 	@Override
 	protected void onProgressUpdate(Void... values) {
-		;
+		; // do nothing
 	}
 	
 	@Override

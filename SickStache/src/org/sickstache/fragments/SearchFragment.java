@@ -68,6 +68,7 @@ public class SearchFragment extends LoadingListFragment<SearchParams, Void, Sear
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		this.setRetainInstance(true);
 		sorter = new Comparator<SearchResult>(){
 			@Override
 			public int compare(SearchResult lhs, SearchResult rhs) {
