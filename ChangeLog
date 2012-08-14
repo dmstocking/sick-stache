@@ -1,0 +1,67 @@
+Whats new in this version:
+- Fixed a series of bugs on screen rotation.
+
+Whats new in version 2.1.2:
+- Added many more error messages to make debugging and error reports better.
+- Fixed a problem when fetching a banner that caused it to never be saved.
+- Startup should be slightly faster.
+
+Whats new in version 2.1.1:
+- Fixed crash on Android 4.1
+- Fixed crash on Android 2.2
+- Fixed problem when loading an image that doesnt exist
+
+Whats new in version 2.1:
+- New Banner Cache (Clear your Cache first)
+- Clicking an item in the History now opens the Episode View
+- Error messages are now displayed in views
+- Whats New? dialog
+- What's New? menu item
+
+Whats new in version 2.0.2:
+- Added Delete Show to Edit Show Activity
+- Added Extra Path for people using multiple services on one port
+
+Whats new in version 2.0.1
+- Fixed a problem with Add Show (sorry)
+
+Whats new in version 2.0
+- Updated Add Show View
+- Fixed Add Show bug
+- Mass show edits
+- Mass set episode status
+- Added Search Language
+- Updated Quality Dialog
+- Finally added About Activity :)
+- Fixed spelling mistake
+
+Whats new in version 1.4
+- Updated History View
+- Options now available for Add Show
+- Edit Show options (accessed though menu/actionbar after selecting a show)
+- Updated widgets for options
+- Sort by Name/Relevance/Year added to Add Show search
+- Changed icons to Android 4.0 icons. (might undo idk)
+
+Whats new in version 1.3
+- Under the hood improvements
+- Added Expandable List to seasons
+- Added prescaling of banners (should reduce stutter when scrolling)
+- Removed blocking call from images (should reduce stutter when scrolling)
+- Added HTTP Authentication (Not Properly Tested)
+- Up no longer recreates the main activity
+- Auto Refresh on options changed
+- Fixed a bug with default settings on new devices
+
+Whats new in version 1.2
+- Fixed 4.0 error on screen rotation
+- Added Future Episodes section headers
+- Actually fixed search crash
+
+Whats new in version 1.1.1
+- Added HTTPS
+- Fixed theming on 3.0+ devices
+- Fixed small text
+- Updated ActionBarSherlock?
+- Updated ViewPagerIndicator?
+- Fixed a crashing on search
