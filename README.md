@@ -1,7 +1,9 @@
 SickStache
 =============
 
-SickStache is an open source android app for managing your SickBeard server.
+SickStache is an open source android app for managing your SickBeard server. It is also available on Google Play.
+
+[![Google Play Icon](http://www.android.com/images/brand/android_app_on_play_logo_large.png)](http://play.google.com/store/apps/details?id=org.sickstache)
 
 Features:
 * Android Ice Cream Sandwich (4.0) look and feel
@@ -18,5 +20,3 @@ Features:
 * Mass Episode Edit via Context Action Bar
 * HTTPS Support
 
-![Google Play Icon](http://www.android.com/images/brand/android_app_on_play_logo_large.png)
-Format: [SickStache on Goole Play](http://play.google.com/store/apps/details?id=org.sickstache)
