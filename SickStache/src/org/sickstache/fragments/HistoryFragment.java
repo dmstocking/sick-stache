@@ -27,7 +27,6 @@ import org.sickstache.app.LoadingSectionListFragment;
 import org.sickstache.helper.Preferences;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -35,36 +34,11 @@ import android.widget.TextView;
 
 public class HistoryFragment extends LoadingSectionListFragment<HistoryItem, Void, Void, History> {
 	
-//	private ArrayAdapter<HistoryItem> historyAdapter;
-	
-//	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		this.setRetainInstance(true);
-//		historyAdapter = new ArrayAdapter<HistoryItem>( this.getActivity(), R.layout.history_item ){
-//			@Override
-//			public View getView( int position, View convertView, ViewGroup parent ) {
-//				View row;
-//				if ( convertView == null ) {
-//					row = getActivity().getLayoutInflater().inflate(R.layout.history_item, null);
-//				} else {
-//					row = convertView;
-//				}
-//				HistoryItem item = getItem(position);
-//				((TextView)row.findViewById(R.id.historyDateTextView)).setText(item.date);
-//				((TextView)row.findViewById(R.id.historyEpisodeTextView)).setText(item.show + " - " + item.season + "x" + item.episode + " [" + item.quality + " ]");
-//				if ( item.status.compareTo("Downloaded") == 0 ) {
-//					row.setBackgroundResource(R.color.sickbeard_today_background);
-//				} else {
-//					row.setBackgroundResource(R.color.sickbeard_soon_background);
-//				}
-//				return row;
-//			}
-//		};
+	protected boolean isRetainInstance() {
+		return true;
 	}
-	
+
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
@@ -141,7 +115,6 @@ public class HistoryFragment extends LoadingSectionListFragment<HistoryItem, Voi
 	@Override
 	protected View getListTypeView(int position, HistoryItem item, View convertView, ViewGroup parent) {
 		View row = convertView;
-//		((TextView)row.findViewById(R.id.historyDateTextView)).setText(item.date);
 		((TextView)row.findViewById(R.id.historyEpisodeTextView)).setText(item.date.substring(11) + " - " + item.show + " - " + item.season + "x" + item.episode + " [" + item.quality + " ]");
 		if ( item.status.compareTo("Downloaded") == 0 ) {
 			row.setBackgroundResource(R.color.sickbeard_today_background);

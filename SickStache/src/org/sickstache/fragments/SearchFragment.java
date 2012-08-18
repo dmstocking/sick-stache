@@ -36,13 +36,13 @@ import org.sickstache.fragments.SearchFragment.SearchParams;
 import org.sickstache.helper.Preferences;
 import org.sickstache.widget.SafeArrayAdapter;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -67,8 +67,21 @@ public class SearchFragment extends LoadingListFragment<SearchParams, Void, Sear
 	private SearchResults lastResults = null;
 	
 	@Override
+	protected boolean isRetainInstance() {
+		return true;
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		Intent intent = this.getActivity().getIntent();
+	    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+	    	query = intent.getStringExtra(SearchManager.QUERY);
+	    }
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		this.setRetainInstance(true);
 		sorter = new Comparator<SearchResult>(){
 			@Override
 			public int compare(SearchResult lhs, SearchResult rhs) {
@@ -110,15 +123,6 @@ public class SearchFragment extends LoadingListFragment<SearchParams, Void, Sear
 		super.onCreateOptionsMenu(menu, inflater);
 		menu.removeItem(R.id.searchMenuItem);
 		inflater.inflate(R.menu.search_menu, menu);
-	}
-
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		Intent intent = this.getActivity().getIntent();
-	    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-	    	query = intent.getStringExtra(SearchManager.QUERY);
-	    }
-		super.onViewCreated(view, savedInstanceState);
 	}
 	
 	@Override

@@ -22,6 +22,8 @@ package org.sickstache;
 import org.sickstache.app.SickActivity;
 
 import android.os.Bundle;
+import android.text.util.Linkify;
+import android.widget.TextView;
 
 public class AboutActivity extends SickActivity {
 
@@ -29,6 +31,12 @@ public class AboutActivity extends SickActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.about_activity);
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		Linkify.addLinks((TextView) this.findViewById(R.id.aboutTextView), Linkify.WEB_URLS);
 	}
 
 }

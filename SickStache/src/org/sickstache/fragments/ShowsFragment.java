@@ -36,17 +36,14 @@ import org.sickstache.widget.DefaultImageView;
 import org.sickstache.widget.SafeArrayAdapter;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -58,12 +55,15 @@ import com.actionbarsherlock.view.MenuItem;
 import com.viewpagerindicator.TitlePageIndicator;
 
 public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Show>> implements ViewPager.OnPageChangeListener {
-
-//	private static final String[] showActions = { "Set Quality", "Pause", "Refresh", "Update" };
 	
 	private SafeArrayAdapter<Show> showAdapter;
 	
 	private TitlePageIndicator pageIndicator = null;
+	
+	@Override
+	protected boolean isRetainInstance() {
+		return true;
+	}
 	
 	@Override
 	protected int getChoiceMode() {
@@ -73,7 +73,6 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.setRetainInstance(true);
 	    showAdapter = new SafeArrayAdapter<Show>(this.getActivity(), R.layout.show_banner_item) {
 			@Override
 			public View getView( int position, View convertView, ViewGroup parent ) {
@@ -109,6 +108,12 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 			; // there is no viewPagerIndicator
 			// tried to do this with a check but it always failed
 		}
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		selected.clear();
 	}
 
 	@Override
@@ -250,12 +255,12 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 	
 	@Override
 	public void onPageScrollStateChanged(int arg0) {
-		// do nothing
+		; // do nothing
 	}
 
 	@Override
 	public void onPageScrolled(int arg0, float arg1, int arg2) {
-		// do nothing
+		; // do nothing
 	}
 
 	@Override

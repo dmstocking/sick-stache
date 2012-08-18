@@ -21,18 +21,9 @@ package org.sickstache.widget;
 
 import java.util.List;
 
-import org.sickstache.helper.BannerCache;
-import org.sickstache.task.FetchBannerTask;
-
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 
 public class SafeArrayAdapter<T> extends ArrayAdapter<T> {
 	

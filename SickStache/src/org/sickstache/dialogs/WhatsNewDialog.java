@@ -19,7 +19,6 @@
  */
 package org.sickstache.dialogs;
 
-import android.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -35,9 +34,10 @@ public class WhatsNewDialog extends SherlockDialogFragment {
 	private DialogInterface.OnClickListener okListener = null;
 	
 	private static String whatsNew =
-			"- Fixed a series of bugs on screen rotation.\n" +
+			"- No more refreshing on screen rotation.\n" +
+			"- Upated About activity with proper attribution to libraries used.\n" +
 			"\n" +
-			"Please show your support by rating and reviewing this app on Goole Play!";
+			"Please show your support by purchasing this app on Goole Play!";
 	
 	public WhatsNewDialog()
 	{

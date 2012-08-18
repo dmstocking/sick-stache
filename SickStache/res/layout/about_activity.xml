@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/aboutTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="I am a recently graduated graduate student, who wanted a fast app for managing sickbeard. Afterwords, I thought that everyone else might want to use it. Show your support by purchasing it on Google Play and reviewing it. Thanks!" />
+        android:textSize="18sp"
+        android:text="I am a recently graduated graduate student who wanted a fast app for managing sickbeard. Afterwords, I thought that everyone else might want to use it. :)\n
+\n
+This project is located on https://github.com/Buttink/sick-stashe \n
+\n
+If you have a problem, feel free to send me an email or file an issue at https://github.com/Buttink/sick-stashe/issues \n
+\n
+Libraries Used:\n
+ActionBarSherlock - Jake Wharton\n
+ViewPagerIndicator - Jake Wharton\n
+Gson" />
 
-</LinearLayout>
+</ScrollView>

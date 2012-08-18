@@ -30,12 +30,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public abstract class LoadingFragment<Params, Progress, Result> extends SherlockFragment {
+public abstract class LoadingFragment<Params, Progress, Result> extends SickFragment {
 	
 	public enum Status { NORMAL, WORKING, ERROR, EMPTY };
 	
@@ -55,13 +54,10 @@ public abstract class LoadingFragment<Params, Progress, Result> extends Sherlock
 	
 	protected AsyncTask<Params,Progress,Result> downloader = new Downloader();
 	
-	protected boolean justCreated = false;
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setHasOptionsMenu(true);
-		justCreated = true;
 	}
 	
 	@Override
@@ -91,18 +87,20 @@ public abstract class LoadingFragment<Params, Progress, Result> extends Sherlock
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		if ( justCreated )
+		if ( isInRetainLifecycle() )
+			this.setStatus(Status.NORMAL);
+		else
 			this.refresh();
-		justCreated = false;
+			
 	}
 	
 	@Override
-	public void onDestroyView()
+	public void onDestroy()
 	{
 		if ( downloader != null ) {
 			downloader.cancel(true);
 		}
-		super.onDestroyView();
+		super.onDestroy();
 	}
 	
 	@Override
@@ -213,8 +211,14 @@ public abstract class LoadingFragment<Params, Progress, Result> extends Sherlock
     				LoadingFragment.this.error.setText("Error Retrieving Results\nERROR: "+error.getMessage());
     				LoadingFragment.this.setStatus(LoadingFragment.Status.ERROR);
     			} else if ( result != null ) {
-        			LoadingFragment.this.setStatus(LoadingFragment.Status.NORMAL);
-    				LoadingFragment.this.onPostExecute(result);
+    				try {
+	        			LoadingFragment.this.setStatus(LoadingFragment.Status.NORMAL);
+	    				LoadingFragment.this.onPostExecute(result);
+    				} catch (Exception e) {
+    					// I'm hoping that because I hold these references this will never do a null pointer exception
+	    				LoadingFragment.this.error.setText("Error Retrieving Results\nERROR: "+e.getMessage());
+	    				LoadingFragment.this.setStatus(LoadingFragment.Status.ERROR);
+	    			}
     			}
     		}
     	}

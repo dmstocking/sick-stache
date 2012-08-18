@@ -34,13 +34,12 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public abstract class LoadingListFragment<Params, Progress, Result> extends SherlockListFragment implements AdapterView.OnItemLongClickListener {
+public abstract class LoadingListFragment<Params, Progress, Result> extends SickListFragment implements AdapterView.OnItemLongClickListener {
 	
 	public enum ListStatus { NORMAL, ERROR, EMPTY };
 	
@@ -58,8 +57,6 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 	protected abstract String getEmptyText();
 	protected abstract Params[] getRefreshParams();
 	
-	protected boolean justCreated = false;
-	
 	protected int getChoiceMode() {
 		return ListView.CHOICE_MODE_NONE;
 	}
@@ -70,7 +67,6 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setHasOptionsMenu(true);
-		justCreated = true;
 	}
 	
 	@Override
@@ -97,18 +93,19 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		if ( justCreated )
+		if ( isInRetainLifecycle() )
+			this.setListStatus(ListStatus.NORMAL);
+		else
 			this.refresh();
-		justCreated = false;
 	}
 	
 	@Override
-	public void onDestroyView()
+	public void onDestroy()
 	{
 		if ( downloader != null ) {
 			downloader.cancel(true);
 		}
-		super.onDestroyView();
+		super.onDestroy();
 	}
 	
 	@Override
@@ -212,7 +209,13 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sher
     				LoadingListFragment.this.error.setText("Error Retrieving Results\nERROR: "+error.getMessage());
     				LoadingListFragment.this.setListStatus(ListStatus.ERROR);
     			} else if ( result != null ) {
-    				LoadingListFragment.this.onPostExecute(result);
+    				try {
+    					LoadingListFragment.this.onPostExecute(result);
+    				} catch (Exception e) {
+    					// I'm hoping that because I hold these references this will never do a null pointer exception
+        				LoadingListFragment.this.error.setText("Error Retrieving Results\nERROR: "+e.getMessage());
+        				LoadingListFragment.this.setListStatus(ListStatus.ERROR);
+    				}
     			}
     		}
     	}

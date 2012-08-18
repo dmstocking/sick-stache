@@ -37,8 +37,8 @@ import org.sickstache.helper.Preferences;
 import org.sickstache.task.SetStatusTask;
 import org.sickstache.widget.DefaultImageView;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -74,9 +74,13 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	private LayoutInflater layoutInflater;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		this.setRetainInstance(true);
+	protected boolean isRetainInstance() {
+		return true;
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
 		Intent parent = this.getActivity().getIntent();
 		tvdbid = parent.getStringExtra("tvdbid");
 		show = parent.getStringExtra("show");
@@ -85,7 +89,7 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		layoutInflater = inflater;
-		if ( hasHeader() && justCreated ) {
+		if ( hasHeader() && isInRetainLifecycle() == false ) {
 			header = (LinearLayout)inflater.inflate(R.layout.show_fragment_header, null);
 		}
 		return super.onCreateView(inflater, container, savedInstanceState);
@@ -100,13 +104,10 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		if ( hasHeader() ) {
-			this.getListView().setAdapter(null);
-			this.getListView().addHeaderView(header,null,false);
-			if ( !justCreated )
-				this.getListView().setAdapter(adapter);
-		}
-		if ( justCreated ) {
+		if ( isInRetainLifecycle() == false ) {
+			if ( hasHeader() ) {
+				this.getListView().addHeaderView(header,null,false);
+			}
 			showView = (TextView) view.findViewById(R.id.show);
 			showView.setText(show);
 			airs = (TextView) view.findViewById(R.id.airsTextView);
@@ -116,7 +117,20 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 			airbydate = (TextView) view.findViewById(R.id.airbydateTextView);
 			showImage = (DefaultImageView) view.findViewById(R.id.showImage);
 			showImage.setBanner( tvdbid );
+		} else {
+			// because a header is tied to the listView and not the fragment we have to do this 
+			if ( hasHeader() ) {
+				this.getListView().setAdapter(null);
+				this.getListView().addHeaderView(header,null,false);
+				this.getListView().setAdapter(adapter);
+			}
 		}
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		selected.clear();
 	}
 
 	@Override

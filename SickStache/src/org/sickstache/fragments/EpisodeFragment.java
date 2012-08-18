@@ -26,6 +26,9 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 	public String season;
 	public String episode;
 	public StatusEnum status = null;
+	public String airbydateText = null;
+	public String nameText = null;
+	public String descriptionText = null;
 	
 	public DefaultImageView showImage;
 	
@@ -39,7 +42,12 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 	
 	public WorkingTextView search;
 	public WorkingTextView setStatusView;
-
+	
+	@Override
+	protected boolean isRetainInstance() {
+		return true;
+	}
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -51,12 +59,6 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		this.setRetainInstance(true);
-	}
-
-	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		this.showImage = (DefaultImageView)view.findViewById(R.id.showImage);
@@ -64,10 +66,18 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 		this.seasonView = (TextView)view.findViewById(R.id.seasonTextView);
 		this.episodeView = (TextView)view.findViewById(R.id.episodeTextView);
 		this.airbydate = (TextView)view.findViewById(R.id.airbydateTextView);
+		if ( this.airbydateText != null )
+			this.airbydate.setText(this.airbydateText);
 		this.name = (TextView)view.findViewById(R.id.nameTextView);
+		if ( this.nameText != null )
+			this.name.setText(this.nameText);
 		this.descirption = (TextView)view.findViewById(R.id.descriptionTextView);
+		if ( this.descriptionText != null )
+			this.descirption.setText(this.descriptionText);
 		this.search = (WorkingTextView)view.findViewById(R.id.searchWorkingTextView);
 		this.statusView = (TextView)view.findViewById(R.id.statusTextView);
+		if ( status != null )
+			this.setStatusEnum(status);
 		this.setStatusView = (WorkingTextView)view.findViewById(R.id.setStatusWorkingTextView);
 		
 		this.showView.setText(this.show);
@@ -173,9 +183,12 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 
 	@Override
 	protected void onPostExecute(Episode result) {
-		airbydate.setText(result.airdate);
-		name.setText(result.name);
-		descirption.setText(result.description);
+		airbydateText = result.airdate;
+		nameText = result.name;
+		descriptionText = result.description;
+		airbydate.setText(airbydateText);
+		name.setText(nameText);
+		descirption.setText(descriptionText);
 		setStatusEnum(result.status);
 	}
 }

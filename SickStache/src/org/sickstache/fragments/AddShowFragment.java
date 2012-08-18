@@ -26,12 +26,13 @@ import org.sickbeard.LanguageEnum;
 import org.sickbeard.Show.QualityEnum;
 import org.sickstache.HomeActivity;
 import org.sickstache.R;
+import org.sickstache.app.SickFragment;
 import org.sickstache.dialogs.ErrorDialog;
 import org.sickstache.dialogs.QualityDialog;
 import org.sickstache.dialogs.StatusDialog;
 import org.sickstache.helper.Preferences;
 
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -45,38 +46,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
-public class AddShowFragment extends SherlockFragment {
+public class AddShowFragment extends SickFragment {
 	
-	private class SearchParams {
-		public String tvdbid;
-		public LanguageEnum langauge;
-		public Boolean seasonFolder;
-		public StatusEnum status;
-		public EnumSet<QualityEnum> initial;
-		public EnumSet<QualityEnum> archive;
-		
-		public SearchParams( String tvdbid, LanguageEnum lang, Boolean season, StatusEnum status,
-				EnumSet<QualityEnum> initial, EnumSet<QualityEnum> archive) {
-			this.tvdbid = tvdbid;
-			this.langauge = lang;
-			this.seasonFolder = season;
-			this.status = status;
-			this.initial = initial;
-			this.archive = archive;
-		}
-	}
 	protected Dialog working;
 	
 	public TextView showTextView;
-//	public TextView directoryTextView;
 	public TextView languageTextView;
 	public TextView seasonFolderTextView;
 	public TextView statusTextView;
 	public TextView qualityTextView;
-//	public TextView initialQualityTextView;
-//	public TextView archiveQualityTextView;
 	
 	public LanguageEnum language = null;
 	public Boolean seasonFolder = null;
@@ -88,59 +66,33 @@ public class AddShowFragment extends SherlockFragment {
 	
 	protected String tvdbid;
 	protected String showName;
+	
+	@Override
+	protected boolean isRetainInstance() {
+		return true;
+	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		Intent intent = this.getActivity().getIntent();
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		Intent intent = activity.getIntent();
 		tvdbid = intent.getExtras().getString("tvdbid");
 		showName = intent.getExtras().getString("show");
 		try {
 			language = LanguageEnum.valueOf(intent.getExtras().getString("lang").toLowerCase());
 		} catch (Exception e) { language = null; }
-		showTextView.setText(showName);
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View root = inflater.inflate(R.layout.add_show_fragment, container, false);
 		showTextView = (TextView)root.findViewById(R.id.showTextView);
-//		directoryTextView = (TextView)root.findViewById(R.id.directoryTextView);
-//		directoryTextView.setOnClickListener( new OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				final CharSequence[] items = { "Default" };
-//				
-//				AlertDialog.Builder builder = new AlertDialog.Builder(AddShowFragment.this.getSherlockActivity());
-//				builder.setTitle("Select Directory");
-//				builder.setItems(items, new DialogInterface.OnClickListener() {
-//				    public void onClick(DialogInterface dialog, int item) {
-//				    	
-//				    }
-//				});
-//			}
-//		});
-//		languageTextView = (TextView)root.findViewById(R.id.languageTextView);
-//		languageTextView.setOnClickListener( new OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				// TODO probably should just make this once and save it
-//				String[] items = LanguageEnum.valuesToString();
-////				String[] itemsNDefault = new String[items.length+1];
-////				itemsNDefault[0] = "Default";
-////				for ( int i=0; i < items.length; i++ ) {
-////					itemsNDefault[i+1] = items[i];
-////				}
-//				AlertDialog.Builder builder = new AlertDialog.Builder(AddShowFragment.this.getSherlockActivity());
-//				builder.setTitle("Select Language");
-//				builder.setItems(items, new DialogInterface.OnClickListener() {
-//				    public void onClick(DialogInterface dialog, int item) {
-//				    	language = LanguageEnum.fromOrdinal(item);
-//				    }
-//				});
-//				builder.show();
-//			}
-//		});
+		showTextView.setText(showName);
 		statusTextView = (TextView)root.findViewById(R.id.statusTextView);
 		statusTextView.setOnClickListener( new OnClickListener() {
 			@Override
@@ -185,53 +137,6 @@ public class AddShowFragment extends SherlockFragment {
 				qDialog.show(getFragmentManager(), "quality");
 			}
 		});
-//		initialQualityTextView = (TextView)root.findViewById(R.id.initialQualityTextView);
-//		initialQualityTextView.setOnClickListener( new OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				String[] items = QualityEnum.valuesToString();
-//				AlertDialog.Builder builder = new AlertDialog.Builder(AddShowFragment.this.getSherlockActivity());
-//				builder.setTitle("Select Initial Quality");
-//				builder.setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
-//					
-//					@Override
-//					public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-//						if ( isChecked ) {
-//							initialQuality.add(QualityEnum.fromOrdinal(which));
-//						} else {
-//							initialQuality.remove(QualityEnum.fromOrdinal(which));
-//						}
-//					}
-//				});
-//				builder.show();
-//			}
-//		});
-//		archiveQualityTextView = (TextView)root.findViewById(R.id.archiveQualityTextView);
-//		archiveQualityTextView.setOnClickListener( new OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				String[] rawItems = QualityEnum.valuesToString();
-//				String[] items = new String[6];
-//				for ( int i=0; i < items.length; i++ )
-//					items[i] = rawItems[i+1];
-//				AlertDialog.Builder builder = new AlertDialog.Builder(AddShowFragment.this.getSherlockActivity());
-//				builder.setTitle("Select Archive Quality");
-//				builder.setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
-//					
-//					@Override
-//					public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-//						if ( which == 0 )
-//							return;
-//						if ( isChecked ) {
-//							archiveQuality.add(QualityEnum.fromOrdinal(which+1));
-//						} else {
-//							archiveQuality.remove(QualityEnum.fromOrdinal(which+1));
-//						}
-//					}
-//				});
-//				builder.show();
-//			}
-//		});
 		addButton = (Button)root.findViewById(R.id.addButton);
 		addButton.setOnClickListener( new OnClickListener() {
 			  public void onClick(View v) {
@@ -281,7 +186,7 @@ public class AddShowFragment extends SherlockFragment {
     	private EnumSet<QualityEnum> initial = null;
     	private EnumSet<QualityEnum> archive = null;
     	
-    	public Downloader( String tvdbid, LanguageEnum langauge, Boolean seasonFolder, StatusEnum status, EnumSet<QualityEnum> inital, EnumSet<QualityEnum> archive )
+    	public Downloader( String tvdbid, LanguageEnum language, Boolean seasonFolder, StatusEnum status, EnumSet<QualityEnum> inital, EnumSet<QualityEnum> archive )
     	{
     		this.tvdbid = tvdbid;
     		this.language = language;

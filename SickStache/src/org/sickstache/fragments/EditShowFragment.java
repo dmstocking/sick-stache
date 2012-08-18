@@ -21,6 +21,7 @@ package org.sickstache.fragments;
 
 import org.sickstache.HomeActivity;
 import org.sickstache.R;
+import org.sickstache.app.SickFragment;
 import org.sickstache.dialogs.ErrorDialog;
 import org.sickstache.dialogs.PauseDialog;
 import org.sickstache.dialogs.QualityDialog;
@@ -33,6 +34,7 @@ import org.sickstache.task.UpdateTask;
 import org.sickstache.widget.DefaultImageView;
 import org.sickstache.widget.WorkingTextView;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -44,9 +46,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
-public class EditShowFragment extends SherlockFragment {
+public class EditShowFragment extends SickFragment {
 	
 	protected String tvdbid;
 	protected String show;
@@ -56,15 +56,20 @@ public class EditShowFragment extends SherlockFragment {
 	
 	protected WorkingTextView banner;
 	protected WorkingTextView quality;
-//	protected WorkingTextView archiveQuality;
 	protected WorkingTextView pause;
 	protected WorkingTextView refresh;
 	protected WorkingTextView update;
 	protected WorkingTextView delete;
+	
+	// retaining instance with this fragment doesn't actually do anything
+//	@Override
+//	protected boolean isRetainInstance() {
+//		return true;
+//	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
 		Intent intent = this.getActivity().getIntent();
 		tvdbid = intent.getStringExtra("tvdbid");
 		show = intent.getStringExtra("show");
@@ -77,7 +82,6 @@ public class EditShowFragment extends SherlockFragment {
 		showTextView = (TextView)root.findViewById(R.id.showTextView);
 		banner = (WorkingTextView)root.findViewById(R.id.bannerWorkingTextView);
 		quality = (WorkingTextView)root.findViewById(R.id.qualityWorkingTextView);
-//		archiveQuality = (WorkingTextView)root.findViewById(R.id.archiveQualityWorkingTextView);
 		pause = (WorkingTextView)root.findViewById(R.id.pauseWorkingTextView);
 		refresh = (WorkingTextView)root.findViewById(R.id.refreshWorkingTextView);
 		update = (WorkingTextView)root.findViewById(R.id.updateWorkingTextView);
@@ -86,7 +90,6 @@ public class EditShowFragment extends SherlockFragment {
 		showTextView.setText(show);
 		banner.text.setText("Fetch Banner");
 		quality.text.setText("Quality");
-//		archiveQuality.text.setText("Archive Quality");
 		pause.text.setText("Pause");
 		refresh.text.setText("Refresh");
 		update.text.setText("Update");
@@ -146,71 +149,8 @@ public class EditShowFragment extends SherlockFragment {
 						task.execute();
 					}} );
 				qDialog.show(getFragmentManager(), "quality");
-//				final InitialQualityDialog qDialog = new InitialQualityDialog( true );
-//				qDialog.setTitle("Set Quality");
-//				qDialog.setOnOkClick( new DialogInterface.OnClickListener(){
-//					@Override
-//					public void onClick(DialogInterface arg0, int arg1) {
-//						final ArchiveQualityDialog aDialog = new ArchiveQualityDialog();
-//						aDialog.setTitle("Set Archive Quality");
-//						aDialog.setOnOkClick( new DialogInterface.OnClickListener(){
-//							@Override
-//							public void onClick(DialogInterface dialog, int which) {
-//								quality.setIsWorking(true);
-//								boolean[] archiveQualities = new boolean[7];
-//								archiveQualities[0] = false;
-//								for ( int i=0; i < 6; i++ ) {
-//									archiveQualities[i+1] = aDialog.getSelected()[i];
-//								}
-//								EnumSet<QualityEnum> initial = QualityEnum.fromBooleans( qDialog.getSelected() );
-//								EnumSet<QualityEnum> archive = QualityEnum.fromBooleans( archiveQualities );
-//								SetQualityTask task = new SetQualityTask(tvdbid,initial,archive){
-//									@Override
-//									protected void onPostExecute(Boolean result) {
-//										if ( result != null && result == true )
-//											quality.setIsSuccessful(true);
-//										else
-//											quality.setIsSuccessful(false);
-//									}
-//								};
-//								task.execute();
-//							}});
-//						aDialog.show(getFragmentManager(), "archive quality");
-//					}});
-//				qDialog.show(getFragmentManager(), "quality");
 			}
 		});
-		// removed and make two dialogs for quality
-//		archiveQuality.text.setOnClickListener(new OnClickListener(){
-//			@Override
-//			public void onClick(View arg0) {
-//				final ArchiveQualityDialog qDialog = new ArchiveQualityDialog();
-//				qDialog.setTitle("Set Archive Quality");
-//				qDialog.setOnOkClick( new DialogInterface.OnClickListener(){
-//					@Override
-//					public void onClick(DialogInterface arg0, int arg1) {
-//						archiveQuality.setIsWorking(true);
-//						boolean[] rawQualities = qDialog.getSelected();
-//						boolean[] qualities = new boolean[7];
-//						qualities[0] = false;
-//						for ( int i=0; i < 6; i++ ) {
-//							qualities[i+1] = rawQualities[i];
-//						}
-//						EnumSet<QualityEnum> archive = QualityEnum.fromBooleans( qualities );
-//						SetQualityTask task = new SetQualityTask(tvdbid,null,archive){
-//							@Override
-//							protected void onPostExecute(Boolean result) {
-//								if ( result != null && result == true )
-//									archiveQuality.setIsSuccessful(true);
-//								else
-//									archiveQuality.setIsSuccessful(false);
-//							}
-//						};
-//						task.execute();
-//					}});
-//				qDialog.show(getFragmentManager(), "archiveQuality");
-//			}
-//		});
 		pause.text.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
