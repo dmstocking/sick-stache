@@ -1,3 +1,9 @@
+#General
+*~
+
+#Java
+*.class
+
 #Android
 bin
 gen
@@ -7,6 +13,9 @@ gen
 .classpath
 .settings
 .metadata
+
+#Git
+.gitignore
 
 #Maven
 target

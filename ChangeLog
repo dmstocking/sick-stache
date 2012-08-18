@@ -1,4 +1,8 @@
 Whats new in this version:
+- No more refreshing on screen rotation.
+- Upated About activity with proper attribution to libraries used.
+
+Whats new in version 2.1.3:
 - Fixed a series of bugs on screen rotation.
 
 Whats new in version 2.1.2:
