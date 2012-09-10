@@ -270,6 +270,15 @@ public class SickBeard {
 		return new History( result );
 	}
 	
+	public History history( int limit ) throws Exception
+	{
+		StringBuilder builder = new StringBuilder("history");
+		builder.append("&limit=");
+		builder.append(limit);
+		ArrayList<HistoryJson> result = this.<ArrayList<HistoryJson>>commandData( builder.toString(), new TypeToken<JsonResponse<ArrayList<HistoryJson>>>(){}.getType() );
+		return new History( result );
+	}
+	
 	public boolean historyClear() throws Exception
 	{
 		return this.<Object>commandSuccessful( "history.clear", new TypeToken<JsonResponse<Object>>(){}.getType() );

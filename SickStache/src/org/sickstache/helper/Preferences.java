@@ -109,6 +109,14 @@ public class Preferences implements OnSharedPreferenceChangeListener {
 	{
 		return pref.getString("password", "");
 	}
+
+	public boolean getHistoryService() {
+		return pref.getBoolean("historyService", true);
+	}
+
+	public int getHistoryMax() {
+		return Integer.parseInt(pref.getString("historyMax", "25"));
+	}
 	
 	public SickBeard getSickBeard()
 	{

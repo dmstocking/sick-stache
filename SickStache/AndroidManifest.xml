@@ -16,6 +16,8 @@
         android:theme="@style/Theme.SickStache" >
         <meta-data android:name="android.app.default_searchable"
                 android:value=".ShowSearchActivity" />
+        <service
+            android:name=".NotificationService" />
         <activity
             android:name=".HomeActivity" >
             <intent-filter>

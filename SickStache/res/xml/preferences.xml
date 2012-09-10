@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-        <PreferenceCategory
+    <PreferenceCategory
         android:title="SickBeard Server" >
         <EditTextPreference
             android:title="Host or IP address"
@@ -43,6 +43,20 @@
             android:defaultValue=""
             android:key="password"
             android:inputType="textPassword" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="SickStache Service">
+        <CheckBoxPreference
+            android:title="Enable History Notifications"
+            android:summary="Enable background service to check history and display notifications."
+            android:defaultValue="true"
+            android:key="historyService"/>
+        <EditTextPreference
+            android:title="Max History Check"
+            android:summary="The number of items in history to check to find new items."
+            android:defaultValue="25"
+            android:key="historyMax"
+            android:inputType="number" />
     </PreferenceCategory>
 <!--     <PreferenceCategory -->
 <!--         android:title="History"> -->

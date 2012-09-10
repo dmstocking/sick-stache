@@ -34,10 +34,9 @@ public class WhatsNewDialog extends SherlockDialogFragment {
 	private DialogInterface.OnClickListener okListener = null;
 	
 	private static String whatsNew =
-			"- No more refreshing on screen rotation.\n" +
-			"- Upated About activity with proper attribution to libraries used.\n" +
+			"- New service to check for downloads and snatches.\n" +
 			"\n" +
-			"Please show your support by purchasing this app on Goole Play!";
+			"Please show your support by rating/reviewing this app on Goole Play!";
 	
 	public WhatsNewDialog()
 	{

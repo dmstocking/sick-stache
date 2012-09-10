@@ -27,9 +27,12 @@ import org.sickstache.fragments.ShowsFragment;
 import org.sickstache.helper.BannerCache;
 import org.sickstache.helper.Preferences;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -60,6 +63,8 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 	private ShowsFragment showFrag;
 	private FutureFragment futureFrag;
 	
+	private PendingIntent notificationPendingIntent;
+	
 //	private PingChecker pinger;
 	
     /** Called when the activity is first created. */
@@ -71,6 +76,8 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
         Preferences.setUpSingleton(this);
         Preferences.singleton.registerSharedPreferencesChangedListener(this);
         BannerCache.setUpSingleton(this);
+        
+        updateNotificationService();
 
         setContentView(R.layout.main);
         showFrag = new ShowsFragment();
@@ -170,6 +177,7 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 			if ( preferencesChanged ) {
 				showFrag.refresh();
 				futureFrag.refresh();
+				updateNotificationService();
 				preferencesChanged = false;
 			}
 		}
@@ -178,6 +186,18 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		preferencesChanged = true;
+	}
+
+	private void updateNotificationService() {
+        // this pending intent SHOULD be the same intent no matter what happens
+        notificationPendingIntent = PendingIntent.getService(this, 0, new Intent(this, NotificationService.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+		if ( Preferences.singleton.getHistoryService() == true ) {
+	        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, 0, AlarmManager.INTERVAL_HOUR, notificationPendingIntent);
+//	        am.setInexactRepeating(AlarmManager.RTC, 0, 1000*5, notificationPendingIntent); // 5 seconds ONLY FOR TESTING
+        } else {
+        	am.cancel(notificationPendingIntent);
+        }
 	}
 
 	private class SlideAdapter extends FragmentPagerAdapter implements TitleProvider {

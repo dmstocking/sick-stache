@@ -37,7 +37,6 @@
 	<!-- CAD Menu Item Values -->
 	<string name="edit_item_title">Edit</string>
 	<string name="pause_item_title">Pause</string>
-	<string name="refresh_item_title">Refresh</string>
 	<string name="update_item_title">Update</string>
 	
 	<string name="set_status_item_title">Set Status</string>
