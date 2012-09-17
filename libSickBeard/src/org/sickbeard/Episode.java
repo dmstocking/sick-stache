@@ -43,12 +43,12 @@ public class Episode {
 
 		public static String[] valuesSetableToString()
 		{
-			StatusEnum[] s = StatusEnum.values();
-			String[] ret = new String[s.length];
-			for ( int i=0; i < ret.length; i++ ) {
-				ret[i] = s[i].toJson();
+			StatusEnum[] setable = {WANTED, SKIPPED, ARCHIVED, IGNORED};
+			String[] result = new String[setable.length];
+			for (int i = 0; i < result.length; i++) {
+				result[i] = setable[i].toJson();
 			}
-			return ret;
+			return result;
 		}
 
 		public static StatusEnum fromJson( String statusString )
