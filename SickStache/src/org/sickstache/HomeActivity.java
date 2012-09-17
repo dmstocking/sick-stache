@@ -71,11 +71,9 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // we have got to do this absolutely first
-        // otherwise we could refresh a cache that doesn't exist
-        Preferences.setUpSingleton(this);
-        Preferences.singleton.registerSharedPreferencesChangedListener(this);
-        BannerCache.setUpSingleton(this);
+        // doing this just so that its initialized even though its a lazy initializer
+        Preferences.getSingleton(this).registerSharedPreferencesChangedListener(this);
+        BannerCache.getSingleton(this);
         
         updateNotificationService();
 
@@ -89,20 +87,8 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
         viewpager.setAdapter( pageAdapter );
         pageIndicator.setViewPager( viewpager );
         
-        if ( Preferences.singleton.isUpdated ) {
-        	// make sure the dialog box isnt already up
-        	Fragment f = getSupportFragmentManager().findFragmentByTag("whatsnew");
-        	if ( f == null ) {
-        		// since it isnt lets make it
-		        WhatsNewDialog diag = new WhatsNewDialog();
-		        diag.setOnOkClick( new OnClickListener(){
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Preferences.singleton.isUpdated = false;
-					}
-				});
-		        diag.show(getSupportFragmentManager(), "whatsnew");
-        	}
+        if ( Preferences.getSingleton(this).isUpdated ) {
+        	showWhatsNewDiag();
         }
     }
     
@@ -126,7 +112,8 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 			        			   f.delete();
 			        		   }
 			        	   }
-			        	   BannerCache.singleton.clear();
+			        	   if ( HomeActivity.this != null )
+			        		   BannerCache.getSingleton(HomeActivity.this).clear();
 			           }
 			       }).setNegativeButton( R.string.no , new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
@@ -145,15 +132,7 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
     		this.startActivity(logIntent);
     		return true;
     	case R.id.whatsNewMenuItem:
-	    	WhatsNewDialog diag = new WhatsNewDialog();
-	        diag.setTitle("What's New?");
-	        diag.setOnOkClick( new OnClickListener(){
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					Preferences.singleton.isUpdated = false;
-				}
-			});
-	        diag.show(getSupportFragmentManager(), "whatsnew");
+	    	showWhatsNewDiag();
 	        return true;
     	case R.id.aboutMenuItem:
     		Intent aboutIntent = new Intent( this, AboutActivity.class );
@@ -188,16 +167,32 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 		preferencesChanged = true;
 	}
 
+	private void showWhatsNewDiag() {
+		// make sure the dialog box isnt already up
+		Fragment f = getSupportFragmentManager().findFragmentByTag("whatsnew");
+		if ( f == null ) {
+			// since it isnt lets make it
+		    WhatsNewDialog diag = new WhatsNewDialog();
+		    diag.setOnOkClick( new OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Preferences.getSingleton(HomeActivity.this).isUpdated = false;
+				}
+			});
+		    diag.show(getSupportFragmentManager(), "whatsnew");
+		}
+	}
+
 	private void updateNotificationService() {
-        // this pending intent SHOULD be the same intent no matter what happens
-        notificationPendingIntent = PendingIntent.getService(this, 0, new Intent(this, NotificationService.class), PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-		if ( Preferences.singleton.getHistoryService() == true ) {
-	        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, 0, AlarmManager.INTERVAL_HOUR, notificationPendingIntent);
-//	        am.setInexactRepeating(AlarmManager.RTC, 0, 1000*5, notificationPendingIntent); // 5 seconds ONLY FOR TESTING
-        } else {
-        	am.cancel(notificationPendingIntent);
-        }
+//        // this pending intent SHOULD be the same intent no matter what happens
+//        notificationPendingIntent = PendingIntent.getService(this, 0, new Intent(this, NotificationService.class), PendingIntent.FLAG_UPDATE_CURRENT);
+//        AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+//		if ( Preferences.singleton.getHistoryService() == true ) {
+////	        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, 0, AlarmManager.INTERVAL_HOUR, notificationPendingIntent);
+//	        am.setInexactRepeating(AlarmManager.RTC, 0, 1000*15, notificationPendingIntent); // 15 seconds ONLY FOR TESTING
+//        } else {
+//        	am.cancel(notificationPendingIntent);
+//        }
 	}
 
 	private class SlideAdapter extends FragmentPagerAdapter implements TitleProvider {

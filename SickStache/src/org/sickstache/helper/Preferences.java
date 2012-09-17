@@ -31,18 +31,9 @@ import android.util.Log;
 
 public class Preferences implements OnSharedPreferenceChangeListener {
 	
-	public static Preferences singleton;
+	private static Preferences singleton;
 	
 	public boolean isUpdated;
-	
-	public static void setUpSingleton(Context c)
-	{
-		if ( singleton == null ) {
-			PreferenceManager.setDefaultValues(c, R.xml.preferences, false);
-			SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(c);
-		    singleton = new Preferences( pref, c );
-		}
-	}
 	
 	public static void newSingleton(Context c)
 	{
@@ -51,6 +42,13 @@ public class Preferences implements OnSharedPreferenceChangeListener {
         singleton = new Preferences( pref, c );
 	}
 	
+	public static Preferences getSingleton( Context c ) {
+		if ( singleton == null ) {
+			newSingleton(c);
+		}
+		return singleton;
+	}
+
 	private SharedPreferences pref;
 	private SickBeard sick;
 	

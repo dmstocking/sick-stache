@@ -192,7 +192,7 @@ public class SearchFragment extends LoadingListFragment<SearchParams, Void, Sear
 
 	@Override
 	protected SearchResults doInBackground(SearchParams... arg0) throws Exception {
-		return Preferences.singleton.getSickBeard().sbSearchTvDb(arg0[0].query, arg0[0].language);
+		return Preferences.getSingleton(getSherlockActivity()).getSickBeard().sbSearchTvDb(arg0[0].query, arg0[0].language);
 	}
 
 	@Override

@@ -6,13 +6,14 @@ public class RefreshTask extends SickTask<Void,Void,Boolean> {
 	
 	protected String[] tvdbids;
 	
-	public RefreshTask( String tvdbid )
+	public RefreshTask( Preferences pref, String tvdbid )
 	{
-		this.tvdbids = new String[]{ tvdbid };
+		this( pref, new String[] { tvdbid } );
 	}
 	
-	public RefreshTask( String[] tvdbids )
+	public RefreshTask( Preferences pref, String[] tvdbids )
 	{
+		super(pref);
 		this.tvdbids = tvdbids;
 	}
 
@@ -25,9 +26,9 @@ public class RefreshTask extends SickTask<Void,Void,Boolean> {
 	protected Boolean doInBackground(Void... arg0) {
 		try {
 			if ( tvdbids.length == 1 )
-				return Preferences.singleton.getSickBeard().showRefresh(tvdbids[0]);
+				return pref.getSickBeard().showRefresh(tvdbids[0]);
 			else
-				return Preferences.singleton.getSickBeard().showRefresh(tvdbids);
+				return pref.getSickBeard().showRefresh(tvdbids);
 		} catch (Exception e) {
 			error=e;
 			return null;

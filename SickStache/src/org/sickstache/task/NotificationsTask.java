@@ -1,8 +1,16 @@
 package org.sickstache.task;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.sickbeard.History;
 import org.sickbeard.HistoryItem;
 import org.sickstache.HistoryActivity;
+import org.sickstache.NotificationDismissService;
+import org.sickstache.NotificationService;
 import org.sickstache.helper.Preferences;
 
 import android.app.Notification;
@@ -12,9 +20,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
+// marking this deprecated just so no one tries anything funny
+@Deprecated
 public class NotificationsTask extends SickTask<Void,Void,History> {
 	
-	private static HistoryItem last;
+	// current last item that the user has seen
+	private HistoryItem last = null;
+	// the last item that we have seen that may or may not have been seen
+	// when the user dismisses the notification this will be assigned to last
+	private HistoryItem lastOnDismiss = null;
 	
 	protected Exception e;
 	
@@ -25,6 +39,76 @@ public class NotificationsTask extends SickTask<Void,Void,History> {
 		this.c = c;
 		this.nm = nm;
 	}
+	
+	public static void onNotificationDismiss( Context c )
+	{
+		File cache = new File( c.getExternalCacheDir(), "history" );
+		File lastFile = new File( cache, "last.ser" );
+		File lastOnDismissFile = new File( cache, "lastOnDismiss.ser" );
+		lastOnDismissFile.renameTo(lastFile);
+	}
+	
+	public static void updateLastHistoryItem( Context c, HistoryItem last )
+	{
+//		NotificationsTask.last = last;
+//		lastOnDismiss = last;
+	}
+	
+	private void serializeLast( HistoryItem last )
+	{
+		try {
+			File cache = new File( c.getExternalCacheDir(), "history" );
+			File lastFile = new File( cache, "last.ser" );
+			FileOutputStream fileOut = new FileOutputStream(lastFile);
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(last);
+		} catch (Exception e) {
+			;
+		}
+	}
+	
+	private HistoryItem deserializeLast()
+	{
+		try {
+			File cache = new File( c.getExternalCacheDir(), "history" );
+			File last = new File( cache, "last.ser" );
+			if ( last.exists() == false )
+				return null;
+			FileInputStream fileIn = new FileInputStream(last);
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			return (HistoryItem)in.readObject();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	private void serializeLastOnDismiss( HistoryItem lastOnDismiss )
+	{
+		try {
+			File cache = new File( c.getExternalCacheDir(), "history" );
+			File lastFile = new File( cache, "lastOnDismiss.ser" );
+			FileOutputStream fileOut = new FileOutputStream(lastFile);
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(last);
+		} catch (Exception e) {
+			;
+		}
+	}
+	
+	private HistoryItem deserializeLastOnDismiss()
+	{
+		try {
+			File cache = new File( c.getExternalCacheDir(), "history" );
+			File last = new File( cache, "lastOnDismiss.ser" );
+			if ( last.exists() == false )
+				return null;
+			FileInputStream fileIn = new FileInputStream(last);
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			return (HistoryItem)in.readObject();
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 	@Override
 	public String getTaskLogName() {
@@ -34,14 +118,22 @@ public class NotificationsTask extends SickTask<Void,Void,History> {
 	@Override
 	protected History doInBackground(Void... arg0) {
 		try {
-			// TODO make it only get ten items at a time
-			return Preferences.singleton.getSickBeard().history(Preferences.singleton.getHistoryMax());
+			if ( last == null )
+				last = deserializeLast();
+			History h = Preferences.getSingleton(c).getSickBeard().history(Preferences.getSingleton(c).getHistoryMax());
+			if ( h.items.size() > 0 ) {
+				if ( last == null )
+					serializeLast( h.items.get(0) );
+				else
+					serializeLastOnDismiss( h.items.get(0) );
+			}
+			return h;
 		} catch (Exception e) {
 			this.e = e;
 			return null;
 		}
 	}
-
+	
 	@Override
 	protected void onPostExecute(History result) {
 		super.onPostExecute(result);
@@ -62,7 +154,6 @@ public class NotificationsTask extends SickTask<Void,Void,History> {
 						&& item.episode.compareTo(last.episode) == 0
 						&& item.status.compareTo(last.status) == 0
 						&& item.date.compareTo(item.date) == 0 ) {
-//					i = 4; // This is only here for testing purposes
 					break;
 				}
 			}
@@ -81,19 +172,24 @@ public class NotificationsTask extends SickTask<Void,Void,History> {
 						snatched++;
 					}
 				}
+				// used to tell the service that it needs to change the last item
 				Notification n = new NotificationCompat.BigTextStyle(new NotificationCompat.Builder(c)
 					.setContentTitle( i + " New SickBeard Items")
+					.setTicker("New SickBeard Items")
+					.setNumber(i)
 					.setContentText( downloaded + " items downloaded, " + snatched + " items snatched")
 					.setSmallIcon(android.R.drawable.stat_notify_chat)
+					.setWhen(System.currentTimeMillis())
 					.setContentIntent( PendingIntent.getActivity(c, 0, new Intent(c,HistoryActivity.class), PendingIntent.FLAG_CANCEL_CURRENT))
+					.setDeleteIntent( PendingIntent.getService(c, 0, new Intent(c, NotificationDismissService.class), PendingIntent.FLAG_ONE_SHOT))
 					.setAutoCancel(true))
 					.bigText(bigText.toString())
 					.build();
 				
 				nm.notify(0, n);
 			}
-			// don't forget to set the last item for next time
-			last = result.items.get(0);
+			// don't forget to set the last item on dismiss for next time
+			lastOnDismiss = result.items.get(0);
 		}
 	}
 	

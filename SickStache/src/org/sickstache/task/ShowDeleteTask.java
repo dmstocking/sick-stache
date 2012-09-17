@@ -6,10 +6,9 @@ public class ShowDeleteTask extends SickTask<Void,Void,Boolean> {
 	
 	protected String tvdbid;
 	
-	protected Exception e;
-	
-	public ShowDeleteTask( String tvdbid )
+	public ShowDeleteTask( Preferences pref, String tvdbid )
 	{
+		super(pref);
 		this.tvdbid = tvdbid;
 	}
 
@@ -21,9 +20,9 @@ public class ShowDeleteTask extends SickTask<Void,Void,Boolean> {
 	@Override
 	protected Boolean doInBackground(Void... arg0) {
 		try {
-			return Preferences.singleton.getSickBeard().showDelete(tvdbid);
+			return pref.getSickBeard().showDelete(tvdbid);
 		} catch (Exception e) {
-			this.e = e;
+			error=e;
 			return null;
 		}
 	}

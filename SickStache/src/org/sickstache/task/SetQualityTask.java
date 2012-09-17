@@ -11,8 +11,9 @@ public class SetQualityTask extends SickTask<Void,Void,Boolean> {
 	protected EnumSet<QualityEnum> initial;
 	protected EnumSet<QualityEnum> archive;
 	
-	public SetQualityTask( String tvdbid, EnumSet<QualityEnum> initial, EnumSet<QualityEnum> archive )
+	public SetQualityTask( Preferences pref, String tvdbid, EnumSet<QualityEnum> initial, EnumSet<QualityEnum> archive )
 	{
+		super(pref);
 		this.tvdbid = tvdbid;
 		this.initial = initial;
 		this.archive = archive;
@@ -26,7 +27,7 @@ public class SetQualityTask extends SickTask<Void,Void,Boolean> {
 	@Override
 	protected Boolean doInBackground(Void... arg0) {
 		try {
-			return Preferences.singleton.getSickBeard().showSetQuality(tvdbid, initial, archive);
+			return pref.getSickBeard().showSetQuality(tvdbid, initial, archive);
 		} catch (Exception e) {
 			error=e;
 			return null;

@@ -5,6 +5,7 @@ import java.net.URI;
 import org.sickstache.helper.BannerCache;
 import org.sickstache.helper.Preferences;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -14,8 +15,12 @@ public class FetchBannerTask extends SickTask<Void,Void,Bitmap> {
 	protected int width;
 	protected int height;
 	
-	public FetchBannerTask( String tvdbid, int width, int height )
+	private BannerCache cache;
+	
+	public FetchBannerTask( Preferences pref, BannerCache cache, String tvdbid, int width, int height )
 	{
+		super(pref);
+		this.cache = cache;
 		this.tvdbid = tvdbid;
 		this.width = width;
 		this.height = height;
@@ -32,19 +37,19 @@ public class FetchBannerTask extends SickTask<Void,Void,Bitmap> {
 			// THE KEY IS THE TVDBID!!!!!!!!!
 			String key = tvdbid;
 			
-			Bitmap bitmap = BannerCache.singleton.getFromMemory(key);
+			Bitmap bitmap = cache.getFromMemory(key);
 			// if the bitmap was not in the memory cache
 			if ( bitmap == null ) {
 				// check if it is on the disk
-				if ( BannerCache.singleton.inDisk(key) == true ) {
-					bitmap = BannerCache.singleton.getFromDisk(key);
+				if ( cache.inDisk(key) == true ) {
+					bitmap = cache.getFromDisk(key);
 				}
 				// if it wasn't on the disk then finally go get to url
 				if ( bitmap == null ) {
-					URI uri = Preferences.singleton.getSickBeard().showGetBanner(tvdbid);
+					URI uri = pref.getSickBeard().showGetBanner(tvdbid);
 					bitmap = BitmapFactory.decodeStream(uri.toURL().openStream());
 					if ( bitmap != null )
-						BannerCache.singleton.put(key, bitmap);
+						cache.put(key, bitmap);
 				}
 			}
 			// if we have a bitmap scale it

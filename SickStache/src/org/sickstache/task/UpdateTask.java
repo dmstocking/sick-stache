@@ -6,13 +6,14 @@ public class UpdateTask extends SickTask<Void,Void,Boolean> {
 	
 	protected String[] tvdbids;
 	
-	public UpdateTask( String tvdbid )
+	public UpdateTask( Preferences pref, String tvdbid )
 	{
-		this.tvdbids = new String[]{ tvdbid };
+		this(pref, new String[]{ tvdbid } );
 	}
 	
-	public UpdateTask( String[] tvdbids )
+	public UpdateTask( Preferences pref, String[] tvdbids )
 	{
+		super(pref);
 		this.tvdbids = tvdbids;
 	}
 
@@ -25,9 +26,9 @@ public class UpdateTask extends SickTask<Void,Void,Boolean> {
 	protected Boolean doInBackground(Void... arg0) {
 		try {
 			if ( tvdbids.length == 1 )
-				return Preferences.singleton.getSickBeard().showUpdate(tvdbids[0]);
+				return pref.getSickBeard().showUpdate(tvdbids[0]);
 			else
-				return Preferences.singleton.getSickBeard().showUpdate(tvdbids);
+				return pref.getSickBeard().showUpdate(tvdbids);
 		} catch (Exception e) {
 			error=e;
 			return null;

@@ -68,7 +68,7 @@ public class LogFragment extends LoadingListFragment<Void, Void, Logs> {
 
 	@Override
 	protected Logs doInBackground(Void... arg0) throws Exception {
-		return Preferences.singleton.getSickBeard().logs( Logs.LevelEnum.INFO );
+		return Preferences.getSingleton(getSherlockActivity()).getSickBeard().logs( Logs.LevelEnum.INFO );
 	}
 
 	@Override

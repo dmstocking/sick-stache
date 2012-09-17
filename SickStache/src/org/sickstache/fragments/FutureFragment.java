@@ -115,7 +115,7 @@ public class FutureFragment extends LoadingSectionListFragment<FutureEpisode, Vo
 
 	@Override
 	protected FutureEpisodes doInBackground(Void... arg0) throws Exception {
-		return Preferences.singleton.getSickBeard().future( SortEnum.DATE );
+		return Preferences.getSingleton(getSherlockActivity()).getSickBeard().future( SortEnum.DATE );
 	}
 
 	@Override

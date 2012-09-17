@@ -167,7 +167,8 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 								for ( int i=0; i < selected.size(); i++ ) {
 									tvdbids[i] = showAdapter.getItem(selected.get(i)).id;
 								}
-								PauseTask pause = new PauseTask(tvdbids, pDialog.getPause()){
+								Preferences pref = Preferences.getSingleton(ShowsFragment.this.getSherlockActivity());
+								PauseTask pause = new PauseTask(pref, tvdbids, pDialog.getPause()){
 									@Override
 									protected void onPostExecute(Boolean result) {
 										if ( dialog != null && dialog.isShowing() )
@@ -191,7 +192,8 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 							for ( int i=0; i < selected.size(); i++ ) {
 								tvdbids[i] = showAdapter.getItem(selected.get(i)).id;
 							}
-							RefreshTask refresh = new RefreshTask(tvdbids){
+							Preferences pref = Preferences.getSingleton(ShowsFragment.this.getSherlockActivity());
+							RefreshTask refresh = new RefreshTask(pref, tvdbids){
 								@Override
 								protected void onPostExecute(Boolean result) {
 									if ( dialog != null && dialog.isShowing() )
@@ -214,7 +216,8 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 							for ( int i=0; i < selected.size(); i++ ) {
 								tvdbids[i] = showAdapter.getItem(selected.get(i)).id;
 							}
-							UpdateTask update = new UpdateTask(tvdbids){
+							Preferences pref = Preferences.getSingleton(ShowsFragment.this.getSherlockActivity());
+							UpdateTask update = new UpdateTask(pref, tvdbids){
 								@Override
 								protected void onPostExecute(Boolean result) {
 									if ( dialog != null && dialog.isShowing() )
@@ -282,7 +285,7 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 	
 	@Override
 	protected ArrayList<Show> doInBackground(Void... arg0) throws Exception {
-		return Preferences.singleton.getSickBeard().shows();
+		return Preferences.getSingleton(getSherlockActivity()).getSickBeard().shows();
 	}
 	
 	@Override

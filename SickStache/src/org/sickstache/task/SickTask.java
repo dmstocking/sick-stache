@@ -1,5 +1,8 @@
 package org.sickstache.task;
 
+import org.sickstache.helper.Preferences;
+
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -7,8 +10,15 @@ public abstract class SickTask<Params,Progress,Result> extends AsyncTask<Params,
 	
 	protected Exception error = null;
 	
+	protected Preferences pref;
+	
 	public SickTask()
 	{
+	}
+	
+	public SickTask( Preferences pref )
+	{
+		this.pref = pref;
 	}
 	
 	public abstract String getTaskLogName();

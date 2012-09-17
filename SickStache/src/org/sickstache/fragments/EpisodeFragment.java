@@ -90,7 +90,8 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 		this.search.text.setOnClickListener( new View.OnClickListener() {
 			public void onClick(View v) {
 				search.setIsWorking(true);
-				EpisodeSearchTask task = new EpisodeSearchTask(tvdbid,season,episode){
+				Preferences pref = Preferences.getSingleton(v.getContext());
+				EpisodeSearchTask task = new EpisodeSearchTask(pref,tvdbid,season,episode){
 					@Override
 					protected void onPostExecute(Boolean result) {
 						if ( result != null && result == true ) {
@@ -116,7 +117,8 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 				sDialog.setOnListClick( new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						SetStatusTask task = new SetStatusTask(tvdbid,season,episode,StatusEnum.values()[which]){
+						Preferences pref = Preferences.getSingleton(EpisodeFragment.this.getSherlockActivity());
+						SetStatusTask task = new SetStatusTask(pref,tvdbid,season,episode,StatusEnum.values()[which]){
 							@Override
 							protected void onPostExecute(Boolean result) {
 								if ( result != null && result == true ) {
@@ -173,7 +175,7 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 
 	@Override
 	protected Episode doInBackground(String... arg0) throws Exception {
-		return Preferences.singleton.getSickBeard().episode( arg0[0], arg0[1], arg0[2] );
+		return Preferences.getSingleton(getSherlockActivity()).getSickBeard().episode( arg0[0], arg0[1], arg0[2] );
 	}
 
 	@Override

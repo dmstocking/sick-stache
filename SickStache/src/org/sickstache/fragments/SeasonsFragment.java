@@ -158,7 +158,7 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 
 	@Override
 	protected Show doInBackground(String... arg0) throws Exception {
-		return Preferences.singleton.getSickBeard().show(arg0[0],true);
+		return Preferences.getSingleton(getSherlockActivity()).getSickBeard().show(arg0[0],true);
 	}
 
 	@Override
@@ -311,7 +311,8 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 								final ProgressDialog dialog = ProgressDialog.show(SeasonsFragment.this.getSherlockActivity(), "","Setting Status. Please wait...", true);
 								dialog.setCancelable(true);
 								dialog.show();
-								SetStatusTask task = new SetStatusTask(SeasonsFragment.this.tvdbid, SeasonsFragment.this.getSelected(), sDialog.getStatus(arg1)){
+								Preferences pref = Preferences.getSingleton(SeasonsFragment.this.getSherlockActivity());
+								SetStatusTask task = new SetStatusTask(pref,SeasonsFragment.this.tvdbid, SeasonsFragment.this.getSelected(), sDialog.getStatus(arg1)){
 									@Override
 									protected void onPostExecute(Boolean result) {
 										super.onPostExecute(result);

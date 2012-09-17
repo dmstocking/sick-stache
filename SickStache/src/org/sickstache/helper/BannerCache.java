@@ -36,26 +36,26 @@ public class BannerCache {
 	private static final String cacheLogName = "BannerCache";
 	private static final String cacheFolder = "banners";
 	
-	public static BannerCache singleton;
+	private static BannerCache singleton;
 
-	private Context c;
 	private File cacheDir;
 	private LruCache<String,Bitmap> memCache;
 	
-	public static void setUpSingleton( Context c )
-	{
-		if ( singleton == null )
-			singleton = new BannerCache(c);
-	}
-	
 	public static void newSingleton( Context c )
 	{
-		singleton = new BannerCache(c);
+		singleton = new BannerCache( c.getApplicationContext() );
 	}
 	
+	public static BannerCache getSingleton( Context c ) {
+		if ( singleton == null ) {
+			newSingleton(c);
+		}
+		return singleton;
+	}
+
 	private BannerCache( Context c )
 	{
-		this.c = c;
+		c = c.getApplicationContext();
 		this.cacheDir = new File( c.getExternalCacheDir(), cacheFolder );
 		if ( this.cacheDir.exists() == false  )
 			this.cacheDir.mkdirs();

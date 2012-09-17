@@ -7,16 +7,14 @@ public class PauseTask extends SickTask<Void,Void,Boolean> {
 	protected String[] tvdbid;
 	protected Boolean pause;
 	
-	protected Exception e;
-	
-	public PauseTask( String tvdbid, Boolean pause )
+	public PauseTask( Preferences pref, String tvdbid, Boolean pause )
 	{
-		this.tvdbid = new String[]{ tvdbid };
-		this.pause = pause;
+		this( pref, new String[]{ tvdbid }, pause );
 	}
 	
-	public PauseTask ( String[] tvdbid, Boolean pause )
+	public PauseTask ( Preferences pref, String[] tvdbid, Boolean pause )
 	{
+		super(pref);
 		this.tvdbid = tvdbid;
 		this.pause = pause;
 	}
@@ -30,11 +28,11 @@ public class PauseTask extends SickTask<Void,Void,Boolean> {
 	protected Boolean doInBackground(Void... arg0) {
 		try {
 			if ( tvdbid.length == 1)
-				return Preferences.singleton.getSickBeard().showPause(tvdbid[0], pause);
+				return pref.getSickBeard().showPause(tvdbid[0], pause);
 			else
-				return Preferences.singleton.getSickBeard().showPause(tvdbid, pause);
+				return pref.getSickBeard().showPause(tvdbid, pause);
 		} catch (Exception e) {
-			this.e = e;
+			error=e;
 			return null;
 		}
 	}

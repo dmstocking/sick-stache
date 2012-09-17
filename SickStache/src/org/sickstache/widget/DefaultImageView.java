@@ -20,6 +20,7 @@
 package org.sickstache.widget;
 
 import org.sickstache.helper.BannerCache;
+import org.sickstache.helper.Preferences;
 import org.sickstache.task.FetchBannerTask;
 
 import android.content.Context;
@@ -70,7 +71,7 @@ public class DefaultImageView extends ImageView {
 		if ( task != null ) {
 			task.cancel(true);
 		}
-		Bitmap bitmap = BannerCache.singleton.getFromMemory(tvdbid);
+		Bitmap bitmap = BannerCache.getSingleton(getContext()).getFromMemory(tvdbid);
 		if ( bitmap != null ) {
 			// I dupe this statement mainly because i don't want to start a task before i set the bitmap
 			// granted the task currently doens't actually run before i would assign the bitmap
@@ -80,7 +81,7 @@ public class DefaultImageView extends ImageView {
 			if ( defaultBitmap == null )
 				defaultBitmap = BitmapFactory.decodeResource(this.getResources(), defaultResource);
 			this.setImageBitmap(defaultBitmap);
-			task = new FetchBannerTask( tvdbid, this.getWidth(), this.getHeight() ){
+			task = new FetchBannerTask( Preferences.getSingleton(getContext()), BannerCache.getSingleton(getContext()),tvdbid, this.getWidth(), this.getHeight() ){
 				@Override
 				protected void onPostExecute(Bitmap result) {
 					super.onPostExecute(result);

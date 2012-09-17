@@ -25,6 +25,7 @@ import org.sickstache.EpisodeActivity;
 import org.sickstache.R;
 import org.sickstache.app.LoadingSectionListFragment;
 import org.sickstache.helper.Preferences;
+import org.sickstache.task.NotificationsTask;
 
 import android.content.Intent;
 import android.view.View;
@@ -68,7 +69,7 @@ public class HistoryFragment extends LoadingSectionListFragment<HistoryItem, Voi
 
 	@Override
 	protected History doInBackground(Void... arg0) throws Exception {
-		return Preferences.singleton.getSickBeard().history();
+		return Preferences.getSingleton(getSherlockActivity()).getSickBeard().history();
 	}
 
 	@Override
@@ -80,6 +81,9 @@ public class HistoryFragment extends LoadingSectionListFragment<HistoryItem, Voi
 	protected void onPostExecute(History result) {
 		this.setListAdapter(adapter);
 		adapter.clear();
+//		if ( result.items.size() > 0 ) {
+//			NotificationsTask.updateLastHistoryItem(result.items.get(0));
+//		}
 		String lastDate = "";
 		for ( HistoryItem item : result.items ) {
 			if ( item.date.regionMatches(0, lastDate, 0, 10) == false ) {

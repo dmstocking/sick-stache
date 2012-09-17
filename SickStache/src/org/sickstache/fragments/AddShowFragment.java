@@ -199,7 +199,7 @@ public class AddShowFragment extends SickFragment {
     	@Override
     	protected Boolean doInBackground(Void... arg0) {
     		try {
-    			return Preferences.singleton.getSickBeard().showAddNew(tvdbid,
+    			return Preferences.getSingleton(AddShowFragment.this.getSherlockActivity()).getSickBeard().showAddNew(tvdbid,
     					language,
     					seasonFolder,
     					status,

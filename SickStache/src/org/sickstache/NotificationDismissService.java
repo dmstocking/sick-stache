@@ -26,15 +26,13 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-public class NotificationService extends Service {
+public class NotificationDismissService extends Service {
 
 	NotificationManager nm;
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-//		nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-//		NotificationsTask task = new NotificationsTask( this, nm );
-//		task.execute();
+//		NotificationsTask.onNotificationDismiss();
 		return super.onStartCommand(intent, flags, startId);
 	}
 

@@ -25,6 +25,8 @@ import org.sickstache.app.SickFragment;
 import org.sickstache.dialogs.ErrorDialog;
 import org.sickstache.dialogs.PauseDialog;
 import org.sickstache.dialogs.QualityDialog;
+import org.sickstache.helper.BannerCache;
+import org.sickstache.helper.Preferences;
 import org.sickstache.task.FetchInternetBannerTask;
 import org.sickstache.task.PauseTask;
 import org.sickstache.task.RefreshTask;
@@ -100,7 +102,9 @@ public class EditShowFragment extends SickFragment {
 			public void onClick(View arg0) {
 				try {
 					banner.setIsWorking(true);
-					FetchInternetBannerTask task = new FetchInternetBannerTask(tvdbid){
+					Preferences pref = Preferences.getSingleton(arg0.getContext());
+					BannerCache cache = BannerCache.getSingleton(arg0.getContext());
+					FetchInternetBannerTask task = new FetchInternetBannerTask(pref, cache, tvdbid){
 						@Override
 						protected void onPostExecute(Bitmap result) {
 							super.onPostExecute(result);
@@ -131,7 +135,8 @@ public class EditShowFragment extends SickFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						quality.setIsWorking(true);
-						SetQualityTask task = new SetQualityTask(tvdbid,qDialog.getInitialQuality(),qDialog.getArchiveQuality()){
+						Preferences pref = Preferences.getSingleton(EditShowFragment.this.getSherlockActivity());
+						SetQualityTask task = new SetQualityTask(pref, tvdbid, qDialog.getInitialQuality(), qDialog.getArchiveQuality()){
 							@Override
 							protected void onPostExecute(Boolean result) {
 								if ( result != null && result == true ) {
@@ -160,7 +165,8 @@ public class EditShowFragment extends SickFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						pause.setIsWorking(true);
-						PauseTask task = new PauseTask(tvdbid, pDialog.getPause()){
+						Preferences pref = Preferences.getSingleton(EditShowFragment.this.getSherlockActivity());
+						PauseTask task = new PauseTask(pref, tvdbid, pDialog.getPause()){
 							@Override
 							protected void onPostExecute(Boolean result) {
 								super.onPostExecute(result);
@@ -185,7 +191,8 @@ public class EditShowFragment extends SickFragment {
 			@Override
 			public void onClick(View arg0) {
 				refresh.setIsWorking(true);
-				RefreshTask task = new RefreshTask(tvdbid){
+				Preferences pref = Preferences.getSingleton(arg0.getContext());
+				RefreshTask task = new RefreshTask(pref, tvdbid){
 					@Override
 					protected void onPostExecute(Boolean result) {
 						super.onPostExecute(result);
@@ -208,7 +215,8 @@ public class EditShowFragment extends SickFragment {
 			@Override
 			public void onClick(View arg0) {
 				update.setIsWorking(true);
-				UpdateTask task = new UpdateTask(tvdbid){
+				Preferences pref = Preferences.getSingleton(arg0.getContext());
+				UpdateTask task = new UpdateTask(pref, tvdbid){
 					@Override
 					protected void onPostExecute(Boolean result) {
 						super.onPostExecute(result);
@@ -238,7 +246,8 @@ public class EditShowFragment extends SickFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						delete.setIsWorking(true);
-						ShowDeleteTask task = new ShowDeleteTask(tvdbid){
+						Preferences pref = Preferences.getSingleton(EditShowFragment.this.getSherlockActivity());
+						ShowDeleteTask task = new ShowDeleteTask(pref, tvdbid){
 							@Override
 							protected void onPostExecute(Boolean result) {
 								super.onPostExecute(result);

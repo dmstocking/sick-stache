@@ -115,7 +115,7 @@ public class EpisodesFragment extends LoadingListFragment<Void, Void, Season> {
 
 	@Override
 	protected Season doInBackground(Void... arg0) throws Exception {
-		return Preferences.singleton.getSickBeard().showSeasons( tvdbid, season );
+		return Preferences.getSingleton(getSherlockActivity()).getSickBeard().showSeasons( tvdbid, season );
 	}
 
 	@Override

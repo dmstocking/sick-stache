@@ -5,6 +5,7 @@ import java.net.URI;
 import org.sickstache.helper.BannerCache;
 import org.sickstache.helper.Preferences;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -12,8 +13,12 @@ public class FetchInternetBannerTask extends SickTask<Void,Void,Bitmap> {
 
 	protected String tvdbid;
 	
-	public FetchInternetBannerTask( String tvdbid )
+	private BannerCache cache;
+	
+	public FetchInternetBannerTask( Preferences pref, BannerCache cache, String tvdbid )
 	{
+		super(pref);
+		this.cache = cache;
 		this.tvdbid = tvdbid;
 	}
 	
@@ -28,10 +33,10 @@ public class FetchInternetBannerTask extends SickTask<Void,Void,Bitmap> {
 			// THE KEY IS THE TVDBID!!!!!!!!!
 			String key = tvdbid;
 			
-			URI uri = Preferences.singleton.getSickBeard().showGetBanner(tvdbid);
+			URI uri = pref.getSickBeard().showGetBanner(tvdbid);
 			Bitmap bitmap = BitmapFactory.decodeStream(uri.toURL().openStream());
 			if ( bitmap != null )
-				BannerCache.singleton.put(key, bitmap);
+				cache.put(key, bitmap);
 			
 			return bitmap;
 		} catch (Exception e) {
