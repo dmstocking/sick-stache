@@ -22,46 +22,56 @@ package org.sickbeard;
 import org.sickbeard.json.EpisodeJson;
 
 public class Episode {
-	
+
 	public enum StatusEnum {
-		WANTED, SKIPPED, ARCHIVED, IGNORED, UNAIRED, SNATCHED, DOWNLOADED;
-		
+		UNKNOWN("Unknown"),
+		UNAIRED("Unaired"),
+		SNATCHED("Snatched"),
+		DOWNLOADED("Downloaded"),
+		SKIPPED("Skipped"),
+		SNATCHED_PROPER("Snatched (Proper)"),
+		WANTED("Wanted"),
+		ARCHIVED("Archived"),
+		IGNORED("Ignored");
+
+		private final String statusString;
+
+		private StatusEnum(String statusString)
+		{
+			this.statusString = statusString;
+		}
+
 		public static String[] valuesSetableToString()
 		{
 			StatusEnum[] s = StatusEnum.values();
-			String[] ret = new String[4];
+			String[] ret = new String[s.length];
 			for ( int i=0; i < ret.length; i++ ) {
-				ret[i] = s[i].toJson();
+				ret[i] = s[i].statusString;
 			}
 			return ret;
 		}
-		
-		public static StatusEnum fromJson( String status )
+
+		public static StatusEnum fromJson( String statusString )
 		{
-			return StatusEnum.valueOf(status.toUpperCase());
+			for (StatusEnum status : values()) {
+				if (status.statusString.equalsIgnoreCase(statusString)) {
+					return status;
+				}
+			}
+			return StatusEnum.UNKNOWN;
 		}
-		
+
 		public String toJson()
 		{
-			return this.toString().toLowerCase();
+			return this.name().toLowerCase();
 		}
-		
-		public static String[] valuesToString()
-		{
-			StatusEnum[] enums = StatusEnum.values();
-			String[] items = new String[enums.length];
-			for ( int i=0; i < enums.length; i++ ) {
-				items[i] = enums[i].toString();
-			}
-			return items;
-		}
-		
+
 		public static StatusEnum fromOrdinal(int index)
 		{
 			return StatusEnum.values()[index];
 		}
 	}
-	
+
 	public String tvdbid;
 	public String episode;
 	public String airdate;
@@ -70,7 +80,7 @@ public class Episode {
 	public String name;
 	public String quality;
 	public StatusEnum status;
-	
+
 	public Episode( EpisodeJson json ) {
 		episode = json.episode;
 		airdate = json.airdate;
