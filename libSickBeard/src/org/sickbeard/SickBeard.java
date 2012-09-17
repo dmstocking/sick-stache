@@ -69,6 +69,9 @@ import org.sickbeard.json.type.JsonBoolean;
 import org.sickbeard.net.SickAuthenticator;
 import org.sickbeard.net.ssl.DefaultTrustManager;
 
+import android.os.AsyncTask;
+import android.util.Log;
+
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
@@ -87,6 +90,8 @@ public class SickBeard {
 	
 	private String user;
 	private String password;
+	
+	private int apiVersion = 3;
 	
 	public SickBeard( String hostname, String port, String api, boolean https ) {
 		this(hostname,port,api,https,"","","");
@@ -121,6 +126,39 @@ public class SickBeard {
 		} catch (Exception e){
 			;
 		}
+		/***********************************************************
+		 * ANDROID SPECIFIC START                                  *
+		 ***********************************************************/
+		// start a AsyncTask to try and find the actual api version number
+		AsyncTask<Void,Void,CommandsJson> task = new AsyncTask<Void,Void,CommandsJson>(){
+			@Override
+			protected CommandsJson doInBackground(Void... arg0) {
+				try {
+					return SickBeard.this.sbGetCommands();
+				} catch (Exception e) {
+					Log.e("SickBeard", e.getMessage(), e);
+					return null;
+				}
+			}
+			
+			@Override
+			protected void onPostExecute(CommandsJson result) {
+				// do nothing because this is a network error
+				if ( result == null )
+					return;
+				try {
+					// if we get a version use it
+					SickBeard.this.apiVersion = Integer.valueOf(result.api_version);
+				} catch (NumberFormatException e) {
+					// 2 was the odd float so assume its 2 if we cant get an int
+					SickBeard.this.apiVersion = 2;
+				}
+		     }
+		};
+		task.execute();
+		/***********************************************************
+		 * ANDROID SPECIFIC END                                    *
+		 ***********************************************************/
 	}
 	
 	public SickBeard( SickBeard sick )
@@ -137,6 +175,11 @@ public class SickBeard {
 		this.path = path;
 		this.user = user;
 		this.password = password;
+	}
+	
+	public int getApiVersion()
+	{
+		return apiVersion;
 	}
 	
 	public URI getServerUri() throws URISyntaxException
@@ -363,7 +406,13 @@ public class SickBeard {
 			builder.append(language.getAbbrev());
 		}
 		if ( seasonFolders != null ) {
-			builder.append("&season_folder=");
+			// the option isnt called season folders anymore
+			if ( apiVersion >= 3 ) {
+				builder.append("&flatten_folders=");
+			} else {
+				builder.append("&season_folder=");
+			}
+			// if you pass me a boolean you better damn well have checked the version number
 			builder.append( seasonFolders ? "1" : "0" );
 		}
 		if ( status != null ) {

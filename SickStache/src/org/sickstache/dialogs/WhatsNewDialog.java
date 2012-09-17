@@ -34,7 +34,10 @@ public class WhatsNewDialog extends SherlockDialogFragment {
 	private DialogInterface.OnClickListener okListener = null;
 	
 	private static String whatsNew =
-			"- New service to check for downloads and snatches.\n" +
+			"- Fixed a weird bug that intermitatly would crash SickStach.\n" +
+			"- Moved History out of the menu and into the Home Activity.\n" +
+			"- Added missing SickBeard Status.\n" +
+			"- Support for SickBeard \"Flatten Folders\" option.\n" +
 			"\n" +
 			"Please show your support by rating/reviewing this app on Goole Play!";
 	

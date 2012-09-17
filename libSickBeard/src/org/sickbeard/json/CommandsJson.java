@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class CommandsJson {
 	public ArrayList<String> api_commands;
-	//TODO see if this is actually a float
-	public float api_version;
+	// this went from float to int and unfortunately will need to be tested on return
+	public String api_version;
 	public String sb_version;
 }

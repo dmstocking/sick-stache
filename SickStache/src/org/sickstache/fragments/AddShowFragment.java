@@ -121,6 +121,9 @@ public class AddShowFragment extends SickFragment {
 					seasonFolderTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.btn_check_off, 0);
 			}
 		});
+		if ( Preferences.getSingleton(getSherlockActivity()).getSickBeard().getApiVersion() >= 3 ) {
+			seasonFolderTextView.setText("Flatten Folders");
+		}
 		qualityTextView = (TextView)root.findViewById(R.id.qualityTextView);
 		qualityTextView.setOnClickListener( new OnClickListener() {
 			@Override
