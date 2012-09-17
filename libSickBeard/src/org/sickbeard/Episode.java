@@ -46,7 +46,7 @@ public class Episode {
 			StatusEnum[] s = StatusEnum.values();
 			String[] ret = new String[s.length];
 			for ( int i=0; i < ret.length; i++ ) {
-				ret[i] = s[i].statusString;
+				ret[i] = s[i].toJson();
 			}
 			return ret;
 		}
