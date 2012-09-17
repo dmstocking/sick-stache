@@ -112,13 +112,13 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 		this.setStatusView.text.setText("Set Status");
 		this.setStatusView.text.setOnClickListener( new View.OnClickListener() {
 			public void onClick(View v) {
-				StatusDialog sDialog = new StatusDialog();
+				final StatusDialog sDialog = new StatusDialog();
 				sDialog.setTitle("Set Status");
 				sDialog.setOnListClick( new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						Preferences pref = Preferences.getSingleton(EpisodeFragment.this.getSherlockActivity());
-						SetStatusTask task = new SetStatusTask(pref,tvdbid,season,episode,StatusEnum.values()[which]){
+						SetStatusTask task = new SetStatusTask(pref,tvdbid,season,episode,sDialog.getStatus(which)){
 							@Override
 							protected void onPostExecute(Boolean result) {
 								if ( result != null && result == true ) {

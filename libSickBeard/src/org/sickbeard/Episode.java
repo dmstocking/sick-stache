@@ -35,18 +35,27 @@ public class Episode {
 		IGNORED("Ignored");
 
 		private final String statusString;
+		
+		private static StatusEnum[] setable;
 
 		private StatusEnum(String statusString)
 		{
 			this.statusString = statusString;
 		}
+		
+		public static StatusEnum[] valuesSetable()
+		{
+			if ( setable == null ) {
+				setable = new StatusEnum[]{WANTED, SKIPPED, ARCHIVED, IGNORED};
+			}
+			return setable;
+		}
 
 		public static String[] valuesSetableToString()
 		{
-			StatusEnum[] setable = {WANTED, SKIPPED, ARCHIVED, IGNORED};
-			String[] result = new String[setable.length];
+			String[] result = new String[valuesSetable().length];
 			for (int i = 0; i < result.length; i++) {
-				result[i] = setable[i].toJson();
+				result[i] = valuesSetable()[i].toJson();
 			}
 			return result;
 		}

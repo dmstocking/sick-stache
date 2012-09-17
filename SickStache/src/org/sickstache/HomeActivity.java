@@ -160,6 +160,7 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 			if ( preferencesChanged ) {
 				showFrag.refresh();
 				futureFrag.refresh();
+				historyFrag.refresh();
 				updateNotificationService();
 				preferencesChanged = false;
 			}

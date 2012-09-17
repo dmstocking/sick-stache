@@ -33,8 +33,8 @@ public class SickListFragment extends SherlockListFragment {
 
 	@Override
 	public void onDetach() {
+		super.onDetach();
 		this.retainedLifecycle = true; // past this point if this is retained then this value will stay true
 		// if it goes back to false then we recreated the fragment
-		super.onDetach();
 	}
 }
