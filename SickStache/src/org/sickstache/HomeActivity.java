@@ -23,6 +23,7 @@ import java.io.File;
 
 import org.sickstache.dialogs.WhatsNewDialog;
 import org.sickstache.fragments.FutureFragment;
+import org.sickstache.fragments.HistoryFragment;
 import org.sickstache.fragments.ShowsFragment;
 import org.sickstache.helper.BannerCache;
 import org.sickstache.helper.Preferences;
@@ -62,6 +63,7 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 	
 	private ShowsFragment showFrag;
 	private FutureFragment futureFrag;
+	private HistoryFragment historyFrag;
 	
 	private PendingIntent notificationPendingIntent;
 	
@@ -80,6 +82,7 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
         setContentView(R.layout.main);
         showFrag = new ShowsFragment();
         futureFrag = new FutureFragment();
+        historyFrag = new HistoryFragment();
         
         viewpager = ((ViewPager)findViewById(R.id.viewpager));
         pageIndicator = ((TitlePageIndicator)findViewById(R.id.viewPagerIndicator));
@@ -123,10 +126,11 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 			AlertDialog alert = builder.create();
 			alert.show();
     		return true;
-    	case R.id.historyMenuItem:
-    		Intent historyIntent = new Intent( this, HistoryActivity.class );
-    		this.startActivity(historyIntent);
-    		return true;
+    		// this was moved to a tab on the home activity
+//    	case R.id.historyMenuItem:
+//    		Intent historyIntent = new Intent( this, HistoryActivity.class );
+//    		this.startActivity(historyIntent);
+//    		return true;
     	case R.id.logMenuItem:
     		Intent logIntent = new Intent( this, LogActivity.class );
     		this.startActivity(logIntent);
@@ -208,13 +212,15 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 				return showFrag;
 			case 1:
 				return futureFrag;
+			case 2:
+				return historyFrag;
 			}
 			return null;
 		}
 
 		@Override
 		public int getCount() {
-			return 2;
+			return 3;
 		}
 
 		public String getTitle(int position) {
@@ -223,6 +229,8 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 				return "Shows";
 			case 1:
 				return "Future Episodes";
+			case 2:
+				return "History";
 			}
 			return null;
 		}

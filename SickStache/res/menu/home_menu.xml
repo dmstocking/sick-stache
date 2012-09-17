@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item
-        android:id="@+id/historyMenuItem"
-        android:title="@string/history_item_title"
-        android:icon="@drawable/ic_menu_recent_history"
-        android:showAsAction="never" />
+<!--     Moved to the Home Activity's last tab -->
+<!--     <item -->
+<!--         android:id="@+id/historyMenuItem" -->
+<!--         android:title="@string/history_item_title" -->
+<!--         android:icon="@drawable/ic_menu_recent_history" -->
+<!--         android:showAsAction="never" /> -->
     <item
         android:id="@+id/logMenuItem"
         android:title="@string/log_item_title"

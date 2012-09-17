@@ -23,10 +23,18 @@ public class SickFragment extends SherlockFragment {
 	}
 
 	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		// this is a gay hidden state that exists because of the FragmentTransaction.detach
+		if ( isDetached() ) {
+			this.retainedLifecycle = true;
+		}
+	}
+
+	@Override
 	public void onDetach() {
 		super.onDetach();
-		this.retainedLifecycle = true; // past this point if this is retained
-										// then this value will stay true
+		this.retainedLifecycle = true; // past this point if this is retained then this value will stay true
 		// if it goes back to false then we recreated the fragment
 	}
 }
