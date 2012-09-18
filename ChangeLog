@@ -1,7 +1,7 @@
 Whats new in this version:
-- Fixed a weird bug that intermitatly would crash SickStach.
-- Moved History out of the menu and into the Home Activity.
-- Added missing SickBeard Status.
+- Fixed a weird bug that would intermittently crash SickStache.
+- Moved History from the menu to the Home Activity.
+- Added missing SickBeard Status (Thanks to Johno Crawford for the provided patch).
 - Support for SickBeard "Flatten Folders" option.
 
 Whats new in version 2.2:
