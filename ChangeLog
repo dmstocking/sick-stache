@@ -1,4 +1,10 @@
 Whats new in this version:
+- Fixed a weird bug that intermitatly would crash SickStach.
+- Moved History out of the menu and into the Home Activity.
+- Added missing SickBeard Status.
+- Support for SickBeard "Flatten Folders" option.
+
+Whats new in version 2.2:
 - No more refreshing on screen rotation.
 - Upated About activity with proper attribution to libraries used.
 

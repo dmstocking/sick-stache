@@ -14,6 +14,10 @@ gen
 .settings
 .metadata
 
+# this was an experiment and I dont want to pollute the repo
+#IntelliJ IDEA
+.iml
+
 #Git
 .gitignore
 
