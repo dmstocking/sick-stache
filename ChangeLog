@@ -1,4 +1,10 @@
 Whats new in this version:
+- Added help to the menu.
+- Moved clear cache into settings.
+- Gave proper attribution to Johno Crawford. (helped fixed a critical bug!)
+- Changed project setup for easier building. (Maven/IntelliJ IDEA)
+
+Whats new in version 2.2.1:
 - Fixed a weird bug that would intermittently crash SickStache.
 - Moved History from the menu to the Home Activity.
 - Added missing SickBeard Status (Thanks to Johno Crawford for the provided patch).

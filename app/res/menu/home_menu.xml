@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<!--     Moved to the Home Activity's last tab -->
+<!--     <item -->
+<!--         android:id="@+id/historyMenuItem" -->
+<!--         android:title="@string/history_item_title" -->
+<!--         android:icon="@drawable/ic_menu_recent_history" -->
+<!--         android:showAsAction="never" /> -->
+    <item
+        android:id="@+id/logMenuItem"
+        android:title="@string/log_item_title"
+        android:icon="@drawable/ic_menu_info_details"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/whatsNewMenuItem"
+        android:title="@string/whats_new_item_title"
+        android:icon="@drawable/ic_menu_help"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/settingsMenuItem"
+        android:title="@string/settings_item_title"
+        android:icon="@drawable/ic_menu_manage"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/helpMenuItem"
+        android:title="@string/help_item_title"
+        android:icon="@drawable/ic_menu_help"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/aboutMenuItem"
+        android:title="@string/about_item_title"
+        android:icon="@drawable/ic_menu_help"
+        android:showAsAction="never" />
+</menu>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory
+        android:title="SickBeard Server" >
+        <EditTextPreference
+            android:title="Host or IP address"
+            android:summary="The host name or ip address of your SickBeard server."
+            android:defaultValue="192.168.0.101"
+            android:key="host"
+            android:inputType="textUri" />
+        <EditTextPreference
+            android:title="Port"
+            android:summary="The port to connect to your SickBeard server."
+            android:defaultValue="8081"
+            android:key="port"
+            android:inputType="number" />
+        <EditTextPreference
+            android:title="Extra Path"
+            android:summary="(OPTIONAL) An extra path if needed to connect to you SickBeard server."
+            android:defaultValue=""
+            android:key="path"
+            android:inputType="textUri" />
+        <EditTextPreference
+            android:title="API Key"
+            android:summary="The API key of your SickBeard server."
+            android:defaultValue=""
+            android:key="api"
+            android:inputType="text|textNoSuggestions" />
+        <CheckBoxPreference
+            android:title="HTTPS"
+            android:summary="Use HTTPS"
+            android:defaultValue="false"
+            android:key="https"/>
+        <EditTextPreference
+            android:title="Username"
+            android:summary="The username to access your SickBeard server."
+            android:defaultValue=""
+            android:key="username"
+            android:inputType="text|textNoSuggestions" />
+        <EditTextPreference
+            android:title="Password"
+            android:summary="The password to access your SickBeard server."
+            android:defaultValue=""
+            android:key="password"
+            android:inputType="textPassword" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="SickStache Cache" >
+        <org.sickstache.preference.ClearCacheDialogPreference
+                android:title="Clear Banner Cache"
+                android:summary="Delete banner cache. (Cannot be undone!)"
+                android:dialogIcon="@android:drawable/ic_dialog_alert"
+                android:dialogMessage="Are you sure you wish to clear the cache?"
+                android:positiveButtonText="Clear Cache"
+                android:negativeButtonText="Cancel" />
+    </PreferenceCategory>
+<!--     <PreferenceCategory -->
+<!--         android:title="SickStache Service"> -->
+<!--         <CheckBoxPreference -->
+<!--             android:title="Enable History Notifications" -->
+<!--             android:summary="Enable background service to check history and display notifications." -->
+<!--             android:defaultValue="true" -->
+<!--             android:key="historyService"/> -->
+<!--         <EditTextPreference -->
+<!--             android:title="Max History Check" -->
+<!--             android:summary="The number of items in history to check to find new items." -->
+<!--             android:defaultValue="25" -->
+<!--             android:key="historyMax" -->
+<!--             android:inputType="number" /> -->
+<!--     </PreferenceCategory> -->
+<!--     <PreferenceCategory -->
+<!--         android:title="History"> -->
+<!--         <EditTextPreference -->
+<!--             android:title="Item Limit" -->
+<!--             android:summary="The limit on the number of items to show for history." -->
+<!--             android:defaultValue="100" -->
+<!--             android:key="historyLimit" /> -->
+<!--     </PreferenceCategory> -->
+</PreferenceScreen>

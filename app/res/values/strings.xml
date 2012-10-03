@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- General Values -->
+    <string name="app_name">SickStache</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="continue_name">Continue</string>
+    
+    <!-- Searching -->
+    <string name="search_hint">Search for TV Shows</string>
+    
+    <!-- Cache Message -->
+    <string name="cache_delete">Are you sure you want to delete the cache?</string>
+    
+    <!-- Options Fragment Values -->
+    <string name="ip_hint">Host or IP Address (no http://)</string>
+    <string name="try_get_key">Try Automatically Get API Key</string>
+    <string name="port">Port</string>
+    <string name="api_key">API Key</string>
+    <string name="ip_address">IP Address</string>
+    <string name="save">Save</string>
+    
+    <!-- Menu Item Values -->
+    <string name="settings_item_title">Settings</string>
+    <string name="refresh_item_title">Refresh</string>
+    <string name="search_item_title">Search</string>
+    <string name="cache_item_title">Clear Cache</string>
+    <string name="history_item_title">History</string>
+    <string name="log_item_title">Log</string>
+    <string name="whats_new_item_title">What\'s New?</string>
+    <string name="about_item_title">About SickStache</string>
+    <string name="edit_show_title">Edit Show</string>
+    <string name="help_item_title">Help</string>
+    
+	<!-- CAD Menu Item Values -->
+	<string name="edit_item_title">Edit</string>
+	<string name="pause_item_title">Pause</string>
+	<string name="update_item_title">Update</string>
+	
+	<string name="set_status_item_title">Set Status</string>
+    
+</resources>

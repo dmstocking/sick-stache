@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <version>2.2.1</version>
+    <groupId>org.sickstache</groupId>
+    <artifactId>sickstache-parent</artifactId>
+    <packaging>pom</packaging>
+    <name>SickStache parent POM project</name>
+
+    <modules>
+        <module>app</module>
+		<!-- not using this at this moment and its not set up right -->
+		<!-- <module>test</module> -->
+    </modules>
+
+    <licenses>
+        <license>
+            <name>GNU General Purpose License Version 3.0</name>
+            <url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+            <!-- WTB documentation for what these all do -->
+            <!-- <distribution>repo</distribution> -->
+        </license>
+    </licenses>
+
+    <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <android.version>4.0.1.2</android.version>
+	    <android.platform>15</android.platform>
+	    <android-support.version>10</android-support.version>
+    </properties>
+
+	<dependencies>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <version>${android.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>support-v4</artifactId>
+            <version>${android-support.version}</version>
+            <scope>system</scope>
+            <systemPath>${ANDROID_HOME}/extras/android/support/v4/android-support-v4.jar</systemPath>
+        </dependency>
+	</dependencies>
+
+    <build>
+        <pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>3.3.2</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <sdk>
+                        <platform>${android.platform}</platform>
+                    </sdk>
+                    <undeployBeforeDeploy>true</undeployBeforeDeploy>
+                    <!-- <androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
+                    <assetsDirectory>${project.basedir}/assets</assetsDirectory>
+                    <resourceDirectory>${project.basedir}/res</resourceDirectory>
+                    <nativeLibrariesDirectory>${project.basedir}/src/main/native</nativeLibrariesDirectory> -->
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+        </pluginManagement>
+    </build>
+</project>
