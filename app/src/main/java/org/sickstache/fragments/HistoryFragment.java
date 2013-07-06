@@ -120,6 +120,8 @@ public class HistoryFragment extends LoadingSectionListFragment<HistoryItem, Voi
 		((TextView)row.findViewById(R.id.historyEpisodeTextView)).setText(item.date.substring(11) + " - " + item.show + " - " + item.season + "x" + item.episode + " [" + item.quality + " ]");
 		if ( item.status.compareTo("Downloaded") == 0 ) {
 			row.setBackgroundResource(R.color.sickbeard_today_background);
+		} else if ( item.status.compareTo("Snatched") == 0 ) {
+			row.setBackgroundResource(R.color.sickbeard_snatched_background);
 		} else {
 			row.setBackgroundResource(R.color.sickbeard_soon_background);
 		}

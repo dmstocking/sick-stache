@@ -33,11 +33,9 @@ public class WhatsNewDialog extends SherlockDialogFragment {
 	private DialogInterface.OnClickListener okListener = null;
 	
 	private static String whatsNew =
-			"- Added help to the menu.\n" +
-			"- Moved clear cache into settings.\n" +
-			"- Gave proper attribution to Johno Crawford. (helped fixed a critical bug!)\n" +
+			"- Updated the snatched color to the current purple in Sickbeard.\n" +
 			"\n" +
-			"Please show your support by purchasing this app on Google Play!";
+			"Please show your support by rating this app on Google Play!";
 	
 	public WhatsNewDialog()
 	{

@@ -197,8 +197,10 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 		case WANTED:
 			text.setBackgroundResource(R.color.sickbeard_wanted_background);
 			break;
-		case DOWNLOADED:
 		case SNATCHED:
+			text.setBackgroundResource(R.color.sickbeard_snatched_background);
+			break;
+		case DOWNLOADED:
 		case ARCHIVED:
 			text.setBackgroundResource(R.color.sickbeard_downloaded_background);
 			break;

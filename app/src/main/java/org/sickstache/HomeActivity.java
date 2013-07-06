@@ -51,7 +51,7 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 	private boolean preferencesChanged = false;
 	
 	private ViewPager viewpager;
-	private SlideAdapter pageAdapter;
+	private SlidePhoneAdapter pageAdapter;
 	private TitlePageIndicator pageIndicator;
 	
 	private ShowsFragment showFrag;
@@ -79,7 +79,7 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
         
         viewpager = ((ViewPager)findViewById(R.id.viewpager));
         pageIndicator = ((TitlePageIndicator)findViewById(R.id.viewPagerIndicator));
-        pageAdapter =  new SlideAdapter( this.getSupportFragmentManager() );
+        pageAdapter =  new SlidePhoneAdapter( this.getSupportFragmentManager() );
         viewpager.setAdapter( pageAdapter );
         pageIndicator.setViewPager( viewpager );
         
@@ -198,9 +198,9 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 //        }
 	}
 
-	private class SlideAdapter extends FragmentPagerAdapter {
+	private class SlidePhoneAdapter extends FragmentPagerAdapter {
 
-		public SlideAdapter(FragmentManager fm) {
+		public SlidePhoneAdapter(FragmentManager fm) {
 			super(fm);
 		}
 		
@@ -234,4 +234,41 @@ public class HomeActivity extends SherlockFragmentActivity implements OnSharedPr
 			return null;
 		}
     }
+
+	private class SlideTabletAdapter extends FragmentPagerAdapter {
+
+		public SlideTabletAdapter(FragmentManager fm) {
+			super(fm);
+		}
+
+		@Override
+		public Fragment getItem(int arg0) {
+			switch( arg0 ) {
+				case 0:
+					return showFrag;
+				case 1:
+					return futureFrag;
+				case 2:
+					return historyFrag;
+			}
+			return null;
+		}
+
+		@Override
+		public int getCount() {
+			return 3;
+		}
+
+		public String getPageTitle(int position) {
+			switch( position ) {
+				case 0:
+					return "Shows";
+				case 1:
+					return "Future Episodes";
+				case 2:
+					return "History";
+			}
+			return null;
+		}
+	}
 }

@@ -23,6 +23,7 @@
     <color name="sickbeard_wanted_background">#ffb0b0</color>
     <color name="sickbeard_unaired_background">#f5f1e4</color>
     <color name="sickbeard_downloaded_background">#c3e3c8</color>
+	<color name="sickbeard_snatched_background">#ebc1ea</color>
     <color name="sickbeard_skipped_background">#bedeed</color>
     
     <color name="sickbeard_missed_background">#ffdddd</color>

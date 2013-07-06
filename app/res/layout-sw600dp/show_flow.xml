@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" >
+
+	<fragment
+			android:name="org.sickstache.fragments.ShowsFragment"
+			android:id="@+id/showsFragment"
+			android:layout_weight="1"
+			android:layout_width="match_parent"
+			android:layout_height="fill_parent"
+			android:layout_marginLeft="50dp" >
+	</fragment>
+
+	<fragment
+			android:name="org.sickstache.fragments.SeasonsFragment"
+			android:id="@+id/seasonsFragment"
+			android:layout_weight="1"
+			android:layout_width="match_parent"
+			android:layout_height="fill_parent"
+			android:layout_marginRight="50dp" >
+	</fragment>
+
+</LinearLayout>
