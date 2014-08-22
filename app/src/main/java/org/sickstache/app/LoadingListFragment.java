@@ -139,19 +139,28 @@ public abstract class LoadingListFragment<Params, Progress, Result> extends Sick
 	{
 		switch ( status ) {
 		case NORMAL:
-			spinner.setVisibility(ProgressBar.VISIBLE);
-			error.setVisibility(TextView.GONE);
-			empty.setVisibility(TextView.GONE);
+			if (spinner!=null)
+				spinner.setVisibility(ProgressBar.VISIBLE);
+			if (error!=null)
+				error.setVisibility(TextView.GONE);
+			if (empty!=null)
+				empty.setVisibility(TextView.GONE);
 			break;
 		case ERROR:
-			spinner.setVisibility(ProgressBar.GONE);
-			error.setVisibility(TextView.VISIBLE);
-			empty.setVisibility(TextView.GONE);
+			if (spinner!=null)
+				spinner.setVisibility(ProgressBar.GONE);
+			if (error!=null)
+				error.setVisibility(TextView.VISIBLE);
+			if (empty!=null)
+				empty.setVisibility(TextView.GONE);
 			break;
 		case EMPTY:
-			spinner.setVisibility(ProgressBar.GONE);
-			error.setVisibility(TextView.GONE);
-			empty.setVisibility(TextView.VISIBLE);
+			if (spinner!=null)
+				spinner.setVisibility(ProgressBar.GONE);
+			if (error!=null)
+				error.setVisibility(TextView.GONE);
+			if (empty!=null)
+				empty.setVisibility(TextView.VISIBLE);
 			break;
 		}
 	}
