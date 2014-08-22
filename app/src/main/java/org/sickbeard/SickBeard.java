@@ -48,6 +48,7 @@ public class SickBeard {
 	
 	private static final String SUCCESS = "success";
 	private static final String ERROR = "error";
+	private static final String DENIED = "denied";
 	private static final String FAILURE = "failure";
 	
 	private boolean https = false;
@@ -767,7 +768,7 @@ public class SickBeard {
 	}
 
 	private <T> void tryExtractError(JsonResponse<T> response) throws Exception {
-		if ( response.result.compareTo(ERROR) == 0 || response.result.compareTo(FAILURE) == 0 ) {
+		if ( response.result.compareTo(DENIED) == 0 || response.result.compareTo(ERROR) == 0 || response.result.compareTo(FAILURE) == 0 ) {
 			if ( response.message != null && response.message.length() > 0 )
 				throw new Exception( response.message );
 			else if ( response.data != null && response.data.toString().length() > 0 )
