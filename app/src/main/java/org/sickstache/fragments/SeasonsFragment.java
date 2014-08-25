@@ -23,7 +23,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.res.Resources;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,10 +35,12 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+
 import org.sickbeard.Episode;
 import org.sickbeard.Season;
 import org.sickbeard.SeasonEpisodePair;
@@ -53,10 +58,12 @@ import org.sickstache.widget.DefaultImageView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episode,String, Void, Show> {
 
 	private String tvdbid;
+	private String status;
 	private String show;
 	
 	private LinearLayout header;
@@ -81,6 +88,7 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 		super.onAttach(activity);
 		Intent parent = this.getActivity().getIntent();
 		tvdbid = parent.getStringExtra("tvdbid");
+		status = parent.getStringExtra("status");
 		show = parent.getStringExtra("show");
 	}
 
@@ -114,7 +122,7 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 			paused = (TextView) view.findViewById(R.id.pausedTextView);
 			airbydate = (TextView) view.findViewById(R.id.airbydateTextView);
 			showImage = (DefaultImageView) view.findViewById(R.id.showImage);
-			showImage.setBanner( tvdbid );
+			showImage.setBanner( tvdbid , status);
 		} else {
 			// because a header is tied to the listView and not the fragment we have to do this 
 			if ( hasHeader() ) {
@@ -137,6 +145,7 @@ public class SeasonsFragment extends ExpandableLoadingListFragment<Integer,Episo
 		case R.id.editShowMenuItem:
 			Intent intent = new Intent( this.getActivity(), EditShowActivity.class );
 			intent.putExtra("tvdbid", tvdbid);
+			intent.putExtra("status", status);
 			intent.putExtra("show", show);
 			this.startActivity(intent);
 			return true;

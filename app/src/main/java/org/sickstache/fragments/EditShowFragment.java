@@ -19,17 +19,23 @@
  */
 package org.sickstache.fragments;
 
+import java.util.Locale;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import org.sickstache.HomeActivity;
 import org.sickstache.R;
 import org.sickstache.app.SickFragment;
@@ -46,7 +52,8 @@ public class EditShowFragment extends SickFragment {
 	
 	protected String tvdbid;
 	protected String show;
-
+	protected String status;
+	
 	protected DefaultImageView showImage;
 	protected TextView showTextView;
 	
@@ -68,6 +75,7 @@ public class EditShowFragment extends SickFragment {
 		super.onAttach(activity);
 		Intent intent = this.getActivity().getIntent();
 		tvdbid = intent.getStringExtra("tvdbid");
+		status = intent.getStringExtra("status"); // TODO ended
 		show = intent.getStringExtra("show");
 	}
 	
@@ -82,7 +90,7 @@ public class EditShowFragment extends SickFragment {
 		refresh = (WorkingTextView)root.findViewById(R.id.refreshWorkingTextView);
 		update = (WorkingTextView)root.findViewById(R.id.updateWorkingTextView);
 		delete = (WorkingTextView)root.findViewById(R.id.deleteWorkingTextView);
-		showImage.setBanner(tvdbid);
+		showImage.setBanner(tvdbid, status);
 		showTextView.setText(show);
 		banner.text.setText("Fetch Banner");
 		quality.text.setText("Quality");

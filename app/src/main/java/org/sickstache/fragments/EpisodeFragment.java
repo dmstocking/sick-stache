@@ -1,11 +1,17 @@
 package org.sickstache.fragments;
 
+import java.util.Locale;
+
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
 import org.sickbeard.Episode;
 import org.sickbeard.Episode.StatusEnum;
 import org.sickstache.R;
@@ -23,8 +29,9 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 	public String tvdbid;
 	public String show;
 	public String season;
+	public String status;
 	public String episode;
-	public StatusEnum status = null;
+	public StatusEnum statusEnum = null;
 	public String airbydateText = null;
 	public String nameText = null;
 	public String descriptionText = null;
@@ -52,6 +59,8 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 		super.onAttach(activity);
 		Intent parent = activity.getIntent();
 		this.tvdbid = parent.getStringExtra("tvdbid");
+		this.status = parent.getStringExtra("status");
+		status = "ended";
 		this.show = parent.getStringExtra("show");
 		this.season = parent.getStringExtra("season");
 		this.episode = parent.getStringExtra("episode");
@@ -75,15 +84,14 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 			this.descirption.setText(this.descriptionText);
 		this.search = (WorkingTextView)view.findViewById(R.id.searchWorkingTextView);
 		this.statusView = (TextView)view.findViewById(R.id.statusTextView);
-		if ( status != null )
-			this.setStatusEnum(status);
+		if ( statusEnum != null )
+			this.setStatusEnum(statusEnum);
 		this.setStatusView = (WorkingTextView)view.findViewById(R.id.setStatusWorkingTextView);
-		
 		this.showView.setText(this.show);
 		this.seasonView.setText(this.season);
 		this.episodeView.setText(this.episode);
 		
-		showImage.setBanner(tvdbid);
+		showImage.setBanner(tvdbid, status);
 		
 		this.search.text.setText("Search for Episode");
 		this.search.text.setOnClickListener( new View.OnClickListener() {
@@ -142,7 +150,7 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 	
 	public void setStatusEnum(StatusEnum status)
 	{
-		this.status = status;
+		this.statusEnum = status;
 		this.statusView.setText(status.toString());
 
 		// let people do wtf they want

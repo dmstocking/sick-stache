@@ -19,10 +19,32 @@
  */
 package org.sickstache.fragments;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
+import org.sickbeard.Show;
+import org.sickbeard.comparator.ShowNameComparator;
+import org.sickstache.R;
+import org.sickstache.SeasonsActivity;
+import org.sickstache.app.LoadingListFragment;
+import org.sickstache.dialogs.ErrorDialog;
+import org.sickstache.dialogs.PauseDialog;
+import org.sickstache.helper.BannerCache;
+import org.sickstache.helper.Preferences;
+import org.sickstache.task.PauseTask;
+import org.sickstache.task.RefreshTask;
+import org.sickstache.task.UpdateTask;
+import org.sickstache.widget.DefaultImageView;
+import org.sickstache.widget.SafeArrayAdapter;
+
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -31,26 +53,12 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.viewpagerindicator.TitlePageIndicator;
-import org.sickbeard.Show;
-import org.sickbeard.comparator.ShowNameComparator;
-import org.sickstache.R;
-import org.sickstache.SeasonsActivity;
-import org.sickstache.app.LoadingListFragment;
-import org.sickstache.dialogs.ErrorDialog;
-import org.sickstache.dialogs.PauseDialog;
-import org.sickstache.helper.Preferences;
-import org.sickstache.task.PauseTask;
-import org.sickstache.task.RefreshTask;
-import org.sickstache.task.UpdateTask;
-import org.sickstache.widget.DefaultImageView;
-import org.sickstache.widget.SafeArrayAdapter;
-
-import java.util.ArrayList;
 
 public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Show>> implements ViewPager.OnPageChangeListener {
 	
@@ -81,10 +89,11 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 				Show item = getItem(position);
 				TextView tv = (TextView) row.findViewById(R.id.show);
 				tv.setText(item.showName);
+				
 				DefaultImageView image = (DefaultImageView) row.findViewById(R.id.showImage);
 				image.defaultResource = R.drawable.default_banner;
-				image.setBanner( item.id );
-
+				image.setBanner( item.id, item.status);
+				
 				ImageView overlay = (ImageView)row.findViewById(R.id.showSelectedOverlay);
 				if ( selected.contains(position) ) {
 					overlay.setVisibility(View.VISIBLE);
@@ -120,6 +129,7 @@ public class ShowsFragment extends LoadingListFragment<Void, Void, ArrayList<Sho
 		Intent intent = new Intent( this.getActivity(), SeasonsActivity.class );
 		Show item = showAdapter.getItem(position);
 		intent.putExtra("tvdbid", item.id);
+		intent.putExtra("status", item.status);
 		intent.putExtra("show", item.showName);
 		intent.putExtra("headerfooter", true);
 		startActivity(intent);

@@ -19,13 +19,19 @@
  */
 package org.sickstache.widget;
 
+import java.util.Locale;
+
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
+
+import org.sickstache.R;
 import org.sickstache.helper.BannerCache;
 import org.sickstache.helper.Preferences;
 import org.sickstache.task.FetchBannerTask;
@@ -64,7 +70,7 @@ public class DefaultImageView extends ImageView {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 
-	public void setBanner(String tvdbid)
+	public void setBanner(String tvdbid, final String status)
 	{
 		// we are asking for a new uri so we do not want the current
 		if ( task != null ) {
@@ -84,10 +90,25 @@ public class DefaultImageView extends ImageView {
 				@Override
 				protected void onPostExecute(Bitmap result) {
 					super.onPostExecute(result);
-					if ( result != null )
+					if ( result != null ) {
 						DefaultImageView.this.setImageBitmap(result);
+						injectEndedBanner(status);
+					}
 				}};
 				task.execute();
+		}
+		// Overlay for ended
+		injectEndedBanner(status);
+	}
+	
+	private void injectEndedBanner(String status) {
+		if (status.toLowerCase(Locale.ENGLISH).endsWith("ended")) {
+			Resources r = getResources();
+			Drawable[] layers = new Drawable[2];
+			layers[0] = getDrawable();
+			layers[1] = r.getDrawable(R.drawable.ended);
+			LayerDrawable layerDrawable = new LayerDrawable(layers);
+			setImageDrawable(layerDrawable);
 		}
 	}
 }
