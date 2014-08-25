@@ -60,7 +60,6 @@ public class EpisodeFragment extends LoadingFragment<String, Void, Episode> {
 		Intent parent = activity.getIntent();
 		this.tvdbid = parent.getStringExtra("tvdbid");
 		this.status = parent.getStringExtra("status");
-		status = "ended";
 		this.show = parent.getStringExtra("show");
 		this.season = parent.getStringExtra("season");
 		this.episode = parent.getStringExtra("episode");

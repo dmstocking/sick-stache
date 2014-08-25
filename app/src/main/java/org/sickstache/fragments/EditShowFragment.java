@@ -75,7 +75,7 @@ public class EditShowFragment extends SickFragment {
 		super.onAttach(activity);
 		Intent intent = this.getActivity().getIntent();
 		tvdbid = intent.getStringExtra("tvdbid");
-		status = intent.getStringExtra("status"); // TODO ended
+		status = intent.getStringExtra("status"); 
 		show = intent.getStringExtra("show");
 	}
 	
