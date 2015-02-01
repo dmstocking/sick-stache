@@ -75,8 +75,20 @@ public class SickBeard {
 	{
 		this.hostname = hostname;
 		this.port = port;
-		this.extraPath = "/" + extraPath + "/";
+
+		this.extraPath = "";
+        if (extraPath != null && !extraPath.equals("")) {
+
+            StringBuilder extraPathBuilder = new StringBuilder();
+            if (!extraPath.startsWith("/")) extraPathBuilder.append("/"); // Add preceding backslash only if required.
+            extraPathBuilder.append(extraPath);
+            if (extraPath.endsWith("/")) extraPathBuilder.deleteCharAt(extraPathBuilder.length() - 1); // Remove trailing backslash
+
+            this.extraPath = extraPathBuilder.toString();
+        }
+
 		this.path = this.extraPath + "/api/" + api + "/";
+
 		try {
 			this.https = https;
 			this.scheme = "http";
