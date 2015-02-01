@@ -20,6 +20,7 @@
 package org.sickbeard;
 
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.util.Log;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -77,14 +78,8 @@ public class SickBeard {
 		this.port = port;
 
 		this.extraPath = "";
-        if (extraPath != null && !extraPath.equals("")) {
-
-            StringBuilder extraPathBuilder = new StringBuilder();
-            if (!extraPath.startsWith("/")) extraPathBuilder.append("/"); // Add preceding backslash only if required.
-            extraPathBuilder.append(extraPath);
-            if (extraPath.endsWith("/")) extraPathBuilder.deleteCharAt(extraPathBuilder.length() - 1); // Remove trailing backslash
-
-            this.extraPath = extraPathBuilder.toString();
+        if (!TextUtils.isEmpty(extraPath)) {
+            this.extraPath = "/" + extraPath.replaceAll("^/|/$", "");
         }
 
 		this.path = this.extraPath + "/api/" + api + "/";
