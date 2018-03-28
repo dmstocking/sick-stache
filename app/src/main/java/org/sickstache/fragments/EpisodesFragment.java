@@ -43,6 +43,7 @@ public class EpisodesFragment extends LoadingListFragment<Void, Void, Season> {
 	private ArrayAdapter<Episode> episodesAdapter;
 	
 	private String tvdbid;
+	private String status;
 	private String show;
 	private String season;
 	
@@ -51,6 +52,7 @@ public class EpisodesFragment extends LoadingListFragment<Void, Void, Season> {
 		super.onCreate(savedInstanceState);
 		Intent parent = this.getActivity().getIntent();
 		tvdbid = parent.getStringExtra("tvdbid");
+		status = parent.getStringExtra("status");
 		show = parent.getStringExtra("show");
 		season = parent.getStringExtra("season");
 		episodesAdapter = new ArrayAdapter<Episode>(this.getActivity(), R.layout.episodes_item) {
@@ -96,6 +98,7 @@ public class EpisodesFragment extends LoadingListFragment<Void, Void, Season> {
 		super.onListItemClick(l, v, position, id);
 		Intent intent = new Intent( this.getActivity(), EpisodeActivity.class );
 		intent.putExtra("tvdbid", this.tvdbid);
+		intent.putExtra("status", this.status);
 		intent.putExtra("show", this.show);
 		intent.putExtra("season", this.season);
 		intent.putExtra("episode", this.episodesAdapter.getItem(position).episode);
