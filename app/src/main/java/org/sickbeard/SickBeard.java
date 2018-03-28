@@ -20,6 +20,7 @@
 package org.sickbeard;
 
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.util.Log;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -75,8 +76,14 @@ public class SickBeard {
 	{
 		this.hostname = hostname;
 		this.port = port;
-		this.extraPath = "/" + extraPath + "/";
+
+		this.extraPath = "";
+        if (!TextUtils.isEmpty(extraPath)) {
+            this.extraPath = "/" + extraPath.replaceAll("^/|/$", "");
+        }
+
 		this.path = this.extraPath + "/api/" + api + "/";
+
 		try {
 			this.https = https;
 			this.scheme = "http";
